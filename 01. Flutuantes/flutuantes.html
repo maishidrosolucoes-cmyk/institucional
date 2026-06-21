@@ -1,0 +1,3577 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Sistemas de Bombeamento Flutuante | MHS</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Three.js para visualização 3D interativa do produto -->
+    <script src="vendor/three.r128.min.js" defer onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';"></script>
+    <script src="vendor/STLLoader.r128.js" defer onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js';"></script>
+    <script src="vendor/mhs-3d-models.js" defer></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-dark': '#182540',
+                        'brand-darker': '#0a101a',
+                        'brand-teal': '#0088AC',
+                        'brand-red': '#E42927',
+                        'glass-bg': 'rgba(255, 255, 255, 0.04)',
+                        'glass-border': 'rgba(255, 255, 255, 0.08)',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'radial-gradient': 'radial-gradient(circle at 50% -20%, #182540 0%, #0a101a 80%)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            color-scheme: dark;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+        }
+
+        * {
+            box-sizing: border-box;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        *::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: calc(82px + var(--safe-top));
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: #0a101a;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            min-height: 100svh;
+            background-image: radial-gradient(circle at 50% 20%, rgba(0, 136, 172, 0.15) 0%, rgba(10, 16, 26, 1) 60%);
+        }
+
+        .section-x {
+            padding-left: max(1rem, var(--safe-left));
+            padding-right: max(1rem, var(--safe-right));
+        }
+
+        .nav-inner {
+            padding: calc(0.85rem + var(--safe-top)) max(1rem, var(--safe-right)) 0.85rem max(1rem, var(--safe-left));
+        }
+
+        .brand-mark {
+            width: clamp(2.25rem, 7vw, 2.5rem);
+            height: clamp(2.25rem, 7vw, 2.5rem);
+            flex: 0 0 auto;
+        }
+
+        .brand-title {
+            font-size: clamp(1.25rem, 4.5vw, 1.5rem);
+        }
+
+        .brand-logo-link {
+            display: inline-flex;
+            align-items: center;
+            flex: 0 0 auto;
+        }
+
+        .brand-logo {
+            width: auto;
+            height: clamp(2.75rem, 8vw, 3.55rem);
+            display: block;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.35));
+        }
+
+        .nav-actions {
+            gap: clamp(0.5rem, 2.5vw, 1rem);
+            flex-shrink: 0;
+        }
+
+        .nav-download {
+            width: clamp(2.25rem, 8vw, 2.5rem);
+            height: clamp(2.25rem, 8vw, 2.5rem);
+            flex: 0 0 auto;
+        }
+
+        .nav-cta {
+            padding: clamp(0.58rem, 2vw, 0.7rem) clamp(0.9rem, 3.5vw, 1.5rem);
+            font-size: clamp(0.72rem, 2.8vw, 0.875rem);
+            white-space: nowrap;
+        }
+
+        .hero-section {
+            padding-top: clamp(5.8rem, 10vw, 7.25rem);
+            padding-bottom: clamp(1.5rem, 4vw, 3rem);
+        }
+
+        .hero-title {
+            font-size: clamp(2.65rem, 10vw, 4.65rem);
+            letter-spacing: 0;
+        }
+
+        .hero-text {
+            font-size: clamp(0.95rem, 1.45vw, 1.125rem);
+            max-width: 62ch;
+        }
+
+        .hero-visual {
+            height: clamp(19rem, 52vw, 34rem);
+            margin-top: clamp(1.25rem, 4vw, 2.5rem);
+        }
+
+        .hero-ring {
+            width: clamp(20rem, 70vw, 44rem);
+            height: clamp(20rem, 70vw, 44rem);
+        }
+
+        .hero-ring-secondary {
+            width: clamp(25rem, 86vw, 56rem);
+            height: clamp(25rem, 86vw, 56rem);
+        }
+
+        .float-hero {
+            --hero-scale: 1.06;
+            animation: floatHero 6s ease-in-out infinite;
+            transform: translate3d(0, 0, 0) scale(var(--hero-scale));
+            transform-origin: center;
+            will-change: transform;
+        }
+
+        .hero-machine {
+            pointer-events: none;
+        }
+
+        .scroll-cue {
+            margin-top: clamp(1.5rem, 4vw, 3rem);
+            margin-bottom: clamp(3.5rem, 9vw, 8.5rem);
+        }
+
+        .catalog-section {
+            margin-top: clamp(-5rem, -9vw, -2.5rem);
+            padding-bottom: clamp(4.5rem, 9vw, 6.5rem);
+        }
+
+        .catalog-inner {
+            padding-top: clamp(5.25rem, 10vw, 7rem);
+        }
+
+        .technical-specs-simple {
+            margin-top: clamp(2.5rem, 6vw, 4.75rem);
+            display: flex;
+            justify-content: center;
+        }
+
+        .technical-specs-simple img {
+            width: min(100%, 56rem);
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .technical-comparison {
+            width: min(100%, 76rem);
+            margin: clamp(1.25rem, 3vw, 2rem) auto 0;
+        }
+
+        .technical-comparison-trigger {
+            width: 100%;
+            max-width: 56rem;
+            margin: 0 auto;
+            min-height: 3.15rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+            border-radius: 999px;
+            color: #e2e8f0;
+            background: rgba(255, 255, 255, 0.055);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-weight: 800;
+            letter-spacing: 0;
+            transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .technical-comparison-trigger:hover,
+        .technical-comparison-trigger:focus-visible,
+        .technical-comparison-trigger[aria-expanded="true"] {
+            color: #0a101a;
+            background: #0088AC;
+            border-color: rgba(0, 136, 172, 0.95);
+            outline: none;
+        }
+
+        .technical-comparison-panel {
+            margin-top: 1rem;
+            border-radius: 22px;
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .technical-table-shell {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .technical-table {
+            width: 100%;
+            min-width: 46rem;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.86rem;
+        }
+
+        .technical-table th,
+        .technical-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            vertical-align: top;
+        }
+
+        .technical-table th {
+            color: #ffffff;
+            background: rgba(0, 136, 172, 0.16);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            white-space: nowrap;
+        }
+
+        .technical-table td {
+            color: #cbd5e1;
+        }
+
+        .technical-table tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .technical-table td:first-child,
+        .technical-table th:first-child {
+            color: #ffffff;
+            font-weight: 800;
+        }
+
+        .technical-table-note {
+            padding: 0.85rem 1rem;
+            color: #64748b;
+            font-size: 0.72rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .technical-table-plain {
+            margin: 0;
+            padding: 1rem;
+            white-space: pre-wrap;
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            line-height: 1.65;
+        }
+
+        .technical-original-frame {
+            width: 100%;
+            min-height: clamp(18rem, 62vh, 44rem);
+            display: block;
+            border: 0;
+            background: #ffffff;
+        }
+
+        .technical-table-empty {
+            padding: clamp(1.25rem, 4vw, 2rem);
+            color: #cbd5e1;
+            font-size: 0.92rem;
+            line-height: 1.65;
+            text-align: center;
+        }
+
+        .comparison-section {
+            width: min(100%, 76rem);
+            margin: clamp(1rem, 3vw, 1.65rem) auto 0;
+        }
+
+        .comparison-section[hidden] {
+            display: none;
+        }
+
+        .comparison-desktop,
+        .comparison-mobile-landscape {
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(0, 136, 172, 0.22);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.28);
+        }
+
+        .comparison-section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: clamp(1rem, 2.2vw, 1.35rem);
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(0, 136, 172, 0.95), rgba(24, 37, 64, 0.96));
+        }
+
+        .comparison-section-kicker {
+            color: rgba(255, 255, 255, 0.74);
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 0.2rem;
+        }
+
+        .comparison-section-title {
+            font-size: clamp(1.35rem, 3vw, 2.05rem);
+            font-weight: 900;
+            line-height: 1.08;
+        }
+
+        .comparison-section-hint {
+            color: rgba(255, 255, 255, 0.76);
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .comparison-mobile {
+            display: none;
+        }
+
+        .comparison-mobile-portrait {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.95rem;
+            min-height: 13rem;
+            padding: 1.5rem;
+            border-radius: 22px;
+            color: #dbeafe;
+            background: rgba(0, 136, 172, 0.12);
+            border: 1px solid rgba(0, 136, 172, 0.28);
+            text-align: left;
+        }
+
+        .comparison-mobile-portrait i {
+            color: #0088AC;
+            font-size: 2rem;
+            transform: rotate(90deg);
+        }
+
+        .comparison-mobile-portrait strong {
+            display: block;
+            color: #ffffff;
+            font-size: 1rem;
+            line-height: 1.25;
+            margin-bottom: 0.35rem;
+        }
+
+        .comparison-mobile-portrait span {
+            display: block;
+            color: #cbd5e1;
+            font-size: 0.82rem;
+            line-height: 1.45;
+        }
+
+        .comparison-table-shell {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            background: rgba(255, 255, 255, 0.96);
+        }
+
+        .comparison-grid-table {
+            width: 100%;
+            min-width: 58rem;
+            border-collapse: collapse;
+            color: #182540;
+            font-size: 0.86rem;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.88)),
+                radial-gradient(circle at 50% 45%, rgba(0, 136, 172, 0.12), transparent 48%);
+        }
+
+        .comparison-grid-table th,
+        .comparison-grid-table td {
+            padding: 1.05rem 0.95rem;
+            border: 1px solid rgba(24, 37, 64, 0.09);
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .comparison-grid-table th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            color: #182540;
+            background: #eef3f7;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .comparison-grid-table th:first-child,
+        .comparison-grid-table td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 3;
+            width: 12.5rem;
+            text-align: left;
+            background: #f4f8fb;
+            color: #182540;
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+        }
+
+        .comparison-grid-table th:first-child {
+            z-index: 4;
+            background: #eaf0f5;
+        }
+
+        .comparison-grid-table td {
+            font-weight: 800;
+        }
+
+        .comparison-grid-table tr:nth-child(even) td:not(:first-child) {
+            background: rgba(226, 232, 240, 0.5);
+        }
+
+        .comparison-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 2rem;
+            min-height: 2rem;
+            border-radius: 999px;
+            color: #059669;
+            background: rgba(16, 185, 129, 0.12);
+            font-size: 1rem;
+        }
+
+        .comparison-status.is-optional {
+            min-width: 3.35rem;
+            min-height: 1.75rem;
+            padding: 0 0.6rem;
+            color: #d97706;
+            background: rgba(245, 158, 11, 0.13);
+            border: 1px solid rgba(245, 158, 11, 0.18);
+            font-size: 0.62rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+        }
+
+        .comparison-status.is-unavailable {
+            color: #E42927;
+            background: rgba(228, 41, 39, 0.1);
+        }
+
+        .comparison-tags {
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.35rem;
+        }
+
+        .comparison-tags span {
+            padding: 0.35rem 0.52rem;
+            border-radius: 8px;
+            color: #4f46e5;
+            background: rgba(79, 70, 229, 0.1);
+            font-size: 0.58rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 767px) {
+            .comparison-section {
+                width: min(100%, calc(100vw - 1rem));
+            }
+
+            .comparison-desktop {
+                display: none;
+            }
+
+            .comparison-mobile {
+                display: block;
+            }
+        }
+
+        @media (max-width: 767px) and (orientation: portrait) {
+            .comparison-mobile-portrait {
+                display: flex;
+            }
+
+            .comparison-mobile-landscape {
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) and (orientation: landscape) {
+            .comparison-section {
+                width: min(100%, calc(100vw - 0.75rem));
+                margin-top: 0.75rem;
+            }
+
+            .comparison-mobile {
+                display: block;
+            }
+
+            .comparison-desktop,
+            .comparison-mobile-portrait {
+                display: none;
+            }
+
+            .comparison-mobile-landscape {
+                display: block;
+                border-radius: 16px;
+            }
+
+            .comparison-section-header {
+                padding: 0.55rem 0.7rem;
+            }
+
+            .comparison-section-kicker,
+            .comparison-section-hint {
+                display: none;
+            }
+
+            .comparison-section-title {
+                font-size: 1rem;
+            }
+
+            .comparison-table-shell {
+                overflow: visible;
+            }
+
+            .comparison-grid-table {
+                min-width: 0;
+                table-layout: fixed;
+                font-size: 0.52rem;
+            }
+
+            .comparison-grid-table th,
+            .comparison-grid-table td {
+                padding: 0.34rem 0.22rem;
+                line-height: 1.1;
+            }
+
+            .comparison-grid-table th:first-child,
+            .comparison-grid-table td:first-child {
+                position: static;
+                width: 27%;
+                font-size: 0.43rem;
+                letter-spacing: 0.08em;
+            }
+
+            .comparison-status {
+                min-width: 1.35rem;
+                min-height: 1.35rem;
+                font-size: 0.72rem;
+            }
+
+            .comparison-status.is-optional {
+                min-width: 2.35rem;
+                min-height: 1.2rem;
+                padding: 0 0.32rem;
+                font-size: 0.45rem;
+            }
+
+            .comparison-tags {
+                gap: 0.12rem;
+            }
+
+            .comparison-tags span {
+                padding: 0.2rem 0.22rem;
+                border-radius: 5px;
+                font-size: 0.38rem;
+                letter-spacing: 0.03em;
+            }
+        }
+
+        .product-carousel {
+            position: relative;
+            padding: 0 clamp(0.35rem, 5vw, 4.5rem);
+            overflow: visible;
+        }
+
+        .product-carousel-viewport {
+            min-height: clamp(30rem, 70vw, 34rem);
+            overflow: visible;
+            padding: clamp(6.25rem, 10vw, 7.5rem) 0 clamp(2rem, 4vw, 2.75rem);
+            cursor: grab;
+            touch-action: pan-y;
+            user-select: none;
+        }
+
+        .product-carousel-viewport.is-dragging {
+            cursor: grabbing;
+        }
+
+        .product-carousel-viewport:focus-visible {
+            outline: 2px solid rgba(0, 136, 172, 0.75);
+            outline-offset: 8px;
+            border-radius: 28px;
+        }
+
+        .product-carousel-track {
+            display: flex;
+            align-items: stretch;
+            gap: clamp(1rem, 3vw, 2rem);
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+
+        .product-card {
+            flex: 0 0 clamp(18.5rem, 76vw, 22rem);
+            min-height: clamp(26.5rem, 60vw, 30rem);
+            transform: scale(0.86);
+            opacity: 0.52;
+            filter: saturate(0.78);
+            z-index: 1;
+            transition: transform 0.45s ease, opacity 0.45s ease, filter 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+        }
+
+        .product-card.is-neighbor {
+            transform: scale(0.93);
+            opacity: 0.78;
+            filter: saturate(0.9);
+        }
+
+        .product-card.is-active {
+            transform: scale(1.07) translateY(-0.25rem);
+            opacity: 1;
+            filter: saturate(1.08);
+            z-index: 5;
+            border-color: rgba(0, 136, 172, 0.55);
+            box-shadow: 0 34px 70px rgba(0, 136, 172, 0.2), 0 22px 45px rgba(0, 0, 0, 0.45);
+        }
+
+        .product-card-image {
+            overflow: visible;
+            pointer-events: none;
+        }
+
+        .product-card-image img {
+            transform-origin: center bottom;
+        }
+
+        .product-card-summary {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.55rem;
+            width: 100%;
+            margin-top: auto;
+            padding: 0.75rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .product-card-spec {
+            min-height: 3.45rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.18rem;
+            padding: 0.55rem 0.65rem;
+            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .product-card-spec-label {
+            color: rgba(203, 213, 225, 0.58);
+            font-size: 0.55rem;
+            font-weight: 800;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .product-card-spec-value {
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .product-card-spec-value.is-accent {
+            color: #0088AC;
+        }
+
+        .product-nav-button {
+            position: absolute;
+            top: 50%;
+            z-index: 20;
+            width: clamp(2.55rem, 8vw, 3.2rem);
+            height: clamp(2.55rem, 8vw, 3.2rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(10, 16, 26, 0.66);
+            color: #e2e8f0;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.32);
+            transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+        }
+
+        .product-nav-button:hover,
+        .product-nav-button:focus-visible {
+            background: rgba(0, 136, 172, 0.82);
+            border-color: rgba(0, 136, 172, 0.95);
+            color: #0a101a;
+            outline: none;
+        }
+
+        .product-nav-prev {
+            left: clamp(0rem, 1vw, 0.75rem);
+            transform: translateY(-50%);
+        }
+
+        .product-nav-next {
+            right: clamp(0rem, 1vw, 0.75rem);
+            transform: translateY(-50%);
+        }
+
+        .product-carousel-dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.55rem;
+            margin-top: clamp(0.5rem, 2vw, 1rem);
+        }
+
+        .product-carousel-dot {
+            width: 0.55rem;
+            height: 0.55rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.22);
+            border: 0;
+            transition: width 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-carousel-dot.is-active {
+            width: 1.65rem;
+            background: #0088AC;
+            box-shadow: 0 0 18px rgba(0, 136, 172, 0.55);
+        }
+
+        .fluid-section {
+            padding-top: clamp(4.5rem, 9vw, 6rem);
+            padding-bottom: clamp(4.5rem, 9vw, 6rem);
+        }
+
+        .section-heading {
+            font-size: clamp(1.45rem, 4.2vw, 1.875rem);
+        }
+
+        .feature-stack {
+            gap: clamp(3.5rem, 8vw, 6rem);
+        }
+
+        .feature-visual {
+            height: clamp(20rem, 58vw, 28rem);
+            margin: clamp(0.5rem, 3vw, 1rem) 0;
+        }
+
+        .fluid-subtitle {
+            font-size: clamp(1.55rem, 4.8vw, 1.875rem);
+            line-height: 1.2;
+        }
+
+        /* Video de demonstracao */
+        .project-video-section {
+            padding-bottom: clamp(4.5rem, 9vw, 6.5rem);
+        }
+
+        .project-video-inner {
+            width: min(100%, 72rem);
+        }
+
+        .project-video-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1.25rem;
+            margin-bottom: clamp(1rem, 3vw, 1.6rem);
+        }
+
+        .project-video-kicker {
+            color: #0088AC;
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .project-video-title {
+            color: #ffffff;
+            font-size: clamp(1.65rem, 4.6vw, 2.85rem);
+            font-weight: 900;
+            line-height: 1.05;
+        }
+
+        .project-video-download {
+            min-height: 2.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+            flex: 0 0 auto;
+            padding: 0.75rem 1.1rem;
+            border-radius: 999px;
+            color: #0a101a;
+            background: #0088AC;
+            border: 1px solid rgba(0, 136, 172, 0.95);
+            font-size: 0.86rem;
+            font-weight: 900;
+            box-shadow: 0 16px 34px rgba(0, 136, 172, 0.22);
+            transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .project-video-download:hover,
+        .project-video-download:focus-visible {
+            background: #22d3ee;
+            transform: translateY(-2px);
+            box-shadow: 0 20px 42px rgba(34, 211, 238, 0.22);
+            outline: none;
+        }
+
+        .project-video-shell {
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            background: #020617;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(0, 136, 172, 0.12);
+        }
+
+        .project-video-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -40px 80px rgba(0, 0, 0, 0.16);
+        }
+
+        .project-video-player {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            display: block;
+            background: #020617;
+            object-fit: contain;
+        }
+
+        /* Glassmorphism Premium */
+        .glass-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .glass-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(0, 136, 172, 0.4);
+                box-shadow: 0 30px 60px rgba(0, 136, 172, 0.15);
+            }
+
+            .product-card.glass-card:hover {
+                transform: scale(0.95) translateY(-0.25rem);
+            }
+
+            .product-card.is-active.glass-card:hover {
+                transform: scale(1.09) translateY(-0.45rem);
+            }
+        }
+
+        /* Tipografia Gigante de Fundo (Marca de Água estilo "TOP") */
+        .watermark-text {
+            font-size: 28vw;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.02);
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            user-select: none;
+            line-height: 1;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        /* Partículas flutuantes (simulando os grãos de café, mas em estilo água/tech) */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,136,172,0.4) 0%, transparent 70%);
+            filter: blur(4px);
+            z-index: 1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes floatHero {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(var(--hero-scale)); }
+            50% { transform: translate3d(0, -22px, 0) scale(var(--hero-scale)); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* Estilo para os Números Gigantes da Secção "MHS É" */
+        .giant-number {
+            position: absolute;
+            font-size: clamp(6.5rem, 16vw, 11rem);
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            top: clamp(-3.75rem, -8vw, -2.75rem);
+            z-index: 0;
+            line-height: 1;
+            user-select: none;
+        }
+
+        /* Modal */
+        .modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: calc(1rem + var(--safe-top)) max(1rem, var(--safe-right)) calc(1rem + var(--safe-bottom)) max(1rem, var(--safe-left));
+        }
+        .modal.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            max-height: 90vh;
+            max-height: min(90vh, calc(100svh - 2rem - var(--safe-top) - var(--safe-bottom)));
+            transform: scale(0.95) translateY(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .modal.active .modal-content { transform: scale(1) translateY(0); }
+
+        .product-modal-content {
+            width: min(100%, 72rem);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .product-modal-content:hover {
+            transform: scale(1) translateY(0);
+        }
+
+        .product-sheet-handle {
+            display: none;
+        }
+
+        .product-modal-header {
+            flex: 0 0 auto;
+        }
+
+        .product-modal-subtitle {
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+        }
+
+        .product-modal-body {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            padding: clamp(1rem, 3vw, 2rem);
+        }
+
+        .product-market-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(19rem, 0.75fr);
+            gap: clamp(1.25rem, 3vw, 2rem);
+            align-items: start;
+        }
+
+        .product-media-column {
+            min-width: 0;
+        }
+
+        .product-summary-panel {
+            position: sticky;
+            top: 0;
+            align-self: start;
+            border-radius: 24px;
+            padding: clamp(1rem, 2vw, 1.35rem);
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .product-gallery-layout {
+            display: grid;
+            grid-template-columns: 5.75rem minmax(0, 1fr);
+            gap: 1rem;
+            align-items: stretch;
+        }
+
+        .product-gallery-stage {
+            position: relative;
+            min-height: clamp(20rem, 42vw, 31rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+            border-radius: 0;
+            background: transparent;
+            border: 0;
+        }
+
+        .product-gallery-stage::before {
+            content: "";
+            position: absolute;
+            width: min(72%, 24rem);
+            height: min(72%, 24rem);
+            background: radial-gradient(circle, rgba(0, 136, 172, 0.16) 0%, rgba(0, 136, 172, 0.06) 45%, transparent 72%);
+            border: 1px solid rgba(0, 136, 172, 0.14);
+            border-radius: 999px;
+            pointer-events: none;
+            filter: blur(0.2px);
+        }
+
+        .product-gallery-image {
+            position: relative;
+            z-index: 2;
+            width: min(86%, 30rem);
+            max-height: clamp(17rem, 36vw, 27rem);
+            object-fit: contain;
+            filter: drop-shadow(0 28px 36px rgba(0, 0, 0, 0.65));
+            animation: productMediaFloat 6.5s ease-in-out infinite;
+            transition: transform 0.35s ease, opacity 0.35s ease;
+        }
+
+        .product-gallery-image.is-hidden {
+            display: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .product-gallery-nav {
+            position: absolute;
+            top: 50%;
+            z-index: 5;
+            width: 2.75rem;
+            height: 2.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            color: #e2e8f0;
+            background: rgba(10, 16, 26, 0.68);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .product-gallery-nav:hover,
+        .product-gallery-nav:focus-visible {
+            background: #0088AC;
+            color: #0a101a;
+            border-color: rgba(0, 136, 172, 0.95);
+            outline: none;
+        }
+
+        .product-gallery-nav.is-hidden {
+            display: none;
+        }
+
+        .product-gallery-prev {
+            left: 0.85rem;
+            transform: translateY(-50%);
+        }
+
+        .product-gallery-next {
+            right: 0.85rem;
+            transform: translateY(-50%);
+        }
+
+        .product-thumbs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 0.1rem 0.15rem 0.1rem 0;
+        }
+
+        .product-thumb {
+            position: relative;
+            width: 5.6rem;
+            height: 5rem;
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+        }
+
+        .product-thumb.is-active {
+            background: rgba(0, 136, 172, 0.16);
+            border-color: rgba(0, 136, 172, 0.85);
+            transform: translateY(-2px);
+        }
+
+        .product-thumb img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .product-thumb-badge {
+            position: absolute;
+            right: 0.35rem;
+            bottom: 0.35rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            border-radius: 999px;
+            padding: 0.18rem 0.42rem;
+            color: #0a101a;
+            background: #0088AC;
+            font-size: 0.58rem;
+            font-weight: 900;
+            letter-spacing: 0.02em;
+            box-shadow: 0 0 14px rgba(0, 136, 172, 0.4);
+        }
+
+        .product-info-copy {
+            font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+        }
+
+        .product-spec-card {
+            min-height: 6rem;
+        }
+
+        .product-3d-stage {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            min-height: 0;
+            height: 100%;
+            overflow: visible;
+            border-radius: 0;
+            background: transparent;
+            animation: productMediaFloat 6.5s ease-in-out infinite;
+        }
+
+        .product-3d-canvas {
+            width: 100%;
+            height: 100%;
+            min-height: 100%;
+            display: block;
+            cursor: grab;
+            touch-action: none;
+        }
+
+        .product-3d-canvas.is-dragging {
+            cursor: grabbing;
+        }
+
+        .product-3d-fallback {
+            position: absolute;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            color: #cbd5e1;
+            background: rgba(10, 16, 26, 0.86);
+        }
+
+        .product-3d-fallback.is-visible {
+            display: flex;
+        }
+
+        .product-3d-fallback p {
+            max-width: 24rem;
+            color: #cbd5e1;
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
+        .product-3d-stage.is-fallback .product-3d-actions {
+            display: none;
+        }
+
+        .product-3d-actions {
+            position: absolute;
+            right: 1rem;
+            bottom: 1rem;
+            z-index: 5;
+            display: flex;
+            gap: 0.55rem;
+        }
+
+        .product-3d-action {
+            width: 2.55rem;
+            height: 2.55rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            color: #e2e8f0;
+            background: rgba(10, 16, 26, 0.68);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .product-3d-action:hover,
+        .product-3d-action:focus-visible {
+            background: #0088AC;
+            color: #0a101a;
+            border-color: rgba(0, 136, 172, 0.95);
+            outline: none;
+        }
+
+        .product-3d-action.is-active {
+            background: rgba(0, 136, 172, 0.82);
+            color: #0a101a;
+            border-color: rgba(0, 136, 172, 0.95);
+        }
+
+        .product-desktop-only {
+            display: none;
+        }
+
+        @keyframes productMediaFloat {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            50% { transform: translate3d(0, -8px, 0); }
+        }
+
+        @media (min-width: 640px) {
+            .section-x {
+                padding-left: max(1.5rem, var(--safe-left));
+                padding-right: max(1.5rem, var(--safe-right));
+            }
+
+            .nav-inner {
+                padding-left: max(1.5rem, var(--safe-left));
+                padding-right: max(1.5rem, var(--safe-right));
+            }
+
+            .float-hero {
+                --hero-scale: 1.22;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .hero-visual {
+                margin-top: 0;
+            }
+
+            .float-hero {
+                --hero-scale: 1.48;
+            }
+
+            .feature-visual {
+                margin: 0;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .section-x {
+                padding-left: max(2.5rem, var(--safe-left));
+                padding-right: max(2.5rem, var(--safe-right));
+            }
+
+            .nav-inner {
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+                width: min(100%, 86rem);
+                max-width: none;
+                gap: 2rem;
+            }
+
+            .brand-logo-link {
+                justify-self: start;
+            }
+
+            .desktop-nav {
+                justify-self: center;
+            }
+
+            .nav-actions {
+                justify-self: end;
+            }
+
+            .hero-section > .max-w-7xl,
+            .catalog-inner {
+                width: min(100%, 86rem);
+                max-width: none;
+            }
+
+            .float-hero {
+                --hero-scale: 1.82;
+            }
+
+            .catalog-section {
+                margin-top: clamp(-7rem, -6vw, -5rem);
+                padding-bottom: clamp(2.75rem, 4.5vw, 4rem);
+            }
+
+            .catalog-inner {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .product-carousel {
+                padding-left: clamp(3.5rem, 5vw, 5rem);
+                padding-right: clamp(3.5rem, 5vw, 5rem);
+            }
+
+            .product-carousel-viewport {
+                min-height: clamp(29.5rem, 35vw, 33rem);
+                padding-top: clamp(6.25rem, 7vw, 7.25rem);
+                padding-bottom: clamp(1.5rem, 2.5vw, 2.25rem);
+            }
+
+            .product-card {
+                flex-basis: clamp(20rem, 24vw, 23rem);
+                min-height: clamp(27rem, 31vw, 29.5rem);
+            }
+
+            .product-nav-prev {
+                left: clamp(0.65rem, 1.5vw, 1.5rem);
+            }
+
+            .product-nav-next {
+                right: clamp(0.65rem, 1.5vw, 1.5rem);
+            }
+
+            .technical-specs-simple,
+            .technical-comparison,
+            .comparison-section {
+                width: min(100%, 72rem);
+                max-width: none;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .technical-specs-simple {
+                margin-top: clamp(2.75rem, 4vw, 4rem);
+            }
+
+            .technical-specs-simple img,
+            .technical-comparison-trigger {
+                width: 100%;
+                max-width: none;
+            }
+
+            .technical-specs-simple img {
+                max-height: clamp(13rem, 18vw, 17rem);
+            }
+
+            .fluid-section {
+                padding-top: clamp(3.25rem, 4.5vw, 4.75rem);
+                padding-bottom: clamp(4rem, 5vw, 5.5rem);
+            }
+
+            #diferenciais > .max-w-6xl {
+                width: min(100%, 72rem);
+                max-width: none;
+            }
+
+            #contato .glass-card img {
+                top: 50%;
+                right: clamp(2rem, 4.5vw, 4rem);
+                bottom: auto;
+                width: clamp(14rem, 18vw, 18rem);
+                max-height: calc(100% - 2rem);
+                transform: translateY(-50%);
+            }
+
+            .product-modal-content {
+                width: min(calc(100vw - 3rem), 94rem);
+                max-height: min(92vh, calc(100svh - 2rem - var(--safe-top) - var(--safe-bottom)));
+                border-radius: 30px;
+                background:
+                    radial-gradient(circle at 18% 12%, rgba(0, 136, 172, 0.14), transparent 34%),
+                    linear-gradient(145deg, rgba(20, 28, 42, 0.96), rgba(8, 13, 22, 0.98));
+            }
+
+            .product-modal-header {
+                display: grid;
+                grid-template-columns: minmax(14rem, 1fr) auto auto auto;
+                align-items: center;
+                gap: 1rem;
+                padding: 1.1rem 1.35rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.035);
+            }
+
+            .product-modal-header h2 {
+                font-size: clamp(1.65rem, 2.15vw, 2.45rem);
+                line-height: 1.05;
+            }
+
+            .product-modal-index.product-desktop-only {
+                display: block;
+                margin-top: 0.35rem;
+                color: rgba(203, 213, 225, 0.58);
+                font-size: 0.72rem;
+                font-weight: 700;
+            }
+
+            .product-modal-nav.product-desktop-only {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.35rem;
+                padding: 0.35rem;
+                border-radius: 999px;
+                background: rgba(0, 0, 0, 0.22);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .product-modal-nav button,
+            .product-modal-stepper button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.45rem;
+                min-height: 2.25rem;
+                border-radius: 999px;
+                color: #cbd5e1;
+                font-size: 0.76rem;
+                font-weight: 800;
+                transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+            }
+
+            .product-modal-nav button {
+                padding: 0 0.85rem;
+            }
+
+            .product-modal-nav button:hover,
+            .product-modal-nav button:focus-visible,
+            .product-modal-stepper button:hover,
+            .product-modal-stepper button:focus-visible {
+                background: rgba(0, 136, 172, 0.2);
+                color: #ffffff;
+                outline: none;
+            }
+
+            .product-modal-stepper.product-desktop-only {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .product-modal-stepper button {
+                width: 2.45rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(255, 255, 255, 0.04);
+            }
+
+            .product-modal-body {
+                padding: clamp(1.15rem, 1.8vw, 1.6rem);
+            }
+
+            .product-market-layout {
+                grid-template-columns: minmax(0, 1.55fr) minmax(22rem, 0.82fr);
+                gap: clamp(1.25rem, 2vw, 1.85rem);
+            }
+
+            .product-media-column {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .product-gallery-layout {
+                grid-template-columns: 6.2rem minmax(0, 1fr);
+                gap: 1.1rem;
+            }
+
+            .product-gallery-stage {
+                min-height: clamp(30rem, 53vh, 39rem);
+            }
+
+            .product-gallery-stage::before {
+                width: min(78%, 32rem);
+                height: min(78%, 32rem);
+            }
+
+            .product-gallery-image {
+                width: min(88%, 38rem);
+                max-height: clamp(24rem, 48vh, 33rem);
+            }
+
+            .product-thumbs {
+                max-height: clamp(30rem, 53vh, 39rem);
+                padding: 0.2rem 0.35rem 0.2rem 0;
+            }
+
+            .product-thumb {
+                width: 6rem;
+                height: 5.35rem;
+            }
+
+            .product-summary-panel {
+                top: 0.25rem;
+                max-height: calc(min(92vh, 100svh - 2rem - var(--safe-top) - var(--safe-bottom)) - 7.5rem);
+                overflow-y: auto;
+                padding: clamp(1.15rem, 1.7vw, 1.45rem);
+            }
+
+            .product-info-copy {
+                font-size: 0.95rem;
+                line-height: 1.65;
+            }
+
+            .product-spec-card {
+                min-height: 5.45rem;
+            }
+
+            .product-desktop-detail-grid.product-desktop-only {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 0.85rem;
+            }
+
+            .product-detail-card,
+            .product-engineering-panel {
+                border-radius: 18px;
+                background: rgba(255, 255, 255, 0.045);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            }
+
+            .product-detail-card {
+                padding: 1rem;
+            }
+
+            .product-detail-card span,
+            .product-engineering-panel span {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.45rem;
+                color: #0088AC;
+                font-size: 0.68rem;
+                font-weight: 900;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                margin-bottom: 0.5rem;
+            }
+
+            .product-detail-card p,
+            .product-engineering-panel li {
+                color: #cbd5e1;
+                font-size: 0.78rem;
+                line-height: 1.55;
+            }
+
+            .product-engineering-panel.product-desktop-only {
+                display: block;
+                margin-bottom: 1rem;
+                padding: 1rem;
+            }
+
+            .product-engineering-panel ul {
+                display: grid;
+                gap: 0.55rem;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .product-engineering-panel li {
+                position: relative;
+                padding-left: 1.05rem;
+            }
+
+            .product-engineering-panel li::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0.62em;
+                width: 0.38rem;
+                height: 0.38rem;
+                border-radius: 999px;
+                background: #0088AC;
+                box-shadow: 0 0 12px rgba(0, 136, 172, 0.55);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .project-video-section {
+                padding-bottom: clamp(3.5rem, 12vw, 5rem);
+            }
+
+            .project-video-header {
+                align-items: stretch;
+                flex-direction: column;
+                gap: 0.9rem;
+                text-align: left;
+            }
+
+            .project-video-download {
+                display: none;
+            }
+
+            .project-video-shell {
+                border-radius: 20px;
+            }
+
+            .modal {
+                align-items: flex-end;
+                padding: calc(1.1rem + var(--safe-top)) max(0.45rem, var(--safe-right)) 0 max(0.45rem, var(--safe-left));
+            }
+
+            .product-modal-content {
+                width: 100%;
+                height: calc(100svh - 1.1rem - var(--safe-top));
+                max-height: calc(100svh - 1.1rem - var(--safe-top));
+                border-radius: 22px 22px 0 0;
+                transform: translateY(105%);
+            }
+
+            .modal.active .product-modal-content {
+                transform: translateY(0);
+            }
+
+            .product-sheet-handle {
+                display: block;
+                width: 2.35rem;
+                height: 0.22rem;
+                margin: 0.55rem auto 0.1rem;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.24);
+                flex: 0 0 auto;
+            }
+
+            .product-modal-header {
+                padding: 0.6rem 0.95rem 0.75rem;
+                background: transparent !important;
+                border-bottom: 0 !important;
+            }
+
+            .product-modal-subtitle {
+                font-size: 0.58rem;
+                margin-bottom: 0.1rem;
+            }
+
+            .product-modal-header h2 {
+                font-size: 1.35rem;
+                line-height: 1.1;
+            }
+
+            .product-modal-header button {
+                width: 2.25rem;
+                height: 2.25rem;
+            }
+
+            .product-modal-body {
+                padding: 0.55rem 0.7rem calc(1.8rem + var(--safe-bottom));
+                overscroll-behavior: contain;
+            }
+
+            .product-market-layout {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .product-summary-panel {
+                position: static;
+                border-radius: 18px;
+                padding: 0.85rem;
+            }
+
+            .product-gallery-layout {
+                grid-template-columns: 1fr;
+                gap: 0.55rem;
+            }
+
+            .product-gallery-stage {
+                order: 1;
+            }
+
+            .product-thumbs {
+                order: 2;
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding: 0.15rem 0 0.45rem;
+            }
+
+            .product-thumb {
+                width: 4.35rem;
+                height: 3.35rem;
+                border-radius: 13px;
+            }
+
+            .product-gallery-stage {
+                min-height: clamp(13rem, 50vw, 16rem);
+            }
+
+            .product-gallery-image {
+                width: min(88%, 17rem);
+                max-height: 14.5rem;
+            }
+
+            .product-gallery-nav {
+                width: 2.15rem;
+                height: 2.15rem;
+                font-size: 0.85rem;
+            }
+
+            .product-gallery-prev {
+                left: 0.45rem;
+            }
+
+            .product-gallery-next {
+                right: 0.45rem;
+            }
+
+            .product-3d-stage {
+                min-height: 0;
+            }
+
+            .product-3d-actions {
+                right: 0.65rem;
+                bottom: 0.65rem;
+                gap: 0.4rem;
+            }
+
+            .product-3d-action {
+                width: 2.15rem;
+                height: 2.15rem;
+                font-size: 0.85rem;
+            }
+
+            .product-info-copy {
+                margin-bottom: 0.75rem;
+                padding: 0.8rem;
+                border-radius: 14px;
+                font-size: 0.82rem;
+                line-height: 1.55;
+            }
+
+            .product-summary-panel .grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.55rem;
+                margin-bottom: 0.85rem;
+            }
+
+            .product-spec-card {
+                min-height: 4.35rem;
+                padding: 0.7rem;
+                border-radius: 14px;
+            }
+
+            .product-spec-card p:first-child {
+                margin-bottom: 0.25rem;
+                font-size: 0.62rem;
+                line-height: 1.2;
+            }
+
+            #modal-cap,
+            #modal-peso,
+            #modal-pot {
+                font-size: 0.95rem;
+                line-height: 1.2;
+            }
+
+            #modal-dim,
+            #modal-diam {
+                font-size: 0.75rem;
+                line-height: 1.25;
+            }
+
+            .product-summary-panel .product-contact-cta {
+                min-height: 2.55rem;
+                padding: 0.65rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .nav-inner {
+                gap: 0.75rem;
+            }
+
+            .nav-download {
+                width: 2.25rem;
+                height: 2.25rem;
+            }
+
+            .watermark-text {
+                font-size: 40vw;
+                top: 34%;
+            }
+
+            .product-carousel {
+                padding: 0 0.2rem;
+            }
+
+            .product-carousel-viewport {
+                min-height: 31rem;
+                padding-top: 6.25rem;
+            }
+
+            .product-card {
+                flex-basis: min(82vw, 20rem);
+                min-height: 27.5rem;
+            }
+
+            .product-card-summary {
+                gap: 0.45rem;
+                padding: 0.65rem 0;
+            }
+
+            .product-card-spec {
+                min-height: 3.25rem;
+                padding: 0.48rem 0.55rem;
+                border-radius: 12px;
+            }
+
+            .product-card-spec-label {
+                font-size: 0.5rem;
+            }
+
+            .product-card-spec-value {
+                font-size: 0.68rem;
+            }
+
+            .product-nav-prev {
+                left: -0.35rem;
+            }
+
+            .product-nav-next {
+                right: -0.35rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Navegação 100% Transparente e Fixa -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 bg-transparent">
+        <div class="nav-inner max-w-7xl mx-auto flex justify-between items-center">
+            <a href="../crm.html" class="brand-logo-link" aria-label="Voltar ao hub MHS">
+                <img src="logo_mhs.png" alt="MHS" class="brand-logo">
+            </a>
+            
+            <div class="desktop-nav hidden lg:flex bg-black/20 backdrop-blur-md rounded-full px-8 py-2 border border-white/10 space-x-8 text-sm font-medium text-gray-300">
+                <a href="../crm.html" class="hover:text-brand-teal transition">Hub MHS</a>
+                <a href="#home" class="hover:text-brand-teal transition">Início</a>
+                <a href="#produtos" class="hover:text-brand-teal transition">Catálogo</a>
+                <a href="#diferenciais" class="hover:text-brand-teal transition">Engenharia</a>
+            </div>
+
+            <div class="nav-actions flex items-center">
+                <button type="button" aria-label="Baixar informações do projeto" class="nav-download rounded-full bg-black/20 backdrop-blur-md flex items-center justify-center hover:bg-white/10 transition border border-white/10">
+                    <i class="fas fa-download text-brand-teal"></i>
+                </button>
+                <a href="https://wa.me/5585982031499?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20projeto%20MHS." target="_blank" rel="noopener noreferrer" class="nav-cta bg-brand-teal hover:bg-teal-400 text-brand-darker rounded-full font-bold transition duration-300 shadow-[0_0_20px_rgba(0,136,172,0.4)]">
+                    Solicitar Projeto
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- NOVA HERO SECTION: Alturas muito mais curtas e coladas ao menu (overflow-x-hidden permite que a imagem gigante não quebre a barra de scroll) -->
+    <header id="home" class="hero-section section-x relative w-full overflow-x-hidden flex flex-col items-center">
+        <!-- Luzes de fundo atmosféricas -->
+        <div class="absolute top-1/4 left-1/4 w-[300px] md:w-[400px] h-[300px] md:h-[400px] bg-brand-teal/20 rounded-full blur-[100px] md:blur-[150px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-[200px] md:w-[300px] h-[200px] md:h-[300px] bg-brand-dark/50 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <!-- Alteração: Mudança de Grid (50/50) para Flex (60% Texto / 40% Imagem) -->
+        <div class="max-w-7xl mx-auto w-full flex flex-col md:flex-row gap-8 lg:gap-12 items-center relative z-10">
+            
+            <!-- Coluna de Texto (Esquerda - Agora tem 60% do espaço) -->
+            <div class="w-full md:w-[55%] lg:w-[60%] text-center md:text-left flex flex-col justify-center items-center md:items-start">
+                
+                <!-- Título Principal -->
+                <h1 class="hero-title font-black leading-[0.95] mb-4 text-white uppercase w-full">
+                    Transferindo<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-teal to-blue-400">Eficiência</span>
+                </h1>
+                
+                <!-- Descrição -->
+                <p class="hero-text text-gray-300 leading-[1.6] w-full lg:pr-10 mb-0 font-light">
+                    Na Mais Hidro Soluções, desenvolvemos sistemas flutuantes de bombeamento sob demanda — soluções completas e eficientes para a transferência de fluidos nos setores de indústria, construção civil, irrigação, mineração, piscicultura e carcinicultura. Do projeto à entrega, tudo pensado para atender a sua necessidade.
+                </p>
+                
+            </div>
+
+            <!-- Coluna de Imagem e Composição (Direita - Imagem COLOSSAL aumentada em 75%) -->
+            <div class="hero-visual w-full md:w-[45%] lg:w-[40%] relative flex justify-center items-center">
+                <!-- Anéis Tecnológicos de Fundo (Aumentados drasticamente para acompanhar a máquina gigante) -->
+                <div class="hero-ring absolute border border-brand-teal/30 rounded-full pointer-events-none"></div>
+                <div class="hero-ring hero-ring-secondary absolute border border-white/10 rounded-full border-dashed pointer-events-none opacity-50"></div>
+                
+                <!-- A tua Imagem Principal (Aumentada em mais +75% através de uma escala massiva) -->
+                <img src="01.05 MHS 1500/Flutuante MHS 1500 1.png" 
+                     alt="Bomba Flutuante MHS" 
+                     class="hero-machine w-full max-w-[600px] object-contain drop-shadow-[0_40px_50px_rgba(0,0,0,0.8)] relative z-20 float-hero transform-gpu">
+                
+            </div>
+        </div>
+        
+        <!-- Indicador visual de Scroll com margem inferior (mb) para dar espaço perfeito à sobreposição -->
+        <div class="scroll-cue flex flex-col items-center opacity-50 hover:opacity-100 transition animate-bounce cursor-pointer relative z-20" onclick="document.getElementById('produtos').scrollIntoView({behavior: 'smooth'})">
+            <span class="text-[9px] uppercase tracking-widest text-gray-400 mb-1">Descobrir Modelos</span>
+            <i class="fas fa-chevron-down text-brand-teal"></i>
+        </div>
+    </header>
+
+    <!-- Secção de Catálogo (Subiu usando margem negativa -mt para sobrepor elegantemente o Hero) -->
+    <section id="produtos" class="catalog-section section-x relative z-30 pointer-events-none">
+        <div class="pointer-events-auto">
+            <!-- Marca de água gigante "TOP" adaptada para "PRO" -->
+            <div class="watermark-text">PRO</div>
+            
+            <!-- Partículas de fundo -->
+            <div class="particle w-20 h-20 top-10 left-1/4"></div>
+            <div class="particle w-32 h-32 bottom-20 right-1/4" style="animation-delay: 1s;"></div>
+            <div class="particle w-16 h-16 top-1/2 left-10" style="animation-delay: 2s;"></div>
+    
+            <div class="catalog-inner max-w-7xl mx-auto relative z-10"> <!-- Espaço para as imagens que saem do topo do cartão -->
+                <div class="product-carousel" aria-label="Catálogo de modelos MHS">
+                    <button id="carousel-prev" type="button" class="product-nav-button product-nav-prev" aria-label="Produto anterior">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+                    <div id="product-carousel-viewport" class="product-carousel-viewport" role="region" tabindex="0" aria-roledescription="carrossel" aria-label="Produtos em destaque">
+                        <div id="product-grid" class="product-carousel-track">
+                            <!-- Injetado via JS -->
+                        </div>
+                    </div>
+
+                    <button id="carousel-next" type="button" class="product-nav-button product-nav-next" aria-label="Próximo produto">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div id="product-carousel-dots" class="product-carousel-dots" aria-label="Navegação dos produtos"></div>
+                
+                <div class="text-center mt-12">
+                    <a href="#produtos" class="text-gray-500 text-sm border-b border-gray-600 hover:text-brand-teal hover:border-brand-teal transition pb-1">
+                        Ver todos os modelos
+                    </a>
+                </div>
+
+                <div class="technical-specs-simple">
+                    <img src="https://res.cloudinary.com/dbnyxxhe3/image/upload/v1781792498/POST_GRUPO_FACEBOOK_0625_vwgw55.png" alt="Comparativo de dimensões MHS">
+                </div>
+
+                <div class="technical-comparison">
+                    <button id="technical-comparison-trigger" type="button" class="technical-comparison-trigger" aria-expanded="false" aria-controls="technical-comparison-section">
+                        <i class="fas fa-table-list" aria-hidden="true"></i>
+                        Comparativo técnico
+                        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+
+                    <div id="technical-comparison-section" class="comparison-section" hidden>
+                        <div class="comparison-desktop">
+                            <div class="comparison-section-header">
+                                <div>
+                                    <p class="comparison-section-kicker">Tabela MHS</p>
+                                    <h2 class="comparison-section-title">Comparativo técnico</h2>
+                                </div>
+                                <p class="comparison-section-hint">Role horizontalmente se necessário</p>
+                            </div>
+                            <div class="comparison-table-shell">
+                                <table class="comparison-grid-table" aria-label="Comparativo técnico dos flutuantes MHS">
+                                    <thead>
+                                        <tr>
+                                            <th>Especificação</th>
+                                            <th>MHS 100</th>
+                                            <th>MHS 300</th>
+                                            <th>MHS 750</th>
+                                            <th>MHS 1500</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="technical-comparison-table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="comparison-mobile">
+                            <div class="comparison-mobile-portrait">
+                                <i class="fas fa-mobile-screen-button" aria-hidden="true"></i>
+                                <div>
+                                    <strong>Gire o celular para visualizar a tabela.</strong>
+                                    <span>O comparativo completo foi otimizado para modo paisagem, sem cortes laterais.</span>
+                                </div>
+                            </div>
+
+                            <div class="comparison-mobile-landscape">
+                                <div class="comparison-section-header">
+                                    <div>
+                                        <p class="comparison-section-kicker">Tabela MHS</p>
+                                        <h2 class="comparison-section-title">Comparativo técnico</h2>
+                                    </div>
+                                </div>
+                                <div class="comparison-table-shell">
+                                    <table class="comparison-grid-table" aria-label="Comparativo técnico dos flutuantes MHS para celular em paisagem">
+                                        <thead>
+                                            <tr>
+                                                <th>Especificação</th>
+                                                <th>MHS 100</th>
+                                                <th>MHS 300</th>
+                                                <th>MHS 750</th>
+                                                <th>MHS 1500</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="technical-comparison-table-body"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Secção "MHS É" (A exata recriação do "BODRIN это") -->
+    <section id="diferenciais" class="fluid-section section-x relative z-20">
+        <div class="max-w-6xl mx-auto relative">
+            <div class="text-center mb-14 md:mb-20">
+                <h2 class="section-heading font-bold text-gray-300 tracking-widest uppercase">MAIS HIDRO SOLUÇÕES É</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 items-center">
+                
+                <!-- Coluna Esquerda -->
+                <div class="feature-stack flex flex-col text-left">
+                    <div class="relative pl-6">
+                        <span class="giant-number -left-8">1</span>
+                        <h3 class="text-xl font-semibold mb-3 text-white relative z-10">Qualidade</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed relative z-10">Construção em fibra de vidro reforçada, com acabamento em gelcoat branco para proteger a estrutura e facilitar a conservação. Cada conjunto é projetado para suportar operação contínua, exposição à água e rotinas exigentes de bombeamento.</p>
+                    </div>
+                    <div class="relative pl-6">
+                        <span class="giant-number -left-8">2</span>
+                        <h3 class="text-xl font-semibold mb-3 text-white relative z-10">Segurança</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed relative z-10">Os modelos utilizam câmaras de sustentação fechadas e proteção estrutural para manter estabilidade sobre a lâmina d'água. Na linha de maior capacidade, o preenchimento em poliestireno expandido amplia a reserva de flutuabilidade e a confiabilidade operacional.</p>
+                    </div>
+                </div>
+
+                <!-- Coluna Central (Imagem) -->
+                <div class="feature-visual flex flex-col justify-center items-center relative">
+                    <div class="absolute inset-0 bg-brand-teal/5 rounded-full blur-[80px]"></div>
+                    <!-- Imagem principal central -->
+                    <img src="miniatura_flut.png" 
+                         alt="Flutuante MHS em destaque" 
+                         class="h-full max-h-full w-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] relative z-20">
+                </div>
+
+                <!-- Coluna Direita -->
+                <div class="feature-stack flex flex-col text-left">
+                    <div class="relative pl-6">
+                        <span class="giant-number -left-8">3</span>
+                        <h3 class="text-xl font-semibold mb-3 text-white relative z-10">Adaptabilidade </h3>
+                        <p class="text-gray-400 text-sm leading-relaxed relative z-10">O tubo extensor flangeado, a bitola, o diâmetro e a quantidade de fixadores podem ser ajustados conforme a bomba e a necessidade do projeto. A configuração acompanha expansões, reduções e requisitos específicos de instalação.</p>
+                    </div>
+                    <div class="relative pl-6">
+                        <span class="giant-number -left-8">4</span>
+                        <h3 class="text-xl font-semibold mb-3 text-white relative z-10">Integração</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed relative z-10">O sistema reúne capota, cofre, copo, tubo de passagem e fixadores dimensionados para facilitar montagem, inspeção e manutenção. A MHS orienta a seleção do modelo, do recalque e dos acessórios para entregar uma solução pronta para campo.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Secção Call To Action Fundo (Cópia exata do layout do fundo da referência) -->
+    <section id="contato" class="section-x pb-20 md:pb-24 relative z-20">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-card relative overflow-hidden flex flex-col md:flex-row items-center justify-between p-6 sm:p-8 md:p-12">
+                <!-- Efeito de brilho no cartão -->
+                <div class="absolute -left-20 top-0 w-64 h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[30deg]"></div>
+                
+                <div class="relative z-10 md:w-2/3 text-center md:text-left mb-8 md:mb-0">
+                    <h2 class="fluid-subtitle font-bold text-white mb-6">
+                        Descubra qual equipamento se adapta melhor ao seu projeto
+                    </h2>
+                    <a href="https://wa.me/5585982031499?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20projeto%20MHS." target="_blank" rel="noopener noreferrer" class="inline-block border border-white/20 bg-white/5 hover:bg-white/10 text-gray-300 px-8 py-2.5 rounded-full text-sm font-medium transition backdrop-blur-sm">
+                        Solicitar Projeto
+                    </a>
+                </div>
+
+                <div class="relative z-10 md:w-1/3 flex justify-center md:justify-end">
+                    <!-- Imagem a sair para fora do contentor simulando a colher de café -->
+                    <img src="01.01 MHS 100/Flutuante MHS 100 1.png" 
+                         alt="MHS Equipamento" 
+                         class="w-52 sm:w-64 md:w-80 md:absolute md:-right-12 md:-bottom-12 drop-shadow-2xl object-contain">
+                </div>
+            </div>
+            <div class="mt-4 px-4 text-left">
+                <a href="#contato" class="text-[10px] text-gray-600 border-b border-gray-700 hover:text-gray-400">Política de privacidade e termos</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="video-flutuante" class="project-video-section section-x relative z-20">
+        <div class="project-video-inner mx-auto">
+            <div class="project-video-header">
+                <div>
+                    <p class="project-video-kicker">Demonstração MHS</p>
+                    <h2 class="project-video-title">Flutuantes em operação</h2>
+                </div>
+
+                <a href="video_flutuantes.mp4" download class="project-video-download" aria-label="Baixar vídeo dos flutuantes MHS">
+                    <i class="fas fa-download" aria-hidden="true"></i>
+                    <span>Baixar vídeo</span>
+                </a>
+            </div>
+
+            <div class="project-video-shell">
+                <video
+                    id="project-video"
+                    class="project-video-player"
+                    src="video_flutuantes.mp4"
+                    controls
+                    muted
+                    playsinline
+                    preload="metadata"
+                    aria-label="Vídeo de demonstração dos flutuantes MHS">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- Página de Produto / Modal Super Premium -->
+    <div id="techModal" class="modal fixed inset-0 z-[100] flex items-center justify-center bg-brand-darker/90 backdrop-blur-md">
+        <div class="modal-content product-modal-content glass-card relative border border-brand-teal/30">
+            <div class="product-sheet-handle"></div>
+
+            <div class="product-modal-header p-4 sm:p-6 flex justify-between items-center gap-4">
+                <div>
+                    <p class="product-modal-subtitle text-brand-teal uppercase font-bold mb-1">Produto MHS</p>
+                    <h2 id="modal-title" class="text-2xl sm:text-3xl font-black text-white tracking-wider"></h2>
+                    <p id="modal-index" class="product-modal-index product-desktop-only"></p>
+                </div>
+                <nav class="product-modal-nav product-desktop-only" aria-label="Navegacao da ficha do produto">
+                    <button type="button" data-product-scroll-target="product-media-area">
+                        <i class="fas fa-images" aria-hidden="true"></i>
+                        Midia
+                    </button>
+                    <button type="button" data-product-scroll-target="product-summary-area">
+                        <i class="fas fa-sliders" aria-hidden="true"></i>
+                        Especificacoes
+                    </button>
+                    <button type="button" data-product-scroll-target="product-project-area">
+                        <i class="fas fa-compass-drafting" aria-hidden="true"></i>
+                        Projeto
+                    </button>
+                </nav>
+                <div class="product-modal-stepper product-desktop-only" aria-label="Navegar entre produtos">
+                    <button id="product-modal-prev" type="button" aria-label="Produto anterior">
+                        <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <button id="product-modal-next" type="button" aria-label="Proximo produto">
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <button type="button" onclick="closeModal()" aria-label="Fechar produto" class="w-10 h-10 rounded-full bg-white/5 hover:bg-brand-red flex items-center justify-center text-white transition shrink-0">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="product-modal-body">
+                <div class="product-market-layout">
+                    <section id="product-media-area" class="product-media-column" aria-label="Mídias do produto">
+                        <div class="product-gallery-layout">
+                            <div id="product-thumbs" class="product-thumbs" aria-label="Miniaturas do produto"></div>
+
+                            <div class="product-gallery-stage">
+                                <button id="product-gallery-prev" type="button" class="product-gallery-nav product-gallery-prev" aria-label="Foto anterior">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <img id="modal-img" src="" alt="Produto" class="product-gallery-image">
+                                <div id="product-3d-stage" class="product-3d-stage" hidden>
+                                    <canvas id="product-3d-canvas" class="product-3d-canvas" aria-label="Visualização 3D do produto"></canvas>
+                                    <div id="product-3d-fallback" class="product-3d-fallback">
+                                        <p>Modelo 3D oficial indisponivel neste carregamento.</p>
+                                    </div>
+                                    <div class="product-3d-actions">
+                                        <button id="product-3d-reset" type="button" class="product-3d-action" aria-label="Resetar visão 3D">
+                                            <i class="fas fa-rotate-left"></i>
+                                        </button>
+                                        <button id="product-3d-spin" type="button" class="product-3d-action" aria-label="Alternar rotação automática">
+                                            <i class="fas fa-arrows-rotate"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button id="product-gallery-next" type="button" class="product-gallery-nav product-gallery-next" aria-label="Próxima foto">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="product-desktop-detail-grid product-desktop-only" aria-label="Destaques operacionais do produto">
+                            <article class="product-detail-card">
+                                <span><i class="fas fa-shield-halved" aria-hidden="true"></i> Seguranca</span>
+                                <p>Camara de sustentacao integrada e estrutura protegida para operacao estavel sobre a lamina d'agua.</p>
+                            </article>
+                            <article class="product-detail-card">
+                                <span><i class="fas fa-industry" aria-hidden="true"></i> Aplicacao</span>
+                                <p>Sistema indicado para transferencia de fluidos em industria, mineracao, irrigacao e operacoes sob demanda.</p>
+                            </article>
+                            <article class="product-detail-card">
+                                <span><i class="fas fa-screwdriver-wrench" aria-hidden="true"></i> Manutencao</span>
+                                <p>Conjunto pensado para acesso, inspecao e configuracao de recalque conforme a bomba do projeto.</p>
+                            </article>
+                        </div>
+                    </section>
+
+                    <aside id="product-summary-area" class="product-summary-panel" aria-label="Informações do produto">
+                        <p id="modal-desc" class="product-info-copy text-gray-300 leading-relaxed mb-6 bg-white/5 p-4 rounded-xl border-l-4 border-brand-teal"></p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                            <div class="product-spec-card bg-black/20 p-4 rounded-xl border border-white/5">
+                                <p class="text-xs text-gray-500 uppercase mb-2">Capacidade de Carga</p>
+                                <p id="modal-cap" class="font-bold text-2xl text-white"></p>
+                            </div>
+                            <div class="product-spec-card bg-black/20 p-4 rounded-xl border border-white/5">
+                                <p class="text-xs text-gray-500 uppercase mb-2">Recalque</p>
+                                <p id="modal-peso" class="font-bold text-lg text-brand-teal"></p>
+                            </div>
+                            <div class="product-spec-card bg-black/20 p-4 rounded-xl border border-white/5">
+                                <p class="text-xs text-gray-500 uppercase mb-2">Dimensões</p>
+                                <p id="modal-dim" class="font-bold text-sm text-white"></p>
+                            </div>
+                            <div class="product-spec-card bg-black/20 p-4 rounded-xl border border-white/5">
+                                <p class="text-xs text-gray-500 uppercase mb-2">Potência / Recalque</p>
+                                <p id="modal-pot" class="font-bold text-lg text-brand-red"></p>
+                            </div>
+                        </div>
+                        <div id="product-project-area" class="product-engineering-panel product-desktop-only">
+                            <span><i class="fas fa-diagram-project" aria-hidden="true"></i> Projeto sob medida</span>
+                            <ul>
+                                <li>Selecao do modelo conforme carga, recalque, potencia e condicoes de operacao.</li>
+                                <li>Configuracao de acessorios, fixacao e saida flangeada de acordo com a instalacao.</li>
+                                <li>Atendimento para venda, locacao ou operacao assistida conforme a necessidade do cliente.</li>
+                            </ul>
+                        </div>
+                        <a href="https://wa.me/5585982031499?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20projeto%20MHS." target="_blank" rel="noopener noreferrer" onclick="closeModal()" class="product-contact-cta inline-flex w-full items-center justify-center gap-2 bg-brand-teal hover:bg-teal-400 text-brand-darker px-6 py-3 rounded-full font-bold transition shadow-[0_0_20px_rgba(0,136,172,0.35)]">
+                            <i class="fas fa-paper-plane"></i>
+                            Solicitar Projeto
+                        </a>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados originais
+        const produtosData = [
+            {
+                id: 0, modelo: "MHS 100/MHS 100 B2", rating: "4.8", dimensoes: "1000x900x650 mm", capacidadeMax: "100 kg", peso: "30 kg", diametro: "100 mm", potencia: "7,5 cv",
+                tuboProlongador: "Incluso", filtroRemovivel: "Não incluso", disponibilidade: ["Venda", "Locação", "Operação"],
+                descricao: "Bomba flutuante (motobomba ou eletrobomba de 1,0cv até 15cv) acoplada sobre estrutura tipo balsa, construída em fibra de vidro reforçado com casco singelo e capota articulada, saída de recalque flangeada e com sistema de proteção para o caso de eventual inundação.",
+                imagem: "01.01 MHS 100/Flutuante MHS 100 1.png",
+                galeria: [
+                    "01.01 MHS 100/Flutuante MHS 100 1.png",
+                    "01.01 MHS 100/Flutuante MHS 100 2.png",
+                    "01.01 MHS 100/Flutuante MHS 100 3.png",
+                    "01.01 MHS 100/Flutuante MHS 100 3 (2).png",
+                    "01.01 MHS 100/mhs_100b2.png"
+                ]
+            },
+            {
+                id: 1, modelo: "MHS 300", rating: "5.0", dimensoes: "ø1250x1150 mm", capacidadeMax: "180 kg", peso: "98 kg", diametro: "150 mm", potencia: "25 cv",
+                tuboProlongador: "Incluso", filtroRemovivel: "Opcional", disponibilidade: ["Venda", "Locação", "Operação"],
+                descricao: "Bomba flutuante (motobomba ou eletrobomba de 10cv até 40cv) acoplada sobre estrutura tipo balsa, construída em fibra de vidro reforçado com casco e cofre integrados formando câmara de sustentação, com capota removível ou articulada, saída de recalque flangeada e com sistema de proteção para o caso de eventual inundação.",
+                imagem: "01.03 MHS 300/Flutuante MHS 300 1.png",
+                galeria: [
+                    "01.03 MHS 300/Flutuante MHS 300 1.png",
+                    "01.03 MHS 300/Flutuante MHS 300 2.png",
+                    "01.03 MHS 300/Flutuante MHS 300 3.png"
+                ]
+            },
+            {
+                id: 2, modelo: "MHS 750", rating: "4.9", dimensoes: "ø1900x1250 mm", capacidadeMax: "450 kg", peso: "100 kg", diametro: "200 mm", potencia: "40 cv",
+                tuboProlongador: "Incluso", filtroRemovivel: "Opcional", disponibilidade: ["Venda", "Locação", "Operação"],
+                descricao: "Bomba flutuante (motobomba ou eletrobomba de 10cv até 40cv) acoplada sobre estrutura tipo balsa, construída em fibra de vidro reforçado com casco e cofre integrados formando câmara de sustentação, com capota removível ou articulada, saída de recalque flangeada e com sistema de proteção para o caso de eventual inundação.",
+                imagem: "01.04 MHS 750/Flutuante MHS 750 1.png",
+                galeria: [
+                    "01.04 MHS 750/Flutuante MHS 750 1.png",
+                    "01.04 MHS 750/Flutuante MHS 750 2.png",
+                    "01.04 MHS 750/Flutuante MHS 750 3.png"
+                ],
+                modelo3d: "01.04 MHS 750/Flutuante MHS 750 - 3D(1).stl"
+            },
+            {
+                id: 3, modelo: "MHS 1500", rating: "5.0", dimensoes: "ø2480x1800 mm", capacidadeMax: "1250 kg", peso: "265 kg", diametro: "300 mm", potencia: "150 cv",
+                tuboProlongador: "Incluso", filtroRemovivel: "Opcional", disponibilidade: ["Venda", "Locação", "Operação"],
+                descricao: "Bomba flutuante (motobomba ou eletrobomba de 30cv até 150cv) acoplada sobre estrutura tipo balsa, construída em fibra de vidro reforçado com casco e cofre integrados formando câmara (s) de sustentação, com capota removível ou articulada, saída de recalque flangeada e com sistema de proteção para o caso de eventual inundação.",
+                imagem: "01.05 MHS 1500/Flutuante MHS 1500 1.png",
+                galeria: [
+                    "01.05 MHS 1500/Flutuante MHS 1500 1.png",
+                    "01.05 MHS 1500/Flutuante MHS 1500 2.png",
+                    "01.05 MHS 1500/Flutuante MHS 1500 3.png"
+                ],
+                modelo3d: "01.05 MHS 1500/Flutuante MHS 1500.stl"
+            }
+        ];
+
+        const carouselState = {
+            activeIndex: Math.min(1, produtosData.length - 1),
+            pointerStartX: null,
+            pointerDeltaX: 0,
+            suppressClick: false
+        };
+
+        const productModalState = {
+            product: null,
+            photoIndex: 0,
+            mediaMode: 'photo'
+        };
+
+        const product3DState = {
+            initialized: false,
+            scene: null,
+            camera: null,
+            renderer: null,
+            group: null,
+            geometryCache: new Map(),
+            loadToken: 0,
+            threeRuntimePromise: null,
+            animationId: null,
+            autoRotate: true,
+            dragging: false,
+            lastX: 0,
+            lastY: 0
+        };
+
+        const productPhotoSpecOverrides = {
+            "01.01 MHS 100/mhs_100b2.png": {
+                capacidadeMax: "140 kg",
+                potencia: "15 cv"
+            }
+        };
+
+        function renderCards() {
+            const track = document.getElementById('product-grid');
+            const dots = document.getElementById('product-carousel-dots');
+            if (!track || !dots) return;
+
+            track.innerHTML = '';
+            dots.innerHTML = '';
+            
+            produtosData.forEach((prod, index) => {
+                const card = document.createElement('div');
+                // Estrutura HTML fiel aos cartões da imagem de referência (Cappuccino, Latte, Mocha)
+                card.className = 'product-card glass-card pt-16 pb-6 px-6 flex flex-col relative group cursor-pointer';
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `Abrir ficha técnica do ${prod.modelo}`);
+                card.dataset.index = index;
+                card.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    openProductFromCard(prod.id, index);
+                });
+                card.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openProductFromCard(prod.id, index, true);
+                    }
+                });
+
+                card.innerHTML = `
+                    <!-- Imagem Recortada para fora do topo -->
+                    <div class="product-card-image absolute -top-20 left-1/2 transform -translate-x-1/2 w-40 h-40 flex justify-center items-end">
+                        <img src="${prod.imagem}" alt="${prod.modelo}" class="max-h-full max-w-full object-contain filter drop-shadow-[0_15px_15px_rgba(0,0,0,0.6)] group-hover:scale-110 group-hover:-translate-y-2 transition duration-500">
+                    </div>
+                    
+                    <!-- Textos -->
+                    <div class="text-center mb-4 mt-8">
+                        <h3 class="text-lg font-bold text-white mb-1">${prod.modelo}</h3>
+                        <p class="text-gray-400 text-[9px] leading-relaxed mx-2 line-clamp-3">${prod.descricao}</p>
+                    </div>
+
+                    <div class="product-card-summary" aria-label="Resumo técnico comparativo">
+                        <div class="product-card-spec">
+                            <span class="product-card-spec-label">Dimensões</span>
+                            <span class="product-card-spec-value">${prod.dimensoes}</span>
+                        </div>
+                        <div class="product-card-spec">
+                            <span class="product-card-spec-label">Capacidade total</span>
+                            <span class="product-card-spec-value">até ${prod.capacidadeMax}</span>
+                        </div>
+                        <div class="product-card-spec">
+                            <span class="product-card-spec-label">Recalque</span>
+                            <span class="product-card-spec-value">até ${prod.diametro}</span>
+                        </div>
+                        <div class="product-card-spec">
+                            <span class="product-card-spec-label">Potência</span>
+                            <span class="product-card-spec-value is-accent">até ${prod.potencia}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Botão + -->
+                    <div class="w-full flex justify-end items-center pt-3">
+                        <span aria-hidden="true" class="bg-brand-teal group-hover:bg-teal-400 text-brand-darker w-6 h-6 rounded-full flex items-center justify-center transition duration-300 shadow-lg">
+                            <i class="fas fa-plus text-[10px]"></i>
+                        </span>
+                    </div>
+                `;
+                track.appendChild(card);
+
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'product-carousel-dot';
+                dot.setAttribute('aria-label', `Selecionar ${prod.modelo}`);
+                dot.addEventListener('click', () => setActiveProduct(index));
+                dots.appendChild(dot);
+            });
+
+            bindCarouselControls();
+            updateCarousel();
+        }
+
+        function openProductFromCard(productId, index, forceOpen = false) {
+            if (carouselState.suppressClick && !forceOpen) return;
+
+            if (index !== carouselState.activeIndex) {
+                setActiveProduct(index);
+            }
+
+            openModal(productId);
+        }
+
+        function bindCarouselControls() {
+            const prevButton = document.getElementById('carousel-prev');
+            const nextButton = document.getElementById('carousel-next');
+            const viewport = document.getElementById('product-carousel-viewport');
+
+            if (prevButton && !prevButton.dataset.bound) {
+                prevButton.dataset.bound = 'true';
+                prevButton.addEventListener('click', () => setActiveProduct(carouselState.activeIndex - 1));
+            }
+
+            if (nextButton && !nextButton.dataset.bound) {
+                nextButton.dataset.bound = 'true';
+                nextButton.addEventListener('click', () => setActiveProduct(carouselState.activeIndex + 1));
+            }
+
+            if (viewport && !viewport.dataset.bound) {
+                viewport.dataset.bound = 'true';
+
+                viewport.addEventListener('click', (event) => {
+                    const card = event.target.closest('.product-card');
+                    if (!card) return;
+
+                    const index = Number(card.dataset.index);
+                    const prod = produtosData[index];
+                    if (!prod) return;
+
+                    openProductFromCard(prod.id, index);
+                });
+
+                viewport.addEventListener('keydown', (event) => {
+                    if (event.key === 'ArrowLeft') {
+                        event.preventDefault();
+                        setActiveProduct(carouselState.activeIndex - 1);
+                    }
+
+                    if (event.key === 'ArrowRight') {
+                        event.preventDefault();
+                        setActiveProduct(carouselState.activeIndex + 1);
+                    }
+                });
+
+                viewport.addEventListener('pointerdown', (event) => {
+                    carouselState.pointerStartX = event.clientX;
+                    carouselState.pointerDeltaX = 0;
+                    viewport.classList.add('is-dragging');
+                });
+
+                viewport.addEventListener('pointermove', (event) => {
+                    if (carouselState.pointerStartX === null) return;
+                    carouselState.pointerDeltaX = event.clientX - carouselState.pointerStartX;
+                });
+
+                viewport.addEventListener('pointerup', () => finishCarouselDrag(viewport));
+                viewport.addEventListener('pointercancel', () => finishCarouselDrag(viewport));
+                viewport.addEventListener('pointerleave', () => finishCarouselDrag(viewport));
+            }
+        }
+
+        function finishCarouselDrag(viewport) {
+            if (carouselState.pointerStartX === null) return;
+
+            if (Math.abs(carouselState.pointerDeltaX) > 24) {
+                carouselState.suppressClick = true;
+                window.setTimeout(() => { carouselState.suppressClick = false; }, 140);
+            }
+
+            if (Math.abs(carouselState.pointerDeltaX) > 42) {
+                setActiveProduct(carouselState.activeIndex + (carouselState.pointerDeltaX < 0 ? 1 : -1));
+            }
+
+            carouselState.pointerStartX = null;
+            carouselState.pointerDeltaX = 0;
+            viewport.classList.remove('is-dragging');
+        }
+
+        function setActiveProduct(index) {
+            if (!produtosData.length) return;
+            carouselState.activeIndex = (index + produtosData.length) % produtosData.length;
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            const viewport = document.getElementById('product-carousel-viewport');
+            const track = document.getElementById('product-grid');
+            const cards = track ? Array.from(track.children) : [];
+            const dots = Array.from(document.querySelectorAll('.product-carousel-dot'));
+            const activeCard = cards[carouselState.activeIndex];
+
+            if (!viewport || !track || !activeCard) return;
+
+            cards.forEach((card, index) => {
+                const distance = Math.abs(index - carouselState.activeIndex);
+                const isNeighbor = distance === 1 || distance === cards.length - 1;
+
+                card.classList.toggle('is-active', index === carouselState.activeIndex);
+                card.classList.toggle('is-neighbor', index !== carouselState.activeIndex && isNeighbor);
+                card.setAttribute('aria-current', index === carouselState.activeIndex ? 'true' : 'false');
+            });
+
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('is-active', index === carouselState.activeIndex);
+                dot.setAttribute('aria-current', index === carouselState.activeIndex ? 'true' : 'false');
+            });
+
+            const activeCenter = activeCard.offsetLeft + (activeCard.offsetWidth / 2);
+            const viewportCenter = viewport.clientWidth / 2;
+            track.style.transform = `translate3d(${viewportCenter - activeCenter}px, 0, 0)`;
+        }
+
+        window.addEventListener('resize', () => {
+            window.requestAnimationFrame(updateCarousel);
+        });
+
+        // Lógica Modal / Página do Produto
+        const modal = document.getElementById('techModal');
+
+        function getProductGallery(prod) {
+            return Array.isArray(prod.galeria) && prod.galeria.length ? prod.galeria : [prod.imagem];
+        }
+
+        function updateProductModalSpecs(prod, photoSrc = '') {
+            const override = productPhotoSpecOverrides[photoSrc] || {};
+            const capacity = override.capacidadeMax || prod.capacidadeMax;
+            const power = override.potencia || prod.potencia;
+            const capEl = document.getElementById('modal-cap');
+            const recalqueEl = document.getElementById('modal-peso');
+            const potEl = document.getElementById('modal-pot');
+
+            if (capEl) capEl.innerText = capacity;
+            if (recalqueEl) recalqueEl.innerText = `Até ${prod.diametro}`;
+            if (potEl) {
+                potEl.innerText = `Até ${power}`;
+                if (potEl.previousElementSibling) potEl.previousElementSibling.innerText = 'Potência';
+            }
+        }
+        
+        function openModal(id) {
+            const prod = produtosData.find(p => p.id === id);
+            if (!prod || !modal) return;
+
+            productModalState.product = prod;
+            productModalState.photoIndex = 0;
+            product3DState.autoRotate = true;
+            product3DState.dragging = false;
+
+            document.getElementById('modal-title').innerText = prod.modelo;
+            const productIndex = produtosData.findIndex((item) => item.id === prod.id);
+            const modalIndex = document.getElementById('modal-index');
+            if (modalIndex) {
+                modalIndex.innerText = productIndex >= 0 ? `Modelo ${productIndex + 1} de ${produtosData.length}` : '';
+            }
+            document.getElementById('modal-desc').innerText = prod.descricao;
+            document.getElementById('modal-dim').innerText = prod.dimensoes;
+            updateProductModalSpecs(prod);
+
+            renderProductGallery(prod);
+
+            const spin3D = document.getElementById('product-3d-spin');
+            if (spin3D) spin3D.classList.add('is-active');
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            if (!modal) return;
+
+            product3DState.loadToken += 1;
+            productModalState.mediaMode = 'photo';
+            stopProduct3DAnimation();
+            clearProduct3DModel();
+            setProduct3DFallback('', false);
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
+        }
+
+        function openAdjacentProduct(step) {
+            const currentId = productModalState.product?.id;
+            const currentIndex = produtosData.findIndex((prod) => prod.id === currentId);
+            if (currentIndex < 0) return;
+
+            const nextIndex = (currentIndex + step + produtosData.length) % produtosData.length;
+            setActiveProduct(nextIndex);
+            openModal(produtosData[nextIndex].id);
+        }
+
+        function scrollProductModalTo(targetId) {
+            const target = document.getElementById(targetId);
+            const body = document.querySelector('.product-modal-body');
+            if (!target || !body) return;
+
+            const bodyRect = body.getBoundingClientRect();
+            const targetRect = target.getBoundingClientRect();
+            const offset = targetRect.top - bodyRect.top + body.scrollTop - 14;
+            body.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
+        }
+
+        function renderProductGallery(prod) {
+            const thumbs = document.getElementById('product-thumbs');
+            if (!thumbs) return;
+
+            thumbs.innerHTML = '';
+
+            getProductGallery(prod).forEach((src, index) => {
+                const thumb = document.createElement('button');
+                thumb.type = 'button';
+                thumb.className = 'product-thumb';
+                thumb.dataset.mediaType = 'photo';
+                thumb.dataset.photoIndex = String(index);
+                thumb.setAttribute('aria-label', `Abrir foto ${index + 1} do ${prod.modelo}`);
+                thumb.innerHTML = `<img src="${src}" alt="${prod.modelo} miniatura ${index + 1}">`;
+                thumb.addEventListener('click', () => setProductPhoto(index));
+                thumbs.appendChild(thumb);
+            });
+
+            if (prod.modelo3d) {
+                const viewerThumb = document.createElement('button');
+                viewerThumb.type = 'button';
+                viewerThumb.className = 'product-thumb product-thumb-3d';
+                viewerThumb.dataset.mediaType = 'viewer';
+                viewerThumb.setAttribute('aria-label', `Interagir com ${prod.modelo} em 3D`);
+                viewerThumb.innerHTML = `
+                    <img src="${prod.imagem}" alt="${prod.modelo} visualização 3D">
+                    <span class="product-thumb-badge"><i class="fas fa-cube"></i> 3D</span>
+                `;
+                viewerThumb.addEventListener('click', setProductViewer);
+                thumbs.appendChild(viewerThumb);
+            }
+
+            setProductPhoto(0);
+        }
+
+        function setProductPhoto(index) {
+            const prod = productModalState.product;
+            const image = document.getElementById('modal-img');
+            const viewer = document.getElementById('product-3d-stage');
+            if (!prod || !image) return;
+
+            const gallery = getProductGallery(prod);
+            productModalState.mediaMode = 'photo';
+            productModalState.photoIndex = (index + gallery.length) % gallery.length;
+            product3DState.loadToken += 1;
+            stopProduct3DAnimation();
+
+            if (viewer) {
+                viewer.hidden = true;
+                viewer.classList.remove('is-fallback');
+            }
+            setProduct3DFallback('', false);
+            setGalleryNavVisibility(false);
+
+            const activePhotoSrc = gallery[productModalState.photoIndex];
+            updateProductModalSpecs(prod, activePhotoSrc);
+
+            image.classList.remove('is-hidden');
+            image.style.opacity = '0';
+            image.src = activePhotoSrc;
+            image.alt = `${prod.modelo} - foto ${productModalState.photoIndex + 1}`;
+
+            window.setTimeout(() => {
+                image.style.opacity = '1';
+            }, 120);
+
+            document.querySelectorAll('.product-thumb').forEach((thumb, thumbIndex) => {
+                const isActive = thumb.dataset.mediaType === 'photo' && Number(thumb.dataset.photoIndex) === productModalState.photoIndex;
+                thumb.classList.toggle('is-active', isActive);
+                thumb.setAttribute('aria-current', isActive ? 'true' : 'false');
+            });
+        }
+
+        function setProductViewer() {
+            const image = document.getElementById('modal-img');
+            const viewer = document.getElementById('product-3d-stage');
+            if (!viewer || !productModalState.product || !productModalState.product.modelo3d) return;
+
+            productModalState.mediaMode = 'viewer';
+            if (image) {
+                image.classList.add('is-hidden');
+                image.removeAttribute('src');
+                image.style.opacity = '0';
+            }
+            viewer.hidden = false;
+            setGalleryNavVisibility(true);
+            updateProductModalSpecs(productModalState.product);
+
+            document.querySelectorAll('.product-thumb').forEach((thumb) => {
+                const isActive = thumb.dataset.mediaType === 'viewer';
+                thumb.classList.toggle('is-active', isActive);
+                thumb.setAttribute('aria-current', isActive ? 'true' : 'false');
+            });
+
+            window.requestAnimationFrame(initProduct3D);
+        }
+
+        function setGalleryNavVisibility(isHidden) {
+            document.getElementById('product-gallery-prev')?.classList.toggle('is-hidden', isHidden);
+            document.getElementById('product-gallery-next')?.classList.toggle('is-hidden', isHidden);
+        }
+
+        function bindProductModalControls() {
+            const galleryPrev = document.getElementById('product-gallery-prev');
+            const galleryNext = document.getElementById('product-gallery-next');
+            const reset3D = document.getElementById('product-3d-reset');
+            const spin3D = document.getElementById('product-3d-spin');
+            const productPrev = document.getElementById('product-modal-prev');
+            const productNext = document.getElementById('product-modal-next');
+
+            if (galleryPrev && !galleryPrev.dataset.bound) {
+                galleryPrev.dataset.bound = 'true';
+                galleryPrev.addEventListener('click', () => setProductPhoto(productModalState.photoIndex - 1));
+            }
+
+            if (galleryNext && !galleryNext.dataset.bound) {
+                galleryNext.dataset.bound = 'true';
+                galleryNext.addEventListener('click', () => setProductPhoto(productModalState.photoIndex + 1));
+            }
+
+            if (reset3D && !reset3D.dataset.bound) {
+                reset3D.dataset.bound = 'true';
+                reset3D.addEventListener('click', resetProduct3DView);
+            }
+
+            if (spin3D && !spin3D.dataset.bound) {
+                spin3D.dataset.bound = 'true';
+                spin3D.addEventListener('click', () => {
+                    product3DState.autoRotate = !product3DState.autoRotate;
+                    spin3D.classList.toggle('is-active', product3DState.autoRotate);
+                });
+            }
+
+            if (productPrev && !productPrev.dataset.bound) {
+                productPrev.dataset.bound = 'true';
+                productPrev.addEventListener('click', () => openAdjacentProduct(-1));
+            }
+
+            if (productNext && !productNext.dataset.bound) {
+                productNext.dataset.bound = 'true';
+                productNext.addEventListener('click', () => openAdjacentProduct(1));
+            }
+
+            document.querySelectorAll('[data-product-scroll-target]').forEach((button) => {
+                if (button.dataset.bound) return;
+                button.dataset.bound = 'true';
+                button.addEventListener('click', () => scrollProductModalTo(button.dataset.productScrollTarget));
+            });
+        }
+
+        function loadScriptOnce(src) {
+            return new Promise((resolve, reject) => {
+                const existingScript = document.querySelector(`script[src="${src}"]`);
+
+                if (existingScript) {
+                    existingScript.addEventListener('load', () => resolve(true), { once: true });
+                    existingScript.addEventListener('error', reject, { once: true });
+                    return;
+                }
+
+                const script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                script.onload = () => resolve(true);
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        function ensureThreeRuntime() {
+            if (window.THREE) return Promise.resolve(true);
+
+            if (!product3DState.threeRuntimePromise) {
+                product3DState.threeRuntimePromise = loadScriptOnce('https://unpkg.com/three@0.128.0/build/three.min.js')
+                    .then(() => Boolean(window.THREE))
+                    .catch(() => false)
+                    .finally(() => {
+                        if (!window.THREE) product3DState.threeRuntimePromise = null;
+                    });
+            }
+
+            return product3DState.threeRuntimePromise;
+        }
+
+        function initProduct3D() {
+            const canvas = document.getElementById('product-3d-canvas');
+            if (!canvas || !productModalState.product) return;
+
+            if (!window.THREE) {
+                setProduct3DFallback('Preparando visualizacao 3D...', true);
+                ensureThreeRuntime().then((isReady) => {
+                    if (isReady && productModalState.mediaMode === 'viewer') {
+                        initProduct3D();
+                        return;
+                    }
+
+                    if (productModalState.mediaMode === 'viewer') {
+                        setProduct3DFallback('Nao foi possivel iniciar o 3D agora. Verifique a conexao e tente abrir novamente.');
+                    }
+                });
+                return;
+            }
+
+            setProduct3DFallback('', false);
+
+            if (!product3DState.initialized) {
+                const THREE = window.THREE;
+                product3DState.scene = new THREE.Scene();
+                product3DState.camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+                product3DState.camera.position.set(0, 0, 5.6);
+                product3DState.camera.lookAt(0, 0, 0);
+
+                try {
+                    product3DState.renderer = new THREE.WebGLRenderer({
+                        canvas,
+                        antialias: true,
+                        alpha: true
+                    });
+                } catch (error) {
+                    setProduct3DFallback('Seu navegador bloqueou a visualização 3D agora. As fotos e informações técnicas continuam disponíveis.');
+                    return;
+                }
+                product3DState.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                product3DState.renderer.outputEncoding = THREE.sRGBEncoding;
+                product3DState.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                product3DState.renderer.toneMappingExposure = 0.62;
+
+                const ambient = new THREE.AmbientLight(0xffffff, 0.38);
+                const key = new THREE.DirectionalLight(0xffffff, 0.62);
+                const fill = new THREE.DirectionalLight(0xb8e7ef, 0.24);
+                const rim = new THREE.DirectionalLight(0x0088AC, 0.42);
+                key.position.set(3, 5, 4);
+                fill.position.set(-4, 1, 2);
+                rim.position.set(-3, 2, -4);
+                product3DState.scene.add(ambient, key, fill, rim);
+
+                bindProduct3DCanvas(canvas);
+                product3DState.initialized = true;
+            }
+
+            buildProduct3DModel(productModalState.product);
+            resizeProduct3DViewer();
+            startProduct3DAnimation();
+        }
+
+        function setProduct3DFallback(message, isVisible = true) {
+            const fallback = document.getElementById('product-3d-fallback');
+            const stage = document.getElementById('product-3d-stage');
+            if (!fallback) return;
+
+            const fallbackText = fallback.querySelector('p');
+            if (fallbackText && message) fallbackText.textContent = message;
+
+            fallback.classList.toggle('is-visible', isVisible);
+            if (stage) stage.classList.toggle('is-fallback', isVisible);
+        }
+
+        function getProduct3DUrlCandidates(path) {
+            const normalizedPath = String(path || '').trim().replace(/\\/g, '/');
+            if (!normalizedPath) return [];
+
+            const encodedBySegment = normalizedPath
+                .split('/')
+                .map((segment) => encodeURIComponent(segment))
+                .join('/');
+
+            const candidates = [normalizedPath, encodeURI(normalizedPath), encodedBySegment];
+
+            [normalizedPath, encodedBySegment].forEach((candidate) => {
+                try {
+                    candidates.push(new URL(candidate, document.baseURI).href);
+                } catch (error) {}
+            });
+
+            return [...new Set(candidates.filter(Boolean))];
+        }
+
+        function isBinaryStl(dataView) {
+            if (dataView.byteLength < 84) return false;
+
+            const faces = dataView.getUint32(80, true);
+            return 84 + faces * 50 === dataView.byteLength;
+        }
+
+        function parseBinaryStl(buffer) {
+            const THREE = window.THREE;
+            const dataView = new DataView(buffer);
+            const faces = dataView.getUint32(80, true);
+            const positions = new Float32Array(faces * 9);
+            const normals = new Float32Array(faces * 9);
+            let offset = 84;
+            let positionIndex = 0;
+
+            for (let face = 0; face < faces; face += 1) {
+                const normalX = dataView.getFloat32(offset, true);
+                const normalY = dataView.getFloat32(offset + 4, true);
+                const normalZ = dataView.getFloat32(offset + 8, true);
+                offset += 12;
+
+                for (let vertex = 0; vertex < 3; vertex += 1) {
+                    positions[positionIndex] = dataView.getFloat32(offset, true);
+                    positions[positionIndex + 1] = dataView.getFloat32(offset + 4, true);
+                    positions[positionIndex + 2] = dataView.getFloat32(offset + 8, true);
+                    normals[positionIndex] = normalX;
+                    normals[positionIndex + 1] = normalY;
+                    normals[positionIndex + 2] = normalZ;
+                    positionIndex += 3;
+                    offset += 12;
+                }
+
+                offset += 2;
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
+            geometry.computeBoundingBox();
+            return geometry;
+        }
+
+        function parseAsciiStl(buffer) {
+            const THREE = window.THREE;
+            const text = new TextDecoder().decode(buffer);
+            const positions = [];
+            const normals = [];
+            const facetPattern = /facet\s+normal\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)[\s\S]*?outer\s+loop([\s\S]*?)endloop/gim;
+            const vertexPattern = /vertex\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)/gim;
+            let facetMatch;
+
+            while ((facetMatch = facetPattern.exec(text))) {
+                const normal = [Number(facetMatch[1]) || 0, Number(facetMatch[2]) || 0, Number(facetMatch[3]) || 0];
+                let vertexMatch;
+                vertexPattern.lastIndex = 0;
+
+                while ((vertexMatch = vertexPattern.exec(facetMatch[4]))) {
+                    positions.push(Number(vertexMatch[1]) || 0, Number(vertexMatch[2]) || 0, Number(vertexMatch[3]) || 0);
+                    normals.push(normal[0], normal[1], normal[2]);
+                }
+            }
+
+            if (!positions.length) {
+                throw new Error('Arquivo STL sem vertices reconheciveis.');
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+            geometry.computeBoundingBox();
+            return geometry;
+        }
+
+        function parseStlGeometry(buffer) {
+            const dataView = new DataView(buffer);
+            const geometry = isBinaryStl(dataView) ? parseBinaryStl(buffer) : parseAsciiStl(buffer);
+
+            if (!geometry.getAttribute('normal')) {
+                geometry.computeVertexNormals();
+            }
+
+            return geometry;
+        }
+
+        function arrayBufferFromBase64(base64) {
+            const binary = window.atob(base64);
+            const bytes = new Uint8Array(binary.length);
+
+            for (let index = 0; index < binary.length; index += 1) {
+                bytes[index] = binary.charCodeAt(index);
+            }
+
+            return bytes.buffer;
+        }
+
+        function getEmbeddedProduct3DGeometry(path) {
+            const THREE = window.THREE;
+            const encodedModel = window.MHS_3D_MODELS?.[path];
+            if (!THREE || !encodedModel) return null;
+
+            try {
+                const buffer = arrayBufferFromBase64(encodedModel);
+
+                if (THREE.STLLoader) {
+                    return new THREE.STLLoader().parse(buffer);
+                }
+
+                return parseStlGeometry(buffer);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function createProduct3DLoader() {
+            const THREE = window.THREE;
+
+            if (THREE.STLLoader) {
+                return new THREE.STLLoader();
+            }
+
+            return {
+                load(url, onLoad, onProgress, onError) {
+                    const fileLoader = new THREE.FileLoader();
+                    fileLoader.setResponseType('arraybuffer');
+                    fileLoader.load(
+                        url,
+                        (buffer) => {
+                            try {
+                                onLoad(parseStlGeometry(buffer));
+                            } catch (error) {
+                                if (onError) onError(error);
+                            }
+                        },
+                        onProgress,
+                        onError
+                    );
+                }
+            };
+        }
+
+        function finishProduct3DLoad(prod, token, geometry) {
+            if (token !== product3DState.loadToken || productModalState.product !== prod || productModalState.mediaMode !== 'viewer') {
+                geometry.dispose();
+                return;
+            }
+
+            setProduct3DFallback('', false);
+            if (!product3DState.geometryCache.has(prod.modelo3d)) {
+                product3DState.geometryCache.set(prod.modelo3d, geometry.clone());
+            }
+            buildStlProduct3DModel(prod, geometry);
+        }
+
+        function loadProduct3DGeometry(prod, token, candidates, index = 0) {
+            if (token !== product3DState.loadToken || productModalState.product !== prod || productModalState.mediaMode !== 'viewer') return;
+
+            const loader = createProduct3DLoader();
+            const url = candidates[index];
+
+            loader.load(
+                url,
+                (geometry) => finishProduct3DLoad(prod, token, geometry),
+                undefined,
+                () => {
+                    if (index + 1 < candidates.length) {
+                        loadProduct3DGeometry(prod, token, candidates, index + 1);
+                        return;
+                    }
+
+                    if (token === product3DState.loadToken && productModalState.product === prod && productModalState.mediaMode === 'viewer') {
+                        setProduct3DFallback('Nao foi possivel carregar o modelo 3D agora. Confira se esta pagina esta sendo aberta por um servidor local ou online.');
+                    }
+                }
+            );
+        }
+
+        function buildProduct3DModel(prod) {
+            const THREE = window.THREE;
+            const token = product3DState.loadToken + 1;
+            product3DState.loadToken = token;
+
+            clearProduct3DModel();
+            setProduct3DFallback('Carregando modelo 3D...', true);
+
+            if (!THREE || !product3DState.scene || !prod.modelo3d) {
+                setProduct3DFallback('Visualizacao 3D indisponivel neste carregamento.');
+                return;
+            }
+
+            const cachedGeometry = product3DState.geometryCache.get(prod.modelo3d);
+            if (cachedGeometry) {
+                finishProduct3DLoad(prod, token, cachedGeometry.clone());
+                return;
+            }
+
+            const embeddedGeometry = getEmbeddedProduct3DGeometry(prod.modelo3d);
+            if (embeddedGeometry) {
+                finishProduct3DLoad(prod, token, embeddedGeometry);
+                return;
+            }
+
+            const candidates = getProduct3DUrlCandidates(prod.modelo3d);
+            if (!candidates.length) {
+                setProduct3DFallback('Caminho do modelo 3D nao encontrado.');
+                return;
+            }
+
+            loadProduct3DGeometry(prod, token, candidates);
+        }
+
+        function clearProduct3DModel() {
+            if (!product3DState.group || !product3DState.scene) return;
+
+            product3DState.scene.remove(product3DState.group);
+            product3DState.group.traverse((node) => {
+                if (node.geometry) node.geometry.dispose();
+                if (node.material) {
+                    if (Array.isArray(node.material)) {
+                        node.material.forEach((material) => material.dispose());
+                        return;
+                    }
+                    node.material.dispose();
+                }
+            });
+            product3DState.group = null;
+        }
+
+        function centerProduct3DGroup(group) {
+            const THREE = window.THREE;
+            if (!THREE || !group) return;
+
+            group.position.set(0, 0, 0);
+            group.updateMatrixWorld(true);
+
+            const box = new THREE.Box3().setFromObject(group);
+            const center = new THREE.Vector3();
+            box.getCenter(center);
+
+            group.position.set(-center.x, -center.y, -center.z);
+            group.updateMatrixWorld(true);
+        }
+
+        function buildStlProduct3DModel(prod, geometry) {
+            const THREE = window.THREE;
+            if (!THREE || !product3DState.scene || productModalState.product !== prod || productModalState.mediaMode !== 'viewer') {
+                geometry.dispose();
+                return;
+            }
+
+            geometry.computeBoundingBox();
+            geometry.center();
+
+            const size = new THREE.Vector3();
+            geometry.boundingBox.getSize(size);
+            const maxAxis = Math.max(size.x, size.y, size.z) || 1;
+            const targetSize = 2.85;
+            const scale = targetSize / maxAxis;
+
+            const material = new THREE.MeshStandardMaterial({
+                color: 0xdce3df,
+                roughness: 0.72,
+                metalness: 0.02
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.scale.setScalar(scale);
+            mesh.rotation.x = -Math.PI / 2;
+
+            const group = new THREE.Group();
+            group.add(mesh);
+            centerProduct3DGroup(group);
+            group.rotation.set(0.08, -0.38, 0);
+            product3DState.group = group;
+            product3DState.scene.add(group);
+        }
+
+        function bindProduct3DCanvas(canvas) {
+            if (canvas.dataset.bound) return;
+            canvas.dataset.bound = 'true';
+
+            canvas.addEventListener('pointerdown', (event) => {
+                product3DState.dragging = true;
+                product3DState.autoRotate = false;
+                product3DState.lastX = event.clientX;
+                product3DState.lastY = event.clientY;
+                canvas.classList.add('is-dragging');
+
+                const spin3D = document.getElementById('product-3d-spin');
+                if (spin3D) spin3D.classList.remove('is-active');
+
+                if (canvas.setPointerCapture) {
+                    canvas.setPointerCapture(event.pointerId);
+                }
+            });
+
+            canvas.addEventListener('pointermove', (event) => {
+                if (!product3DState.dragging || !product3DState.group) return;
+
+                const deltaX = event.clientX - product3DState.lastX;
+                const deltaY = event.clientY - product3DState.lastY;
+                product3DState.group.rotation.y += deltaX * 0.01;
+                product3DState.group.rotation.x = Math.max(-0.55, Math.min(0.65, product3DState.group.rotation.x + deltaY * 0.007));
+                product3DState.lastX = event.clientX;
+                product3DState.lastY = event.clientY;
+            });
+
+            ['pointerup', 'pointercancel', 'pointerleave'].forEach((eventName) => {
+                canvas.addEventListener(eventName, () => {
+                    product3DState.dragging = false;
+                    canvas.classList.remove('is-dragging');
+                });
+            });
+        }
+
+        function resizeProduct3DViewer() {
+            const canvas = document.getElementById('product-3d-canvas');
+            if (!canvas || !product3DState.renderer || !product3DState.camera) return;
+
+            const stage = canvas.parentElement;
+            const width = Math.max(1, stage.clientWidth);
+            const height = Math.max(1, stage.clientHeight);
+            product3DState.renderer.setSize(width, height, false);
+            product3DState.camera.aspect = width / height;
+            product3DState.camera.lookAt(0, 0, 0);
+            product3DState.camera.updateProjectionMatrix();
+        }
+
+        function startProduct3DAnimation() {
+            if (product3DState.animationId || !product3DState.renderer || !product3DState.scene || !product3DState.camera) return;
+
+            const animate = () => {
+                product3DState.animationId = window.requestAnimationFrame(animate);
+
+                if (product3DState.autoRotate && product3DState.group && !product3DState.dragging) {
+                    product3DState.group.rotation.y += 0.006;
+                }
+
+                product3DState.renderer.render(product3DState.scene, product3DState.camera);
+            };
+
+            animate();
+        }
+
+        function stopProduct3DAnimation() {
+            if (!product3DState.animationId) return;
+
+            window.cancelAnimationFrame(product3DState.animationId);
+            product3DState.animationId = null;
+        }
+
+        function resetProduct3DView() {
+            if (!product3DState.group) return;
+
+            product3DState.group.rotation.set(0.08, -0.38, 0);
+            product3DState.autoRotate = true;
+
+            const spin3D = document.getElementById('product-3d-spin');
+            if (spin3D) spin3D.classList.add('is-active');
+        }
+
+        function escapeComparisonValue(value) {
+            const text = value == null ? '' : String(value);
+            return text.replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            })[char]);
+        }
+
+        function renderComparisonStatus(value) {
+            if (value === 'Incluso') {
+                return '<span class="comparison-status" aria-label="Incluso"><i class="fas fa-check" aria-hidden="true"></i></span>';
+            }
+
+            if (value === 'Opcional') {
+                return '<span class="comparison-status is-optional">OPC.</span>';
+            }
+
+            if (value === 'Não incluso' || value === 'Não disponível') {
+                return '<span class="comparison-status is-unavailable" aria-label="Não disponível"><i class="fas fa-times" aria-hidden="true"></i></span>';
+            }
+
+            if (value === 'Disponível') {
+                return '<span class="comparison-status" aria-label="Disponível"><i class="fas fa-check" aria-hidden="true"></i></span>';
+            }
+
+            return escapeComparisonValue(value);
+        }
+
+        function renderComparisonAvailability(items) {
+            const list = Array.isArray(items) ? items : [items];
+            return `<span class="comparison-tags">${list.map((item) => `<span>${escapeComparisonValue(item)}</span>`).join('')}</span>`;
+        }
+
+        function renderComparisonCell(value, type) {
+            if (type === 'status') return renderComparisonStatus(value);
+            if (type === 'tags') return renderComparisonAvailability(value);
+            return escapeComparisonValue(value);
+        }
+
+        function renderTechnicalComparison() {
+            const targets = Array.from(document.querySelectorAll('.technical-comparison-table-body'));
+            if (!targets.length || targets.every((target) => target.dataset.loaded === 'true')) return;
+
+            const rows = [
+                { label: 'Dimensões (LxCxA)', type: 'text', values: produtosData.map((prod) => prod.dimensoes) },
+                { label: 'Capacidade máxima de suporte', type: 'text', values: produtosData.map((prod) => prod.capacidadeMax) },
+                { label: 'Peso líquido (vazio)', type: 'text', values: produtosData.map((prod) => prod.peso) },
+                { label: 'Diâmetro máximo de recalque', type: 'text', values: produtosData.map((prod) => prod.diametro) },
+                { label: 'Potência máxima admissível', type: 'text', values: produtosData.map((prod) => prod.potencia) },
+                { label: 'Tubo prolongador com boia', type: 'status', values: produtosData.map((prod) => prod.tuboProlongador) },
+                { label: 'Filtro removível na sucção', type: 'status', values: produtosData.map((prod) => prod.filtroRemovivel) },
+                { label: 'Disponibilidade', type: 'tags', values: produtosData.map((prod) => prod.disponibilidade) },
+                { label: 'Modelo 3D interativo', type: 'status', values: produtosData.map((prod) => prod.modelo3d ? 'Disponível' : 'Não disponível') }
+            ];
+
+            const tableRows = rows.map((row) => `
+                <tr>
+                    <td>${escapeComparisonValue(row.label)}</td>
+                    ${row.values.map((value) => `<td>${renderComparisonCell(value, row.type)}</td>`).join('')}
+                </tr>
+            `).join('');
+
+            targets.forEach((target) => {
+                target.innerHTML = tableRows;
+                target.dataset.loaded = 'true';
+            });
+        }
+
+        function updateTechnicalComparisonTrigger(isOpen) {
+            const button = document.getElementById('technical-comparison-trigger');
+            if (!button) return;
+
+            const chevron = button.querySelector('.fa-chevron-down, .fa-chevron-up');
+            button.setAttribute('aria-expanded', String(isOpen));
+
+            if (chevron) {
+                chevron.classList.toggle('fa-chevron-down', !isOpen);
+                chevron.classList.toggle('fa-chevron-up', isOpen);
+            }
+        }
+
+        function setTechnicalComparisonOpen(isOpen) {
+            const section = document.getElementById('technical-comparison-section');
+            if (!section) return;
+
+            updateTechnicalComparisonTrigger(isOpen);
+            section.hidden = !isOpen;
+
+            if (isOpen) {
+                renderTechnicalComparison();
+                window.requestAnimationFrame(() => {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                });
+            }
+        }
+
+        function bindTechnicalComparison() {
+            const button = document.getElementById('technical-comparison-trigger');
+            const section = document.getElementById('technical-comparison-section');
+            if (!button || !section || button.dataset.bound) return;
+
+            button.dataset.bound = 'true';
+            button.addEventListener('click', () => {
+                setTechnicalComparisonOpen(section.hidden);
+            });
+        }
+
+        function isProjectVideoInView(video) {
+            if (!video || document.hidden) return false;
+
+            const rect = video.getBoundingClientRect();
+            const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+            if (rect.width <= 0 || rect.height <= 0 || rect.bottom <= 0 || rect.right <= 0 || rect.top >= viewportHeight || rect.left >= viewportWidth) {
+                return false;
+            }
+
+            const visibleWidth = Math.min(rect.right, viewportWidth) - Math.max(rect.left, 0);
+            const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+            const visibleArea = Math.max(0, visibleWidth) * Math.max(0, visibleHeight);
+            const totalArea = Math.max(1, rect.width * rect.height);
+
+            return visibleArea / totalArea >= 0.38;
+        }
+
+        function pauseProjectVideo(video) {
+            if (!video || video.paused) return;
+
+            video.dataset.autoPause = 'true';
+            video.pause();
+        }
+
+        function playProjectVideo(video) {
+            if (!video || video.ended || video.dataset.userPaused === 'true' || !isProjectVideoInView(video)) return;
+
+            const playPromise = video.play();
+            if (playPromise && typeof playPromise.catch === 'function') {
+                playPromise.catch(() => {});
+            }
+        }
+
+        function syncProjectVideoPlayback(video) {
+            if (isProjectVideoInView(video)) {
+                playProjectVideo(video);
+                return;
+            }
+
+            pauseProjectVideo(video);
+        }
+
+        function bindProjectVideoPlayback() {
+            const video = document.getElementById('project-video');
+            if (!video || video.dataset.bound) return;
+
+            video.dataset.bound = 'true';
+            video.dataset.userPaused = 'false';
+            video.dataset.autoPause = 'false';
+
+            video.addEventListener('play', () => {
+                if (!isProjectVideoInView(video)) {
+                    pauseProjectVideo(video);
+                    return;
+                }
+
+                video.dataset.autoPause = 'false';
+                video.dataset.userPaused = 'false';
+            });
+
+            video.addEventListener('pause', () => {
+                if (video.dataset.autoPause === 'true' || video.ended) return;
+                video.dataset.userPaused = 'true';
+            });
+
+            video.addEventListener('ended', () => {
+                video.dataset.userPaused = 'true';
+            });
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver(() => syncProjectVideoPlayback(video), {
+                    threshold: [0, 0.25, 0.38, 0.6, 0.9],
+                    rootMargin: '0px 0px -6% 0px'
+                });
+
+                observer.observe(video);
+            } else {
+                let ticking = false;
+                const queueCheck = () => {
+                    if (ticking) return;
+                    ticking = true;
+                    window.requestAnimationFrame(() => {
+                        ticking = false;
+                        syncProjectVideoPlayback(video);
+                    });
+                };
+
+                window.addEventListener('scroll', queueCheck, { passive: true });
+                window.addEventListener('resize', queueCheck);
+                window.addEventListener('orientationchange', queueCheck);
+                queueCheck();
+            }
+
+            document.addEventListener('visibilitychange', () => {
+                syncProjectVideoPlayback(video);
+            });
+
+            window.requestAnimationFrame(() => syncProjectVideoPlayback(video));
+        }
+
+        if (modal) {
+            modal.addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal && modal.classList.contains('active')) closeModal();
+            if (e.key === 'Escape') setTechnicalComparisonOpen(false);
+        });
+
+        window.addEventListener('resize', () => {
+            window.requestAnimationFrame(resizeProduct3DViewer);
+        });
+
+        window.addEventListener('load', () => {
+            renderCards();
+            bindProductModalControls();
+            bindTechnicalComparison();
+            bindProjectVideoPlayback();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Local tooling
+.agents/
+.codex/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.tmp
+*.bak
+
+# Local secrets
+.env
+.env.*
+!.env.example
+*client_secret*.json
+*.pem
+*.key

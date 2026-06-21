@@ -1,0 +1,2790 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Sistema MHS para monitoramento de bombas de água, vazão, vibração, pressão, transferência de fluidos, automação e gestão operacional." name="description"/>
+<title>Monitoramento de Bombas e Transferência de Fluidos | MHS</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-dark': '#182540',
+                        'brand-darker': '#0a101a',
+                        'brand-teal': '#0088AC',
+                        'brand-red': '#E42927',
+                        'glass-bg': 'rgba(255, 255, 255, 0.04)',
+                        'glass-border': 'rgba(255, 255, 255, 0.08)',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        :root {
+            --brand-dark: #182540;
+            --brand-darker: #0a101a;
+            --brand-teal: #0088AC;
+            --brand-teal-light: #22c7ee;
+            --brand-red: #E42927;
+            --text-main: #f4f8fb;
+            --text-muted: #8b98aa;
+            --line: rgba(255, 255, 255, 0.08);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 75% 8%, rgba(0, 136, 172, 0.15), transparent 24%),
+                radial-gradient(circle at 10% 42%, rgba(24, 37, 64, 0.28), transparent 26%),
+                #060b12;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: linear-gradient(to bottom, black, transparent 82%);
+        }
+
+        .site-noise {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            opacity: 0.32;
+            background:
+                radial-gradient(circle at 8% 14%, rgba(255,255,255,0.45) 0 1px, transparent 1.4px),
+                radial-gradient(circle at 28% 35%, rgba(255,255,255,0.35) 0 1px, transparent 1.3px),
+                radial-gradient(circle at 71% 18%, rgba(34,199,238,0.55) 0 1px, transparent 1.4px),
+                radial-gradient(circle at 90% 56%, rgba(255,255,255,0.34) 0 1px, transparent 1.3px),
+                radial-gradient(circle at 17% 77%, rgba(34,199,238,0.45) 0 1px, transparent 1.4px);
+            background-size: 360px 290px, 420px 370px, 520px 410px, 580px 460px, 470px 390px;
+        }
+
+        .nav-shell {
+            background: linear-gradient(180deg, rgba(6, 11, 18, 0.94), rgba(6, 11, 18, 0.58), transparent);
+        }
+
+        .monitor-brand-link {
+            display: inline-flex;
+            align-items: center;
+            flex: 0 0 auto;
+        }
+
+        .monitor-brand-logo-frame {
+            position: relative;
+            width: 5.35rem;
+            height: 3.9rem;
+            flex: 0 0 auto;
+            overflow: hidden;
+        }
+
+        .monitor-brand-logo {
+            display: block;
+            width: 6.72rem;
+            max-width: none;
+            height: auto;
+            transform: translate(-0.71rem, -0.73rem);
+            filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.35));
+        }
+
+        .section-shell {
+            position: relative;
+            isolation: isolate;
+        }
+
+        .section-shell::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: min(1180px, calc(100% - 48px));
+            height: 1px;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, transparent, rgba(0,136,172,0.35), transparent);
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #72dcf5;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+        }
+
+        .section-label::before {
+            content: "";
+            width: 24px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #22c7ee);
+        }
+
+        .section-title {
+            color: #fff;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.08;
+        }
+
+        .text-gradient {
+            color: transparent;
+            background: linear-gradient(90deg, #22c7ee, #0088AC 56%, #8be7f8);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .lux-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 44px;
+            border-radius: 999px;
+            padding: 0 22px;
+            background: linear-gradient(135deg, #22c7ee, #0088AC);
+            color: #041019;
+            font-size: 12px;
+            font-weight: 800;
+            box-shadow: 0 14px 35px rgba(0,136,172,0.28), inset 0 1px 0 rgba(255,255,255,0.4);
+            transition: transform .3s ease, box-shadow .3s ease, filter .3s ease;
+        }
+
+        .lux-button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+            box-shadow: 0 18px 42px rgba(0,136,172,0.4), inset 0 1px 0 rgba(255,255,255,0.45);
+        }
+
+        .ghost-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 44px;
+            border-radius: 999px;
+            padding: 0 22px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.025);
+            color: #dbe5ee;
+            font-size: 12px;
+            font-weight: 600;
+            transition: border-color .3s ease, background .3s ease, transform .3s ease;
+        }
+
+        .ghost-button:hover {
+            transform: translateY(-2px);
+            border-color: rgba(34,199,238,0.55);
+            background: rgba(0,136,172,0.08);
+        }
+
+        .hero-stage {
+            min-height: 720px;
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 560px;
+            height: 560px;
+            right: -130px;
+            top: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,136,172,0.22), rgba(0,136,172,0.05) 46%, transparent 72%);
+            filter: blur(8px);
+            pointer-events: none;
+        }
+
+        .hero-orbit {
+            position: absolute;
+            inset: 8%;
+            border: 1px solid rgba(34,199,238,0.18);
+            border-radius: 50%;
+            transform: rotate(-14deg);
+            box-shadow: 0 0 80px rgba(0,136,172,0.08), inset 0 0 70px rgba(0,136,172,0.03);
+        }
+
+        .hero-orbit.orbit-two {
+            inset: 20%;
+            border-style: dashed;
+            border-color: rgba(255,255,255,0.1);
+            transform: rotate(26deg);
+        }
+
+        .hero-visual {
+            position: relative;
+            width: min(100%, 560px);
+            aspect-ratio: 1.08;
+            perspective: 1200px;
+        }
+
+        .control-console {
+            position: absolute;
+            inset: 15% 7% 8% 8%;
+            border-radius: 30px;
+            transform: rotateY(-8deg) rotateX(5deg) rotateZ(-1deg);
+            background:
+                linear-gradient(145deg, rgba(18,33,54,0.97), rgba(5,12,21,0.98)),
+                radial-gradient(circle at 80% 10%, rgba(0,136,172,0.28), transparent 42%);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow:
+                0 55px 110px rgba(0,0,0,0.58),
+                0 0 55px rgba(0,136,172,0.13),
+                inset 0 1px 0 rgba(255,255,255,0.12);
+            overflow: hidden;
+        }
+
+        .control-console::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(34,199,238,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34,199,238,0.04) 1px, transparent 1px);
+            background-size: 28px 28px;
+            mask-image: linear-gradient(to bottom, black, transparent);
+            pointer-events: none;
+        }
+
+        .console-topline {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #22c7ee, transparent);
+            opacity: .9;
+        }
+
+        .metric-chip {
+            border: 1px solid rgba(255,255,255,0.08);
+            background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .metric-chip:hover {
+            border-color: rgba(34,199,238,0.28);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #22c55e;
+            box-shadow: 0 0 0 0 rgba(34,197,94,0.55);
+            animation: pulseStatus 2s infinite;
+            flex: 0 0 auto;
+        }
+
+        @keyframes pulseStatus {
+            0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); }
+            70% { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
+            100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+        }
+
+        .floating-node {
+            position: absolute;
+            z-index: 5;
+            min-width: 150px;
+            border-radius: 18px;
+            border: 1px solid rgba(34,199,238,0.2);
+            background: rgba(7,16,27,0.9);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 18px 45px rgba(0,0,0,0.45), 0 0 28px rgba(0,136,172,0.08);
+            animation: floatNode 6s ease-in-out infinite;
+        }
+
+        .floating-node.node-camera {
+            left: -4%;
+            bottom: 11%;
+        }
+
+        .floating-node.node-alert {
+            right: -1%;
+            top: 12%;
+            animation-delay: -2s;
+        }
+
+        @keyframes floatNode {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero-core {
+            position: absolute;
+            left: 50%;
+            top: 4%;
+            width: 110px;
+            height: 110px;
+            transform: translateX(-50%);
+            border-radius: 32px;
+            display: grid;
+            place-items: center;
+            background:
+                radial-gradient(circle at 35% 28%, rgba(255,255,255,0.23), transparent 22%),
+                linear-gradient(145deg, rgba(34,199,238,0.65), rgba(0,74,103,0.92));
+            border: 1px solid rgba(139,231,248,0.6);
+            box-shadow: 0 20px 50px rgba(0,0,0,.42), 0 0 55px rgba(0,136,172,.32);
+            transform-origin: center;
+            animation: coreFloat 5.5s ease-in-out infinite;
+        }
+
+        @keyframes coreFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(-4deg); }
+            50% { transform: translateX(-50%) translateY(-10px) rotate(4deg); }
+        }
+
+        .hero-core::after {
+            content: "";
+            position: absolute;
+            inset: 14px;
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.22);
+        }
+
+        .data-stream {
+            position: absolute;
+            left: 50%;
+            top: 24%;
+            width: 1px;
+            height: 72px;
+            background: linear-gradient(to bottom, #22c7ee, transparent);
+            box-shadow: 0 0 14px #22c7ee;
+        }
+
+        .console-status-rail {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .console-status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            padding: 9px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.065);
+            background: rgba(255,255,255,0.025);
+        }
+
+        .console-status-icon {
+            width: 24px;
+            height: 24px;
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            border-radius: 7px;
+            color: #63dcf5;
+            background: rgba(0,136,172,0.12);
+            border: 1px solid rgba(34,199,238,0.14);
+        }
+
+        .console-status-item p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .floating-node.node-automation {
+            right: 1%;
+            bottom: 7%;
+            animation-delay: -4s;
+        }
+
+        .operations-glow {
+            position: absolute;
+            left: 50%;
+            top: 46%;
+            width: 720px;
+            height: 420px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,136,172,0.13), transparent 68%);
+            filter: blur(18px);
+            pointer-events: none;
+        }
+
+        .operations-console {
+            position: relative;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.09);
+            background:
+                linear-gradient(155deg, rgba(13,30,46,0.985), rgba(5,12,21,0.995)),
+                radial-gradient(circle at 75% 12%, rgba(0,136,172,0.17), transparent 34%);
+            box-shadow: 0 42px 100px rgba(0,0,0,0.46), 0 0 55px rgba(0,136,172,0.08);
+            overflow: hidden;
+        }
+
+        .operations-console::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(34,199,238,0.026) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34,199,238,0.026) 1px, transparent 1px);
+            background-size: 34px 34px;
+            mask-image: linear-gradient(to bottom, black, transparent 88%);
+        }
+
+        .operations-topline {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #22c7ee 25%, #0088AC 70%, transparent);
+            box-shadow: 0 0 18px rgba(34,199,238,0.35);
+        }
+
+        .ops-toolbar {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 17px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.075);
+            background: rgba(0,0,0,0.12);
+        }
+
+        .ops-window-dots {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ops-window-dots span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.17);
+        }
+
+        .ops-window-dots span:first-child {
+            background: rgba(228,41,39,0.7);
+            box-shadow: 0 0 10px rgba(228,41,39,0.24);
+        }
+
+        .ops-layout {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.65fr) minmax(280px, .75fr);
+            gap: 14px;
+            padding: 14px;
+        }
+
+        .ops-main,
+        .ops-side {
+            min-width: 0;
+        }
+
+        .ops-main {
+            display: grid;
+            gap: 14px;
+        }
+
+        .ops-side {
+            display: grid;
+            align-content: start;
+            gap: 14px;
+        }
+
+        .ops-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .ops-metric-card,
+        .ops-panel {
+            border: 1px solid rgba(255,255,255,0.075);
+            background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.016));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.035);
+        }
+
+        .ops-metric-card {
+            min-height: 108px;
+            padding: 13px;
+            border-radius: 12px;
+        }
+
+        .ops-metric-card:hover,
+        .ops-panel:hover {
+            border-color: rgba(34,199,238,0.22);
+        }
+
+        .ops-panel {
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .ops-panel-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.065);
+        }
+
+        .ops-chart-grid {
+            background-image:
+                linear-gradient(rgba(34,199,238,0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34,199,238,0.045) 1px, transparent 1px);
+            background-size: 32px 24px;
+            border-radius: 10px;
+        }
+
+        .sensor-legend {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .sensor-legend-item {
+            min-width: 0;
+            padding: 9px 10px;
+            border-radius: 9px;
+            border: 1px solid rgba(255,255,255,0.055);
+            background: rgba(0,0,0,0.14);
+        }
+
+        .camera-wall {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .camera-tile {
+            position: relative;
+            min-height: 104px;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.07);
+            background:
+                radial-gradient(circle at 70% 22%, rgba(34,199,238,0.16), transparent 28%),
+                linear-gradient(145deg, #0b1a27, #07111c);
+        }
+
+        .camera-tile::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(34,199,238,0.055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34,199,238,0.055) 1px, transparent 1px);
+            background-size: 18px 18px;
+            opacity: .65;
+        }
+
+        .camera-tile::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -20%;
+            height: 26%;
+            background: linear-gradient(to bottom, transparent, rgba(34,199,238,0.12), transparent);
+            animation: cameraScan 4.5s linear infinite;
+        }
+
+        @keyframes cameraScan {
+            from { transform: translateY(-40px); }
+            to { transform: translateY(170px); }
+        }
+
+        .camera-frame {
+            position: absolute;
+            inset: 18px 15px 20px;
+            border: 1px solid rgba(34,199,238,0.2);
+            clip-path: polygon(0 0, 31% 0, 31% 2px, 2px 2px, 2px 31%, 0 31%, 0 0, 100% 0, 100% 31%, calc(100% - 2px) 31%, calc(100% - 2px) 2px, 69% 2px, 69% 0, 100% 0, 100% 100%, 69% 100%, 69% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 69%, 100% 69%, 100% 100%, 0 100%, 0 69%, 2px 69%, 2px calc(100% - 2px), 31% calc(100% - 2px), 31% 100%, 0 100%);
+        }
+
+        .device-list {
+            display: grid;
+            gap: 8px;
+            margin-top: 13px;
+        }
+
+        .device-row {
+            display: grid;
+            grid-template-columns: 28px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 10px;
+            border-radius: 9px;
+            background: rgba(0,0,0,0.13);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .device-row-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            color: #63dcf5;
+            background: rgba(0,136,172,0.11);
+        }
+
+        .automation-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .automation-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 28px;
+            padding: 0 10px;
+            border-radius: 999px;
+            color: #a9b5c3;
+            font-size: 8px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(255,255,255,0.025);
+        }
+
+        .module-card {
+            position: relative;
+            min-height: 220px;
+            border: 1px solid rgba(255,255,255,0.075);
+            border-radius: 10px;
+            background:
+                linear-gradient(150deg, rgba(13,30,46,0.97), rgba(7,17,28,0.98)),
+                radial-gradient(circle at 100% 0%, rgba(0,136,172,0.14), transparent 42%);
+            box-shadow: 0 22px 55px rgba(0,0,0,0.26);
+            overflow: hidden;
+            transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+        }
+
+        .module-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(34,199,238,0.85), transparent);
+            transform: scaleX(0.35);
+            transition: transform .35s ease;
+        }
+
+        .module-card::after {
+            content: "";
+            position: absolute;
+            right: -54px;
+            bottom: -54px;
+            width: 130px;
+            height: 130px;
+            border: 1px solid rgba(34,199,238,0.1);
+            border-radius: 50%;
+        }
+
+        .module-card:hover {
+            transform: translateY(-7px);
+            border-color: rgba(34,199,238,0.32);
+            box-shadow: 0 28px 65px rgba(0,0,0,0.38), 0 0 30px rgba(0,136,172,0.09);
+        }
+
+        .module-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .module-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 11px;
+            display: grid;
+            place-items: center;
+            color: #63dcf5;
+            border: 1px solid rgba(34,199,238,0.2);
+            background: linear-gradient(145deg, rgba(0,136,172,0.17), rgba(24,37,64,0.62));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 22px rgba(0,0,0,0.26);
+        }
+
+        .module-index {
+            color: rgba(255,255,255,0.16);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .16em;
+        }
+
+        .feature-orb {
+            position: absolute;
+            right: -190px;
+            top: -40px;
+            width: 430px;
+            height: 430px;
+            border-radius: 50%;
+            border: 1px solid rgba(34,199,238,0.14);
+            background:
+                radial-gradient(circle at 35% 35%, rgba(34,199,238,0.24), rgba(0,136,172,0.06) 45%, transparent 70%);
+            box-shadow: inset 0 0 60px rgba(0,136,172,0.08), 0 0 80px rgba(0,136,172,0.08);
+            pointer-events: none;
+        }
+
+        .feature-orb::before,
+        .feature-orb::after {
+            content: "";
+            position: absolute;
+            inset: 12%;
+            border-radius: 50%;
+            border: 1px dashed rgba(139,231,248,0.12);
+            transform: rotate(24deg);
+        }
+
+        .feature-orb::after {
+            inset: 31%;
+            border-style: solid;
+            transform: rotate(-18deg);
+        }
+
+        .network-stage {
+            position: relative;
+            min-height: 490px;
+            perspective: 1100px;
+        }
+
+        .network-board {
+            position: absolute;
+            left: 8%;
+            right: 1%;
+            top: 20%;
+            height: 62%;
+            transform: rotateX(58deg) rotateZ(-29deg);
+            border: 1px solid rgba(34,199,238,0.2);
+            background:
+                linear-gradient(rgba(34,199,238,0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34,199,238,0.08) 1px, transparent 1px),
+                linear-gradient(145deg, rgba(10,28,43,0.9), rgba(3,12,20,0.94));
+            background-size: 32px 32px, 32px 32px, auto;
+            box-shadow: 0 45px 70px rgba(0,0,0,0.55), 0 0 45px rgba(0,136,172,0.08);
+            clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);
+        }
+
+        .network-line {
+            position: absolute;
+            height: 2px;
+            transform-origin: left center;
+            background: linear-gradient(90deg, transparent, #22c7ee, transparent);
+            box-shadow: 0 0 10px rgba(34,199,238,.5);
+            opacity: .65;
+        }
+
+        .network-cube {
+            position: absolute;
+            width: 76px;
+            height: 76px;
+            border: 1px solid rgba(139,231,248,0.28);
+            background:
+                linear-gradient(145deg, rgba(34,199,238,.32), rgba(0,65,89,.76));
+            box-shadow: 0 22px 38px rgba(0,0,0,.45), 0 0 25px rgba(0,136,172,.17), inset 0 1px 0 rgba(255,255,255,.18);
+            transform: rotateX(58deg) rotateZ(-29deg);
+        }
+
+        .network-cube::before {
+            content: "";
+            position: absolute;
+            inset: 12px;
+            border: 1px solid rgba(255,255,255,.16);
+        }
+
+        .network-cube i {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            color: white;
+            transform: rotateZ(29deg) rotateX(-12deg);
+            text-shadow: 0 0 15px rgba(255,255,255,.45);
+        }
+
+        .network-cube.cube-1 { left: 15%; top: 18%; }
+        .network-cube.cube-2 { left: 48%; top: 7%; width: 92px; height: 92px; }
+        .network-cube.cube-3 { right: 5%; top: 28%; }
+        .network-cube.cube-4 { left: 36%; bottom: 1%; width: 64px; height: 64px; }
+
+        .signal-ring {
+            position: absolute;
+            left: 50%;
+            top: 49%;
+            width: 260px;
+            height: 110px;
+            transform: translate(-50%, -50%) rotate(-13deg);
+            border: 1px solid rgba(34,199,238,.2);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(0,136,172,.08);
+        }
+
+        .signal-ring.ring-two {
+            width: 390px;
+            height: 170px;
+            border-style: dashed;
+            opacity: .7;
+        }
+
+        .benefit-row {
+            border-top: 1px solid rgba(255,255,255,0.075);
+            transition: background .3s ease, padding-left .3s ease;
+        }
+
+        .benefit-row:hover {
+            background: linear-gradient(90deg, rgba(0,136,172,0.08), transparent);
+            padding-left: 12px;
+        }
+
+        .view-card {
+            position: relative;
+            min-height: 360px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: linear-gradient(165deg, rgba(13,29,44,.98), rgba(5,13,22,.99));
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(0,0,0,.3);
+            transition: transform .35s ease, border-color .35s ease;
+        }
+
+        .view-card:hover {
+            transform: translateY(-7px);
+            border-color: rgba(34,199,238,.34);
+        }
+
+        .view-card.featured {
+            border-color: rgba(34,199,238,.42);
+            box-shadow: 0 28px 65px rgba(0,0,0,.4), 0 0 40px rgba(0,136,172,.12);
+        }
+
+        .view-card.featured::before {
+            content: "VISÃO COMPLETA";
+            position: absolute;
+            top: 17px;
+            right: -39px;
+            width: 150px;
+            padding: 7px 0;
+            transform: rotate(45deg);
+            text-align: center;
+            color: #041019;
+            background: linear-gradient(90deg, #22c7ee, #8be7f8);
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: .1em;
+        }
+
+        .mini-screen {
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,.08);
+            background:
+                linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018)),
+                #07111c;
+        }
+
+        .glass-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025));
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.45);
+        }
+
+        .modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .3s ease, visibility .3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            transform: scale(.96) translateY(18px);
+            transition: transform .35s cubic-bezier(.4,0,.2,1);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-icon-panel {
+            background:
+                radial-gradient(circle at 50% 38%, rgba(0,136,172,.2), transparent 44%),
+                linear-gradient(145deg, rgba(13,29,46,.97), rgba(5,13,22,.99));
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #060b12;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #182540;
+            border-radius: 999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0088AC;
+        }
+
+
+        /* Monitoramento de bombas e transferência de fluidos */
+        .fluid-transfer-glow {
+            position: absolute;
+            width: 640px;
+            height: 640px;
+            left: 50%;
+            top: 48%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,136,172,.14), rgba(0,136,172,.025) 44%, transparent 72%);
+            filter: blur(18px);
+            pointer-events: none;
+        }
+
+        .fluid-console {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.085);
+            border-radius: 26px;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(34,199,238,.07), transparent 38%),
+                linear-gradient(145deg, rgba(14,24,39,.97), rgba(5,10,17,.99));
+            box-shadow: 0 34px 90px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.04);
+        }
+
+        .fluid-console::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
+            background-size: 36px 36px;
+            mask-image: linear-gradient(to bottom, black, transparent 88%);
+        }
+
+        .fluid-console-topline {
+            position: absolute;
+            inset: 0 0 auto;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(34,199,238,.95), transparent);
+            box-shadow: 0 0 22px rgba(34,199,238,.45);
+        }
+
+        .fluid-toolbar {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255,255,255,.065);
+            background: rgba(0,0,0,.12);
+        }
+
+        .fluid-layout {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: minmax(0,1.35fr) minmax(290px,.65fr);
+            gap: 14px;
+            padding: 14px;
+        }
+
+        .fluid-panel,
+        .pump-health-panel,
+        .pump-sequence-panel {
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 18px;
+            background: rgba(255,255,255,.022);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+        }
+
+        .fluid-panel {
+            padding: 18px;
+        }
+
+        .fluid-schematic {
+            position: relative;
+            overflow: hidden;
+            min-height: 330px;
+            margin-top: 14px;
+            border: 1px solid rgba(34,199,238,.09);
+            border-radius: 16px;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(0,136,172,.095), transparent 36%),
+                linear-gradient(180deg, rgba(7,15,25,.92), rgba(4,9,15,.98));
+        }
+
+        .fluid-schematic::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(105deg, transparent 35%, rgba(34,199,238,.035) 50%, transparent 65%);
+            transform: translateX(-100%);
+            animation: fluidScan 7s linear infinite;
+        }
+
+        .fluid-schematic svg {
+            display: block;
+            width: 100%;
+            min-width: 700px;
+            height: 330px;
+        }
+
+        .pipe-base {
+            fill: none;
+            stroke: rgba(122,148,174,.26);
+            stroke-width: 16;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .pipe-flow {
+            fill: none;
+            stroke: #22c7ee;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 12 15;
+            filter: drop-shadow(0 0 7px rgba(34,199,238,.75));
+            animation: fluidTravel 1.2s linear infinite;
+        }
+
+        .sensor-node {
+            fill: #07101a;
+            stroke: rgba(34,199,238,.75);
+            stroke-width: 3;
+            filter: drop-shadow(0 0 9px rgba(34,199,238,.45));
+        }
+
+        .pump-impeller {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: pumpRotation 5s linear infinite;
+        }
+
+        .fluid-metrics {
+            display: grid;
+            grid-template-columns: repeat(4,minmax(0,1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .fluid-metric {
+            min-height: 94px;
+            padding: 13px;
+            border: 1px solid rgba(255,255,255,.065);
+            border-radius: 13px;
+            background: rgba(255,255,255,.025);
+            transition: border-color .25s ease, transform .25s ease, background .25s ease;
+        }
+
+        .fluid-metric:hover {
+            transform: translateY(-2px);
+            border-color: rgba(34,199,238,.24);
+            background: rgba(34,199,238,.04);
+        }
+
+        .fluid-side {
+            display: grid;
+            gap: 14px;
+            align-content: start;
+        }
+
+        .pump-health-panel,
+        .pump-sequence-panel {
+            padding: 17px;
+        }
+
+        .pump-health-ring {
+            position: relative;
+            width: 88px;
+            height: 88px;
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle, rgba(7,15,24,1) 54%, transparent 55%),
+                conic-gradient(#22c7ee 0 74%, rgba(255,255,255,.07) 74% 100%);
+            box-shadow: 0 0 28px rgba(0,136,172,.16);
+        }
+
+        .pump-health-ring::before {
+            content: "";
+            position: absolute;
+            inset: 8px;
+            border: 1px dashed rgba(34,199,238,.22);
+            border-radius: 50%;
+            animation: pumpRotation 12s linear infinite reverse;
+        }
+
+        .vibration-spectrum {
+            height: 78px;
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            padding: 9px 8px 5px;
+            border: 1px solid rgba(255,255,255,.055);
+            border-radius: 11px;
+            background:
+                linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+                rgba(0,0,0,.17);
+            background-size: 100% 18px;
+        }
+
+        .vibration-spectrum span {
+            flex: 1;
+            min-width: 3px;
+            height: var(--bar-height);
+            border-radius: 999px 999px 2px 2px;
+            background: linear-gradient(to top, rgba(0,136,172,.38), #22c7ee);
+            box-shadow: 0 0 8px rgba(34,199,238,.18);
+            animation: spectrumPulse 2.8s ease-in-out infinite;
+            animation-delay: var(--bar-delay);
+        }
+
+        .pump-channel {
+            display: grid;
+            grid-template-columns: 28px minmax(0,1fr) auto;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(255,255,255,.055);
+        }
+
+        .pump-channel:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .pump-channel-icon {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(34,199,238,.16);
+            border-radius: 8px;
+            background: rgba(34,199,238,.055);
+            color: var(--brand-teal-light);
+        }
+
+        .pump-sequence {
+            display: grid;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .pump-step {
+            position: relative;
+            display: grid;
+            grid-template-columns: 28px minmax(0,1fr) auto;
+            align-items: center;
+            gap: 9px;
+            padding: 9px;
+            border: 1px solid rgba(255,255,255,.055);
+            border-radius: 10px;
+            background: rgba(255,255,255,.02);
+        }
+
+        .pump-step::before {
+            content: "";
+            position: absolute;
+            left: 22px;
+            top: 100%;
+            width: 1px;
+            height: 9px;
+            background: linear-gradient(to bottom, rgba(34,199,238,.42), transparent);
+        }
+
+        .pump-step:last-child::before {
+            display: none;
+        }
+
+        .pump-step-number {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border-radius: 9px;
+            border: 1px solid rgba(34,199,238,.18);
+            background: rgba(34,199,238,.07);
+            color: #22c7ee;
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        .fluid-focus-grid {
+            display: grid;
+            grid-template-columns: repeat(4,minmax(0,1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .fluid-focus-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 145px;
+            padding: 18px;
+            border: 1px solid rgba(255,255,255,.065);
+            border-radius: 16px;
+            background: linear-gradient(145deg, rgba(255,255,255,.032), rgba(255,255,255,.012));
+            transition: border-color .25s ease, transform .25s ease;
+        }
+
+        .fluid-focus-card::after {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            right: -65px;
+            bottom: -70px;
+            border: 1px solid rgba(34,199,238,.12);
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(0,136,172,.07);
+        }
+
+        .fluid-focus-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(34,199,238,.22);
+        }
+
+        @keyframes fluidTravel {
+            to { stroke-dashoffset: -27; }
+        }
+
+        @keyframes pumpRotation {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fluidScan {
+            to { transform: translateX(100%); }
+        }
+
+        @keyframes spectrumPulse {
+            0%,100% { opacity: .45; transform: scaleY(.78); transform-origin: bottom; }
+            50% { opacity: 1; transform: scaleY(1); transform-origin: bottom; }
+        }
+
+        @media (max-width: 1023px) {
+            .fluid-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .fluid-side {
+                grid-template-columns: repeat(2,minmax(0,1fr));
+            }
+        }
+
+        @media (max-width: 767px) {
+            .fluid-toolbar {
+                align-items: flex-start;
+                padding: 15px;
+            }
+
+            .fluid-panel {
+                padding: 12px;
+            }
+
+            .fluid-schematic {
+                min-height: 260px;
+                overflow-x: auto;
+            }
+
+            .fluid-schematic svg {
+                height: 260px;
+                min-width: 650px;
+            }
+
+            .fluid-metrics {
+                grid-template-columns: repeat(2,minmax(0,1fr));
+            }
+
+            .fluid-side,
+            .fluid-focus-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1023px) {
+            .hero-stage {
+                min-height: auto;
+            }
+
+            .hero-visual {
+                width: min(100%, 520px);
+            }
+
+            .network-stage {
+                min-height: 430px;
+            }
+
+            .feature-orb {
+                right: -270px;
+            }
+
+            .ops-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .ops-side {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 767px) {
+            body::before {
+                background-size: 48px 48px;
+            }
+
+            .monitor-brand-logo-frame {
+                width: 4.7rem;
+                height: 3.45rem;
+            }
+
+            .monitor-brand-logo {
+                width: 5.9rem;
+                transform: translate(-0.62rem, -0.64rem);
+            }
+
+            .hero-glow {
+                width: 390px;
+                height: 390px;
+                right: -170px;
+                top: 260px;
+            }
+
+            .hero-visual {
+                aspect-ratio: .9;
+                margin-top: 16px;
+            }
+
+            .control-console {
+                inset: 17% 1% 10% 1%;
+                transform: none;
+                border-radius: 24px;
+            }
+
+            .hero-core {
+                width: 88px;
+                height: 88px;
+                border-radius: 25px;
+            }
+
+            .floating-node {
+                min-width: 132px;
+            }
+
+            .floating-node.node-camera {
+                left: 0;
+                bottom: 2%;
+            }
+
+            .floating-node.node-alert {
+                right: 0;
+                top: 10%;
+            }
+
+            .network-stage {
+                min-height: 390px;
+            }
+
+            .network-board {
+                left: 5%;
+                right: -8%;
+            }
+
+            .network-cube {
+                width: 58px;
+                height: 58px;
+            }
+
+            .network-cube.cube-2 {
+                width: 70px;
+                height: 70px;
+            }
+
+            .network-cube.cube-4 {
+                width: 50px;
+                height: 50px;
+            }
+
+            .console-status-rail {
+                display: none;
+            }
+
+            .ops-toolbar {
+                align-items: flex-start;
+                padding: 15px;
+            }
+
+            .ops-toolbar > div:last-child {
+                align-items: flex-end;
+            }
+
+            .ops-layout {
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .ops-main,
+            .ops-side {
+                gap: 10px;
+            }
+
+            .ops-side {
+                grid-template-columns: 1fr;
+            }
+
+            .ops-metrics {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .sensor-legend {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+<style>
+/* Compactação das seções operacionais */
+#transferencia { padding-top: 5rem; padding-bottom: 5rem; }
+#operacao { padding-top: 5rem; padding-bottom: 5rem; }
+@media (max-width: 768px) {
+  #transferencia, #operacao {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+
+  #transferencia .max-w-7xl,
+  #operacao .max-w-7xl,
+  .fluid-console,
+  .operations-console {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .fluid-console,
+  .operations-console {
+    border-radius: 16px;
+  }
+
+  .fluid-toolbar,
+  .ops-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .fluid-toolbar > div,
+  .ops-toolbar > div {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .fluid-toolbar > div:last-child,
+  .ops-toolbar > div:last-child {
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .fluid-toolbar .truncate,
+  .ops-toolbar .truncate {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .fluid-layout,
+  .ops-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .fluid-panel,
+  .fluid-side,
+  .pump-health-panel,
+  .pump-sequence-panel,
+  .ops-main,
+  .ops-side,
+  .ops-panel {
+    min-width: 0;
+  }
+
+  .fluid-panel,
+  .pump-health-panel,
+  .pump-sequence-panel,
+  .ops-panel {
+    padding: 12px;
+    border-radius: 13px;
+  }
+
+  .ops-panel-title {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-bottom: 10px;
+  }
+
+  .ops-panel-title > div {
+    min-width: 0;
+  }
+
+  .fluid-schematic {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    aspect-ratio: 1000 / 360;
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  .fluid-schematic svg {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: 100%;
+  }
+
+  .fluid-metrics,
+  .ops-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .fluid-metric,
+  .ops-metric-card {
+    min-width: 0;
+    min-height: 88px;
+    padding: 10px;
+  }
+
+  .fluid-side,
+  .ops-side {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .pump-health-panel > .flex {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .pump-health-ring {
+    width: 72px;
+    height: 72px;
+  }
+
+  .vibration-spectrum {
+    height: 68px;
+    gap: 3px;
+    margin-top: 14px;
+  }
+
+  .pump-channel,
+  .pump-step {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+
+  .pump-channel > :last-child,
+  .pump-step > :last-child {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .pump-step {
+    padding: 9px;
+  }
+
+  .ops-chart-grid {
+    overflow: hidden;
+  }
+
+  .ops-chart-grid svg {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .sensor-legend {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .fluid-toolbar p,
+  .ops-toolbar p,
+  .ops-panel-title p,
+  .fluid-metric p,
+  .ops-metric-card p,
+  .pump-health-panel p,
+  .pump-sequence-panel p {
+    overflow-wrap: anywhere;
+  }
+}
+</style></head>
+<body class="font-sans antialiased">
+<div aria-hidden="true" class="site-noise"></div>
+<!-- Navegação -->
+<nav class="nav-shell fixed top-0 left-0 w-full z-50" id="navbar">
+<div class="max-w-7xl mx-auto px-5 md:px-8 py-4 flex justify-between items-center">
+<a aria-label="Voltar ao Hub MHS" class="monitor-brand-link" href="../crm.html">
+<span class="monitor-brand-logo-frame">
+<img alt="Mais Hidro Solucoes" class="monitor-brand-logo" src="../01.%20Flutuantes/logo_mhs.png"/>
+</span>
+</a>
+<div class="hidden lg:flex items-center gap-6 text-[11px] font-semibold text-gray-400 uppercase tracking-[0.12em]">
+<a class="hover:text-brand-teal transition" href="../crm.html">Hub MHS</a>
+<a class="hover:text-brand-teal transition" href="#home">Início</a>
+<a class="hover:text-brand-teal transition" href="#transferencia">Transferência</a>
+<a class="hover:text-brand-teal transition" href="#operacao">Centro 360°</a>
+<a class="hover:text-brand-teal transition" href="#contato">Aplicações</a>
+</div>
+<a class="lux-button px-4 md:px-6 text-[10px] md:text-xs" href="#contato">
+<span class="hidden sm:inline">Solicitar demonstração</span>
+<span class="sm:hidden">Demonstração</span>
+<i class="fas fa-arrow-right text-[9px]"></i>
+</a>
+</div>
+</nav>
+<!-- Hero -->
+<header class="section-shell hero-stage pt-28 md:pt-32 pb-20 md:pb-28 px-5 md:px-8 overflow-hidden" id="home">
+<div aria-hidden="true" class="hero-glow"></div>
+<div class="max-w-7xl mx-auto grid lg:grid-cols-[0.92fr_1.08fr] items-center gap-12 lg:gap-8 relative z-10">
+<div class="max-w-xl">
+<span class="section-label">Bombas de água • Vazão • Vibração • Fluidos</span>
+<h1 class="section-title text-4xl sm:text-5xl lg:text-[64px] mt-5">
+                    Bombas sob controle.<br/>
+<span class="text-gradient">Fluidos em movimento.</span>
+</h1>
+<p class="text-gray-400 text-sm md:text-[15px] leading-7 mt-6 max-w-[580px]">
+                    Monitoramento dedicado a bombas de água e sistemas de transferência de fluidos. Vazão, vibração, pressão, volume transferido, tempo de operação e automação reunidos para proteger ativos e manter o processo sob controle.
+                </p>
+</div>
+<div aria-label="Painel conceitual do sistema de monitoramento MHS" class="hero-visual mx-auto lg:mr-0">
+<div aria-hidden="true" class="hero-orbit"></div>
+<div aria-hidden="true" class="hero-orbit orbit-two"></div>
+<div aria-hidden="true" class="hero-core">
+<i class="fas fa-fan text-3xl text-white relative z-10"></i>
+</div>
+<div aria-hidden="true" class="data-stream"></div>
+<div class="control-console">
+<div class="console-topline"></div>
+<div class="relative z-10 p-5 md:p-6">
+<div class="flex items-center justify-between pb-4 border-b border-white/10">
+<div>
+<p class="text-[8px] uppercase tracking-[0.22em] text-gray-500">Estação de bombeamento</p>
+<p class="text-sm font-bold text-white mt-1">Transferência Integrada</p>
+</div>
+<div class="flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/5 px-3 py-1.5">
+<span class="status-dot"></span>
+<span class="text-[8px] font-bold tracking-[0.15em] text-green-400">ONLINE</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3 mt-4">
+<div class="metric-chip rounded-xl p-3">
+<div class="flex items-center justify-between">
+<i class="fas fa-water text-brand-teal"></i>
+<span class="text-[7px] text-green-400">ESTÁVEL</span>
+</div>
+<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-4">Vazão instantânea</p>
+<p class="text-lg font-bold text-white mt-1">Monitorada</p>
+</div>
+<div class="metric-chip rounded-xl p-3">
+<div class="flex items-center justify-between">
+<i class="fas fa-gauge-high text-brand-teal"></i>
+<span class="text-[7px] text-brand-teal">TEMPO REAL</span>
+</div>
+<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-4">Vibração da bomba</p>
+<p class="text-lg font-bold text-white mt-1">Analisada</p>
+</div>
+<div class="metric-chip rounded-xl p-3">
+<div class="flex items-center justify-between">
+<i class="fas fa-wave-square text-brand-teal"></i>
+<span class="text-[7px] text-gray-400">TENDÊNCIA</span>
+</div>
+<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-4">Pressão diferencial</p>
+<p class="text-lg font-bold text-white mt-1">Supervisionada</p>
+</div>
+<div class="metric-chip rounded-xl p-3">
+<div class="flex items-center justify-between">
+<i class="fas fa-clock text-brand-teal"></i>
+<span class="text-[7px] text-gray-400">HISTÓRICO</span>
+</div>
+<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-4">Volume transferido</p>
+<p class="text-lg font-bold text-white mt-1">Totalizado</p>
+</div>
+</div>
+<div class="metric-chip rounded-xl p-4 mt-3">
+<div class="flex justify-between items-center mb-2">
+<div>
+<p class="text-[8px] uppercase tracking-wider text-gray-500">Curva de bombeamento</p>
+<p class="text-[10px] font-semibold text-white mt-1">Vazão e vibração correlacionadas</p>
+</div>
+<span class="text-[8px] text-brand-teal">VISÃO HISTÓRICA</span>
+</div>
+<svg aria-label="Gráfico conceitual de desempenho operacional" class="w-full h-16" role="img" viewbox="0 0 360 74">
+<defs>
+<lineargradient id="heroChartFill" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#22c7ee" stop-opacity="0.4"></stop>
+<stop offset="100%" stop-color="#22c7ee" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0 58 C25 48, 42 19, 72 30 S122 62, 155 38 S210 10, 236 27 S286 61, 316 35 S344 19, 360 20 L360 74 L0 74 Z" fill="url(#heroChartFill)"></path>
+<path d="M0 58 C25 48, 42 19, 72 30 S122 62, 155 38 S210 10, 236 27 S286 61, 316 35 S344 19, 360 20" fill="none" stroke="#22c7ee" stroke-linecap="round" stroke-width="2.5"></path>
+</svg>
+</div>
+<div aria-label="Status dos componentes integrados" class="console-status-rail">
+<div class="console-status-item">
+<span class="console-status-icon"><i class="fas fa-tower-broadcast text-[9px]"></i></span>
+<div class="min-w-0">
+<p class="text-[7px] uppercase tracking-wider text-gray-500">Gateway</p>
+<p class="text-[8px] font-semibold text-green-400 mt-0.5">Conectado</p>
+</div>
+</div>
+<div class="console-status-item">
+<span class="console-status-icon"><i class="fas fa-microchip text-[9px]"></i></span>
+<div class="min-w-0">
+<p class="text-[7px] uppercase tracking-wider text-gray-500">Automação</p>
+<p class="text-[8px] font-semibold text-brand-teal mt-0.5">Sincronizada</p>
+</div>
+</div>
+<div class="console-status-item">
+<span class="console-status-icon"><i class="fas fa-shield-halved text-[9px]"></i></span>
+<div class="min-w-0">
+<p class="text-[7px] uppercase tracking-wider text-gray-500">Registro</p>
+<p class="text-[8px] font-semibold text-white mt-0.5">Rastreável</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="floating-node node-camera p-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-brand-teal/10 border border-brand-teal/20 grid place-items-center text-brand-teal">
+<i class="fas fa-video text-sm"></i>
+</div>
+<div>
+<p class="text-[7px] uppercase tracking-[0.18em] text-gray-500">Câmeras</p>
+<p class="text-[10px] font-semibold text-white mt-1">Visualização integrada</p>
+</div>
+</div>
+</div>
+<div class="floating-node node-alert p-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-brand-red/10 border border-brand-red/20 grid place-items-center text-brand-red">
+<i class="fas fa-bell text-sm"></i>
+</div>
+<div>
+<p class="text-[7px] uppercase tracking-[0.18em] text-gray-500">Eventos</p>
+<p class="text-[10px] font-semibold text-white mt-1">Alertas inteligentes</p>
+</div>
+</div>
+</div>
+<div class="floating-node node-automation p-3 hidden md:block">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-brand-teal/10 border border-brand-teal/20 grid place-items-center text-brand-teal">
+<i class="fas fa-gears text-sm"></i>
+</div>
+<div>
+<p class="text-[7px] uppercase tracking-[0.18em] text-gray-500">Automação</p>
+<p class="text-[10px] font-semibold text-white mt-1">Rotinas rastreadas</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Transferência de fluidos -->
+<section class="section-shell py-24 md:py-32 px-5 md:px-8 overflow-hidden" id="transferencia">
+<div aria-hidden="true" class="fluid-transfer-glow"></div>
+<div class="max-w-7xl mx-auto relative z-10">
+<div class="grid lg:grid-cols-[0.82fr_1.18fr] gap-8 lg:gap-16 items-end">
+<div>
+<span class="section-label">Transferência de fluidos monitorada</span>
+<h2 class="section-title text-3xl md:text-5xl mt-4">
+                        Da sucção ao destino.<br/>
+<span class="text-gradient">Cada etapa sob controle.</span>
+</h2>
+</div>
+<div class="lg:pb-1">
+<p class="text-gray-400 text-sm leading-7 max-w-2xl">
+                        A plataforma acompanha o caminho do fluido através das bombas, tubulações e reservatórios. Vazão, pressão, vibração, nível, volume transferido e estados de automação permanecem correlacionados para revelar o desempenho real de cada ciclo.
+                    </p>
+<div class="automation-tags">
+<span class="automation-tag"><i class="fas fa-fan text-brand-teal"></i>Bombas de água</span>
+<span class="automation-tag"><i class="fas fa-gauge-high text-brand-teal"></i>Vazão e pressão</span>
+<span class="automation-tag"><i class="fas fa-wave-square text-brand-teal"></i>Vibração</span>
+<span class="automation-tag"><i class="fas fa-droplet text-brand-teal"></i>Volume transferido</span>
+<span class="automation-tag"><i class="fas fa-gears text-brand-teal"></i>Sequências automáticas</span>
+</div>
+</div>
+</div>
+<div class="fluid-console mt-14">
+<div class="fluid-console-topline"></div>
+<div class="fluid-toolbar">
+<div class="flex items-center gap-4 min-w-0">
+<div aria-hidden="true" class="ops-window-dots">
+<span></span><span></span><span></span>
+</div>
+<div class="min-w-0">
+<p class="text-[8px] uppercase tracking-[0.2em] text-gray-500">MHS Fluid Transfer</p>
+<p class="text-[11px] md:text-sm font-bold text-white mt-1 truncate">Linha de bombeamento e transferência</p>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<span class="hidden sm:inline text-[7px] uppercase tracking-[0.16em] text-gray-500">Interface conceitual</span>
+<div class="flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/5 px-3 py-1.5">
+<span class="status-dot"></span>
+<span class="text-[8px] font-bold tracking-[0.14em] text-green-400">TRANSFERÊNCIA ATIVA</span>
+</div>
+</div>
+</div>
+<div class="fluid-layout">
+<div class="fluid-panel">
+<div class="ops-panel-title">
+<div>
+<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Diagrama hidráulico</p>
+<p class="text-[11px] font-semibold text-white mt-1">Origem, bombeamento, linha e destino</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-teal shadow-[0_0_8px_rgba(34,199,238,0.8)]"></span>
+<span class="text-[7px] uppercase tracking-wider text-brand-teal">Fluxo supervisionado</span>
+</div>
+</div>
+<div aria-label="Esquema conceitual de transferência de fluido entre reservatórios por uma bomba monitorada" class="fluid-schematic" role="img">
+<svg aria-hidden="true" viewbox="0 0 1000 360">
+<defs>
+<lineargradient id="fluidTankFill" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#22c7ee" stop-opacity=".72"></stop>
+<stop offset="100%" stop-color="#0088ac" stop-opacity=".25"></stop>
+</lineargradient>
+<lineargradient id="fluidPumpBody" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#1c3347"></stop>
+<stop offset="100%" stop-color="#09131f"></stop>
+</lineargradient>
+<pattern height="36" id="fluidGrid" patternunits="userSpaceOnUse" width="36">
+<path d="M36 0H0V36" fill="none" stroke="rgba(255,255,255,.035)" stroke-width="1"></path>
+</pattern>
+<filter height="200%" id="fluidGlow" width="200%" x="-50%" y="-50%">
+<fegaussianblur result="blur" stddeviation="6"></fegaussianblur>
+<femerge>
+<femergenode in="blur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<rect fill="url(#fluidGrid)" height="360" width="1000"></rect>
+<ellipse cx="500" cy="310" fill="rgba(0,0,0,.28)" rx="360" ry="24"></ellipse>
+<g>
+<path d="M72 86H224V270C224 287 210 301 193 301H103C86 301 72 287 72 270Z" fill="rgba(8,17,27,.92)" stroke="rgba(143,168,192,.28)" stroke-width="3"></path>
+<path d="M83 160H213V270C213 281 204 290 193 290H103C92 290 83 281 83 270Z" fill="url(#fluidTankFill)"></path>
+<path d="M83 160C111 148 136 171 163 158S195 149 213 160" fill="none" opacity=".8" stroke="#55d7f2" stroke-width="3"></path>
+<path d="M95 72H201" stroke="rgba(143,168,192,.3)" stroke-linecap="round" stroke-width="5"></path>
+<text fill="#f4f8fb" font-size="13" font-weight="700" text-anchor="middle" x="148" y="50">ORIGEM</text>
+<text fill="#6f8095" font-size="9" text-anchor="middle" x="148" y="67">NÍVEL E VOLUME</text>
+</g>
+<g>
+<path d="M790 86H942V270C942 287 928 301 911 301H821C804 301 790 287 790 270Z" fill="rgba(8,17,27,.92)" stroke="rgba(143,168,192,.28)" stroke-width="3"></path>
+<path d="M801 203H931V270C931 281 922 290 911 290H821C810 290 801 281 801 270Z" fill="url(#fluidTankFill)" opacity=".86"></path>
+<path d="M801 203C829 191 854 214 881 201S913 192 931 203" fill="none" opacity=".8" stroke="#55d7f2" stroke-width="3"></path>
+<path d="M813 72H919" stroke="rgba(143,168,192,.3)" stroke-linecap="round" stroke-width="5"></path>
+<text fill="#f4f8fb" font-size="13" font-weight="700" text-anchor="middle" x="866" y="50">DESTINO</text>
+<text fill="#6f8095" font-size="9" text-anchor="middle" x="866" y="67">VOLUME RECEBIDO</text>
+</g>
+<path class="pipe-base" d="M224 224H343V194H392"></path>
+<path class="pipe-base" d="M608 194H674V129H790"></path>
+<path class="pipe-flow" d="M224 224H343V194H392"></path>
+<path class="pipe-flow" d="M608 194H674V129H790"></path>
+<g transform="translate(308 224)">
+<path d="M-15 -13L0 0L-15 13ZM15 -13L0 0L15 13Z" fill="#0a1521" stroke="#22c7ee" stroke-width="2"></path>
+<circle fill="#22c7ee" filter="url(#fluidGlow)" r="4"></circle>
+</g>
+<g transform="translate(716 129)">
+<path d="M-15 -13L0 0L-15 13ZM15 -13L0 0L15 13Z" fill="#0a1521" stroke="#22c7ee" stroke-width="2"></path>
+<circle fill="#22c7ee" filter="url(#fluidGlow)" r="4"></circle>
+</g>
+<g>
+<rect fill="url(#fluidPumpBody)" height="82" rx="18" stroke="rgba(34,199,238,.42)" stroke-width="3" width="102" x="392" y="153"></rect>
+<path d="M411 170H472M411 184H472M411 198H472M411 212H472" stroke="rgba(143,168,192,.24)" stroke-linecap="round" stroke-width="4"></path>
+<rect fill="#102538" height="20" rx="6" stroke="rgba(34,199,238,.35)" stroke-width="2" width="34" x="489" y="184"></rect>
+<circle cx="561" cy="194" fill="url(#fluidPumpBody)" filter="url(#fluidGlow)" r="47" stroke="rgba(34,199,238,.58)" stroke-width="3"></circle>
+<g class="pump-impeller">
+<path d="M561 160C576 164 584 174 584 188C570 186 561 179 561 160Z" fill="#22c7ee" opacity=".82"></path>
+<path d="M595 194C591 209 581 217 567 217C569 203 576 194 595 194Z" fill="#22c7ee" opacity=".72"></path>
+<path d="M561 228C546 224 538 214 538 200C552 202 561 209 561 228Z" fill="#22c7ee" opacity=".62"></path>
+<path d="M527 194C531 179 541 171 555 171C553 185 546 194 527 194Z" fill="#22c7ee" opacity=".92"></path>
+<circle cx="561" cy="194" fill="#07101a" r="10" stroke="#65def5" stroke-width="3"></circle>
+</g>
+<path d="M403 245H601" stroke="rgba(143,168,192,.25)" stroke-linecap="round" stroke-width="6"></path>
+<text fill="#f4f8fb" font-size="13" font-weight="700" text-anchor="middle" x="500" y="282">CONJUNTO MOTOR-BOMBA</text>
+<text fill="#6f8095" font-size="9" text-anchor="middle" x="500" y="299">VAZÃO • VIBRAÇÃO • TEMPO DE OPERAÇÃO</text>
+</g>
+<g>
+<circle class="sensor-node" cx="270" cy="224" r="14"></circle>
+<text fill="#22c7ee" font-size="8" font-weight="800" text-anchor="middle" x="270" y="228">PS</text>
+<text fill="#6f8095" font-size="8" text-anchor="middle" x="270" y="255">SUCÇÃO</text>
+<circle class="sensor-node" cx="646" cy="194" r="14"></circle>
+<text fill="#22c7ee" font-size="8" font-weight="800" text-anchor="middle" x="646" y="198">FT</text>
+<text fill="#6f8095" font-size="8" text-anchor="middle" x="646" y="224">VAZÃO</text>
+<circle class="sensor-node" cx="748" cy="129" r="14"></circle>
+<text fill="#22c7ee" font-size="8" font-weight="800" text-anchor="middle" x="748" y="133">PD</text>
+<text fill="#6f8095" font-size="8" text-anchor="middle" x="748" y="105">RECALQUE</text>
+<circle class="sensor-node" cx="561" cy="125" r="14"></circle>
+<text fill="#22c7ee" font-size="8" font-weight="800" text-anchor="middle" x="561" y="129">VB</text>
+<path d="M561 139V146" stroke="#22c7ee" stroke-dasharray="3 3" stroke-width="2"></path>
+<text fill="#6f8095" font-size="8" text-anchor="middle" x="561" y="99">VIBRAÇÃO</text>
+</g>
+<g fill="#22c7ee" opacity=".85">
+<path d="M331 214L344 224L331 234Z"></path>
+<path d="M691 119L704 129L691 139Z"></path>
+</g>
+</svg>
+</div>
+<div class="fluid-metrics">
+<div class="fluid-metric">
+<div class="flex items-center justify-between">
+<span class="console-status-icon"><i class="fas fa-gauge-high text-[9px]"></i></span>
+<span class="text-[7px] text-green-400 uppercase">Ativa</span>
+</div>
+<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Vazão instantânea</p>
+<p class="text-[10px] font-semibold text-white mt-1">Leitura contínua</p>
+</div>
+<div class="fluid-metric">
+<div class="flex items-center justify-between">
+<span class="console-status-icon"><i class="fas fa-gauge text-[9px]"></i></span>
+<span class="text-[7px] text-brand-teal uppercase">Duplo ponto</span>
+</div>
+<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Sucção e recalque</p>
+<p class="text-[10px] font-semibold text-white mt-1">Pressões correlacionadas</p>
+</div>
+<div class="fluid-metric">
+<div class="flex items-center justify-between">
+<span class="console-status-icon"><i class="fas fa-wave-square text-[9px]"></i></span>
+<span class="text-[7px] text-brand-teal uppercase">Preditivo</span>
+</div>
+<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Vibração da bomba</p>
+<p class="text-[10px] font-semibold text-white mt-1">Tendência por conjunto</p>
+</div>
+<div class="fluid-metric">
+<div class="flex items-center justify-between">
+<span class="console-status-icon"><i class="fas fa-droplet text-[9px]"></i></span>
+<span class="text-[7px] text-gray-400 uppercase">Acumulado</span>
+</div>
+<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Volume transferido</p>
+<p class="text-[10px] font-semibold text-white mt-1">Totalização por ciclo</p>
+</div>
+</div>
+</div>
+<aside class="fluid-side">
+<div class="pump-health-panel">
+<div class="ops-panel-title">
+<div>
+<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Condição do conjunto</p>
+<p class="text-[11px] font-semibold text-white mt-1">Vibração e comportamento mecânico</p>
+</div>
+<span class="status-dot"></span>
+</div>
+<div class="flex items-center gap-4 mt-5">
+<div aria-hidden="true" class="pump-health-ring">
+<div class="text-center relative z-10">
+<i class="fas fa-fan text-brand-teal text-lg"></i>
+<p class="text-[7px] text-gray-500 mt-1">BOMBA</p>
+</div>
+</div>
+<div class="min-w-0">
+<p class="text-[8px] text-gray-500 uppercase tracking-wider">Análise correlacionada</p>
+<p class="text-sm font-bold text-white mt-2">Vibração × regime hidráulico</p>
+<p class="text-[8px] text-gray-500 leading-4 mt-2">Tendências observadas junto da vazão, pressão e estado de operação.</p>
+</div>
+</div>
+<div aria-label="Representação conceitual de espectro de vibração" class="vibration-spectrum mt-5">
+<span style="--bar-height:30%;--bar-delay:-.1s"></span>
+<span style="--bar-height:46%;--bar-delay:-.5s"></span>
+<span style="--bar-height:76%;--bar-delay:-.9s"></span>
+<span style="--bar-height:39%;--bar-delay:-1.3s"></span>
+<span style="--bar-height:91%;--bar-delay:-1.7s"></span>
+<span style="--bar-height:58%;--bar-delay:-2.1s"></span>
+<span style="--bar-height:33%;--bar-delay:-2.5s"></span>
+<span style="--bar-height:70%;--bar-delay:-.3s"></span>
+<span style="--bar-height:49%;--bar-delay:-.7s"></span>
+<span style="--bar-height:84%;--bar-delay:-1.1s"></span>
+<span style="--bar-height:41%;--bar-delay:-1.5s"></span>
+<span style="--bar-height:63%;--bar-delay:-1.9s"></span>
+</div>
+<div class="mt-3">
+<div class="pump-channel">
+<span class="pump-channel-icon"><i class="fas fa-wave-square text-[8px]"></i></span>
+<div>
+<p class="text-[8px] font-semibold text-white">Motor radial</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Canal de tendência</p>
+</div>
+<span class="text-[7px] text-green-400 uppercase">Ativo</span>
+</div>
+<div class="pump-channel">
+<span class="pump-channel-icon"><i class="fas fa-arrows-left-right text-[8px]"></i></span>
+<div>
+<p class="text-[8px] font-semibold text-white">Mancal axial</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Variação acompanhada</p>
+</div>
+<span class="text-[7px] text-brand-teal uppercase">Tendência</span>
+</div>
+<div class="pump-channel">
+<span class="pump-channel-icon"><i class="fas fa-fan text-[8px]"></i></span>
+<div>
+<p class="text-[8px] font-semibold text-white">Corpo da bomba</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Condição do conjunto</p>
+</div>
+<span class="text-[7px] text-gray-300 uppercase">Histórico</span>
+</div>
+</div>
+</div>
+<div class="pump-sequence-panel">
+<div class="ops-panel-title">
+<div>
+<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Automação hidráulica</p>
+<p class="text-[11px] font-semibold text-white mt-1">Sequência de transferência</p>
+</div>
+<i class="fas fa-gears text-brand-teal text-sm"></i>
+</div>
+<div class="pump-sequence">
+<div class="pump-step">
+<span class="pump-step-number">01</span>
+<div>
+<p class="text-[8px] font-semibold text-white">Permissivos</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Níveis, válvulas e intertravamentos</p>
+</div>
+<i class="fas fa-check text-green-400 text-[8px]"></i>
+</div>
+<div class="pump-step">
+<span class="pump-step-number">02</span>
+<div>
+<p class="text-[8px] font-semibold text-white">Partida da bomba</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Comando e confirmação de estado</p>
+</div>
+<i class="fas fa-check text-green-400 text-[8px]"></i>
+</div>
+<div class="pump-step">
+<span class="pump-step-number">03</span>
+<div>
+<p class="text-[8px] font-semibold text-white">Estabilização</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Vazão, pressão e vibração</p>
+</div>
+<span class="status-dot"></span>
+</div>
+<div class="pump-step">
+<span class="pump-step-number">04</span>
+<div>
+<p class="text-[8px] font-semibold text-white">Transferência</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Totalização e acompanhamento contínuo</p>
+</div>
+<span class="text-[7px] text-brand-teal uppercase">Ativa</span>
+</div>
+<div class="pump-step">
+<span class="pump-step-number">05</span>
+<div>
+<p class="text-[8px] font-semibold text-white">Parada segura</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Critério, registro e encerramento</p>
+</div>
+<span class="text-[7px] text-gray-500 uppercase">Próxima</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+
+</div>
+</section>
+<!-- Centro operacional -->
+<section class="section-shell py-24 md:py-32 px-5 md:px-8 overflow-hidden" id="operacao">
+<div aria-hidden="true" class="operations-glow"></div>
+<div class="max-w-7xl mx-auto relative z-10">
+<div class="grid lg:grid-cols-[0.86fr_1.14fr] gap-8 lg:gap-14 items-end">
+<div>
+<span class="section-label">Centro operacional de bombeamento</span>
+<h2 class="section-title text-3xl md:text-5xl mt-4">
+                        Bombas em operação.<br/>
+<span class="text-gradient">Vazões e vibrações sob análise.</span>
+</h2>
+</div>
+<div class="lg:pb-1">
+<p class="text-gray-400 text-sm leading-7 max-w-2xl">
+                        Uma visão unificada para acompanhar bombas de água, vazão nas linhas, vibração dos conjuntos, pressões de sucção e recalque, volumes transferidos, automação, câmeras e eventos.
+                    </p>
+<div class="automation-tags">
+<span class="automation-tag"><i class="fas fa-fan text-brand-teal"></i>Bombas</span>
+<span class="automation-tag"><i class="fas fa-gauge-high text-brand-teal"></i>Vazão e pressão</span>
+<span class="automation-tag"><i class="fas fa-wave-square text-brand-teal"></i>Vibração</span>
+<span class="automation-tag"><i class="fas fa-droplet text-brand-teal"></i>Transferência</span>
+<span class="automation-tag"><i class="fas fa-clock-rotate-left text-brand-teal"></i>Histórico</span>
+</div>
+</div>
+</div>
+<div aria-label="Interface conceitual do centro operacional MHS" class="operations-console mt-14">
+<div class="operations-topline"></div>
+<div class="ops-toolbar">
+<div class="flex items-center gap-4 min-w-0">
+<div aria-hidden="true" class="ops-window-dots">
+<span></span><span></span><span></span>
+</div>
+<div class="min-w-0">
+<p class="text-[8px] uppercase tracking-[0.2em] text-gray-500">MHS Control Center</p>
+<p class="text-[11px] md:text-sm font-bold text-white mt-1 truncate">Supervisão de bombas e linhas</p>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<span class="hidden sm:inline text-[7px] uppercase tracking-[0.16em] text-gray-500">Interface conceitual</span>
+<div class="flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/5 px-3 py-1.5">
+<span class="status-dot"></span>
+<span class="text-[8px] font-bold tracking-[0.14em] text-green-400">ECOSSISTEMA ONLINE</span>
+</div>
+</div>
+</div>
+<div class="ops-layout">
+<div class="ops-main">
+<div class="ops-metrics">
+<div class="ops-metric-card">
+<div class="flex items-start justify-between gap-2">
+<span class="console-status-icon"><i class="fas fa-water text-[10px]"></i></span>
+<span class="text-[7px] text-green-400 uppercase">Estável</span>
+</div>
+<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-3">Nível e volume</p>
+<p class="text-[11px] font-bold text-white mt-1">Dentro da faixa</p>
+</div>
+<div class="ops-metric-card">
+<div class="flex items-start justify-between gap-2">
+<span class="console-status-icon"><i class="fas fa-gauge-high text-[10px]"></i></span>
+<span class="text-[7px] text-brand-teal uppercase">Contínuo</span>
+</div>
+<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-3">Vazão</p>
+<p class="text-[11px] font-bold text-white mt-1">Leitura ativa</p>
+</div>
+<div class="ops-metric-card">
+<div class="flex items-start justify-between gap-2">
+<span class="console-status-icon"><i class="fas fa-wave-square text-[10px]"></i></span>
+<span class="text-[7px] text-gray-400 uppercase">Tendência</span>
+</div>
+<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-3">Vibração</p>
+<p class="text-[11px] font-bold text-white mt-1">Acompanhada</p>
+</div>
+<div class="ops-metric-card">
+<div class="flex items-start justify-between gap-2">
+<span class="console-status-icon"><i class="fas fa-clock text-[10px]"></i></span>
+<span class="text-[7px] text-gray-400 uppercase">Histórico</span>
+</div>
+<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-3">Tempo de operação</p>
+<p class="text-[11px] font-bold text-white mt-1">Registro ativo</p>
+</div>
+</div>
+<div class="ops-panel">
+<div class="ops-panel-title">
+<div>
+<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Telemetria consolidada</p>
+<p class="text-[11px] font-semibold text-white mt-1">Vazão, pressão e vibração correlacionadas</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-teal shadow-[0_0_8px_rgba(34,199,238,0.8)]"></span>
+<span class="text-[7px] uppercase tracking-wider text-brand-teal">Atualização contínua</span>
+</div>
+</div>
+<div class="ops-chart-grid mt-4 p-2">
+<svg aria-label="Gráfico conceitual de telemetria consolidada" class="w-full h-40 md:h-48" role="img" viewbox="0 0 720 190">
+<defs>
+<lineargradient id="opsAreaFill" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#22c7ee" stop-opacity=".3"></stop>
+<stop offset="100%" stop-color="#22c7ee" stop-opacity="0"></stop>
+</lineargradient>
+<lineargradient id="opsLineTwo" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0%" stop-color="#63738a"></stop>
+<stop offset="100%" stop-color="#a5b4c7"></stop>
+</lineargradient>
+</defs>
+<path d="M0 143 C45 134, 65 74, 112 91 S180 146, 228 112 S290 43, 338 68 S410 136, 462 99 S530 45, 574 69 S650 122, 720 55 L720 190 L0 190 Z" fill="url(#opsAreaFill)"></path>
+<path d="M0 143 C45 134, 65 74, 112 91 S180 146, 228 112 S290 43, 338 68 S410 136, 462 99 S530 45, 574 69 S650 122, 720 55" fill="none" stroke="#22c7ee" stroke-linecap="round" stroke-width="3"></path>
+<path d="M0 118 C64 101, 95 126, 148 106 S233 70, 286 95 S375 130, 433 108 S526 80, 590 96 S664 104, 720 82" fill="none" opacity=".65" stroke="url(#opsLineTwo)" stroke-dasharray="7 8" stroke-linecap="round" stroke-width="2"></path>
+<g fill="#22c7ee">
+<circle cx="112" cy="91" r="4"></circle>
+<circle cx="338" cy="68" r="4"></circle>
+<circle cx="574" cy="69" r="4"></circle>
+<circle cx="720" cy="55" r="4"></circle>
+</g>
+</svg>
+</div>
+<div class="sensor-legend">
+<div class="sensor-legend-item">
+<p class="text-[7px] text-gray-500 uppercase">Reservatórios</p>
+<p class="text-[9px] text-white font-semibold mt-1">Nível e volume</p>
+</div>
+<div class="sensor-legend-item">
+<p class="text-[7px] text-gray-500 uppercase">Linhas</p>
+<p class="text-[9px] text-white font-semibold mt-1">Vazão acumulada</p>
+</div>
+<div class="sensor-legend-item">
+<p class="text-[7px] text-gray-500 uppercase">Conjuntos</p>
+<p class="text-[9px] text-white font-semibold mt-1">Vibração</p>
+</div>
+<div class="sensor-legend-item">
+<p class="text-[7px] text-gray-500 uppercase">Ativos</p>
+<p class="text-[9px] text-white font-semibold mt-1">Horas e ciclos</p>
+</div>
+</div>
+</div>
+</div>
+<aside class="ops-side">
+<div class="ops-panel">
+<div class="ops-panel-title">
+<div>
+<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Monitoramento visual</p>
+<p class="text-[11px] font-semibold text-white mt-1">Câmeras integradas</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="status-dot"></span>
+<span class="text-[7px] text-green-400 uppercase">Disponível</span>
+</div>
+</div>
+<div class="camera-wall">
+<div class="camera-tile">
+<div class="camera-frame"></div>
+<span class="absolute left-2.5 bottom-2 z-10 text-[7px] text-gray-300 uppercase">Área 01</span>
+<i class="fas fa-video absolute right-2.5 top-2.5 z-10 text-[8px] text-brand-teal"></i>
+</div>
+<div class="camera-tile">
+<div class="camera-frame"></div>
+<span class="absolute left-2.5 bottom-2 z-10 text-[7px] text-gray-300 uppercase">Reservatório</span>
+<i class="fas fa-video absolute right-2.5 top-2.5 z-10 text-[8px] text-brand-teal"></i>
+</div>
+<div class="camera-tile">
+<div class="camera-frame"></div>
+<span class="absolute left-2.5 bottom-2 z-10 text-[7px] text-gray-300 uppercase">Bombas</span>
+<i class="fas fa-video absolute right-2.5 top-2.5 z-10 text-[8px] text-brand-teal"></i>
+</div>
+<div class="camera-tile">
+<div class="camera-frame"></div>
+<span class="absolute left-2.5 bottom-2 z-10 text-[7px] text-gray-300 uppercase">Painel</span>
+<i class="fas fa-video absolute right-2.5 top-2.5 z-10 text-[8px] text-brand-teal"></i>
+</div>
+</div>
+</div>
+<div class="ops-panel">
+<div class="ops-panel-title">
+<div>
+<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Infraestrutura conectada</p>
+<p class="text-[11px] font-semibold text-white mt-1">Saúde da comunicação</p>
+</div>
+<i class="fas fa-diagram-project text-brand-teal text-sm"></i>
+</div>
+<div class="device-list">
+<div class="device-row">
+<span class="device-row-icon"><i class="fas fa-tower-broadcast text-[9px]"></i></span>
+<div class="min-w-0">
+<p class="text-[8px] text-white font-semibold">Gateway de campo</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Canal de telemetria</p>
+</div>
+<span class="text-[7px] text-green-400 uppercase">Online</span>
+</div>
+<div class="device-row">
+<span class="device-row-icon"><i class="fas fa-microchip text-[9px]"></i></span>
+<div class="min-w-0">
+<p class="text-[8px] text-white font-semibold">Controladores</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Estados e atividades</p>
+</div>
+<span class="text-[7px] text-brand-teal uppercase">Integrado</span>
+</div>
+<div class="device-row">
+<span class="device-row-icon"><i class="fas fa-satellite-dish text-[9px]"></i></span>
+<div class="min-w-0">
+<p class="text-[8px] text-white font-semibold">Sensores</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Variáveis de processo</p>
+</div>
+<span class="text-[7px] text-green-400 uppercase">Ativo</span>
+</div>
+<div class="device-row">
+<span class="device-row-icon"><i class="fas fa-database text-[9px]"></i></span>
+<div class="min-w-0">
+<p class="text-[8px] text-white font-semibold">Histórico operacional</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Eventos e tendências</p>
+</div>
+<span class="text-[7px] text-gray-300 uppercase">Rastreável</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+
+</div>
+</section>
+<!-- Aplicações -->
+<section class="py-24 md:py-32 px-5 md:px-8 relative overflow-hidden" id="contato">
+<div class="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-brand-teal/[0.04] to-transparent pointer-events-none"></div>
+<div class="max-w-7xl mx-auto relative z-10">
+<div class="text-center max-w-3xl mx-auto">
+<span class="section-label justify-center">Bombeamento e transferência em diferentes escalas</span>
+<h2 class="section-title text-3xl md:text-5xl mt-4">
+                    Visibilidade completa para <span class="text-gradient">cada etapa do fluido</span>
+</h2>
+<p class="text-gray-500 text-xs md:text-sm leading-6 mt-5">
+                    Da casa de bombas ao centro de controle, vazões, vibrações, pressões, volumes e comandos permanecem integrados e rastreáveis.
+                </p>
+</div>
+<div class="grid md:grid-cols-3 gap-5 mt-14 max-w-6xl mx-auto">
+<article class="view-card p-6 md:p-7">
+<div class="module-icon">
+<i class="fas fa-hard-hat"></i>
+</div>
+<p class="text-[9px] uppercase tracking-[0.2em] text-brand-teal mt-6">Operação de campo</p>
+<h3 class="text-xl font-bold text-white mt-3">Acompanhamento técnico</h3>
+<p class="text-[11px] text-gray-500 leading-5 mt-3">
+                        Leitura objetiva de variáveis, estados, alarmes e condições dos ativos em uma interface rápida e responsiva.
+                    </p>
+<div class="mini-screen p-4 mt-6">
+<div class="flex justify-between items-center">
+<span class="text-[8px] text-gray-500 uppercase">Ativos monitorados</span>
+<span class="status-dot"></span>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-4">
+<div class="rounded-lg bg-white/[0.035] border border-white/5 p-3">
+<i class="fas fa-water text-brand-teal text-xs"></i>
+<p class="text-[9px] text-white font-semibold mt-2">Nível</p>
+</div>
+<div class="rounded-lg bg-white/[0.035] border border-white/5 p-3">
+<i class="fas fa-gauge-high text-brand-teal text-xs"></i>
+<p class="text-[9px] text-white font-semibold mt-2">Vazão</p>
+</div>
+</div>
+</div>
+<ul class="space-y-3 mt-6 text-[10px] text-gray-400">
+<li><i class="fas fa-check text-brand-teal mr-2"></i>Leituras centralizadas</li>
+<li><i class="fas fa-check text-brand-teal mr-2"></i>Histórico por ativo</li>
+<li><i class="fas fa-check text-brand-teal mr-2"></i>Alertas operacionais</li>
+</ul>
+</article>
+<article class="view-card featured p-6 md:p-7">
+<div class="module-icon">
+<i class="fas fa-display"></i>
+</div>
+<p class="text-[9px] uppercase tracking-[0.2em] text-brand-teal mt-6">Centro de controle</p>
+<h3 class="text-xl font-bold text-white mt-3">Supervisão integrada</h3>
+<p class="text-[11px] text-gray-500 leading-5 mt-3">
+                        Operação, automação, câmeras e eventos reunidos em uma visão contínua para resposta rápida e segura.
+                    </p>
+<div class="mini-screen p-4 mt-6">
+<div class="flex items-center justify-between">
+<div>
+<span class="text-[8px] text-gray-500 uppercase">Status geral</span>
+<p class="text-sm font-bold text-white mt-1">Operação conectada</p>
+</div>
+<div class="w-9 h-9 rounded-xl bg-brand-teal/10 border border-brand-teal/20 grid place-items-center">
+<i class="fas fa-chart-line text-brand-teal text-xs"></i>
+</div>
+</div>
+<div class="flex items-end gap-1 h-16 mt-4">
+<span class="w-full h-[36%] bg-brand-teal/20 rounded-sm"></span>
+<span class="w-full h-[58%] bg-brand-teal/30 rounded-sm"></span>
+<span class="w-full h-[44%] bg-brand-teal/40 rounded-sm"></span>
+<span class="w-full h-[75%] bg-brand-teal/50 rounded-sm"></span>
+<span class="w-full h-[66%] bg-brand-teal/60 rounded-sm"></span>
+<span class="w-full h-[90%] bg-brand-teal rounded-sm"></span>
+</div>
+</div>
+<ul class="space-y-3 mt-6 text-[10px] text-gray-400">
+<li><i class="fas fa-check text-brand-teal mr-2"></i>Câmeras e automação integradas</li>
+<li><i class="fas fa-check text-brand-teal mr-2"></i>Priorização de eventos</li>
+<li><i class="fas fa-check text-brand-teal mr-2"></i>Gestão visual em tempo real</li>
+</ul>
+</article>
+<article class="view-card p-6 md:p-7">
+<div class="module-icon">
+<i class="fas fa-chart-pie"></i>
+</div>
+<p class="text-[9px] uppercase tracking-[0.2em] text-brand-teal mt-6">Gestão executiva</p>
+<h3 class="text-xl font-bold text-white mt-3">Indicadores consolidados</h3>
+<p class="text-[11px] text-gray-500 leading-5 mt-3">
+                        Tendências, disponibilidade e desempenho organizados para apoiar planejamento, produtividade e governança.
+                    </p>
+<div class="mini-screen p-4 mt-6">
+<div class="flex justify-between items-center">
+<span class="text-[8px] text-gray-500 uppercase">Visão gerencial</span>
+<i class="fas fa-arrow-trend-up text-brand-teal text-xs"></i>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-4">
+<div class="rounded-lg bg-white/[0.035] border border-white/5 p-3">
+<p class="text-[8px] text-gray-500">Disponibilidade</p>
+<p class="text-[10px] text-white font-semibold mt-2">Consolidada</p>
+</div>
+<div class="rounded-lg bg-white/[0.035] border border-white/5 p-3">
+<p class="text-[8px] text-gray-500">Eficiência</p>
+<p class="text-[10px] text-white font-semibold mt-2">Histórica</p>
+</div>
+</div>
+</div>
+<ul class="space-y-3 mt-6 text-[10px] text-gray-400">
+<li><i class="fas fa-check text-brand-teal mr-2"></i>Dashboards por perfil</li>
+<li><i class="fas fa-check text-brand-teal mr-2"></i>Indicadores históricos</li>
+<li><i class="fas fa-check text-brand-teal mr-2"></i>Rastreabilidade operacional</li>
+</ul>
+</article>
+</div>
+<div class="max-w-5xl mx-auto mt-12 rounded-2xl border border-brand-teal/20 bg-brand-teal/[0.055] p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="text-center md:text-left">
+<p class="text-[9px] uppercase tracking-[0.25em] text-brand-teal font-bold">Pronto para elevar o controle das suas bombas e transferências?</p>
+<h3 class="text-xl md:text-2xl font-bold text-white mt-2">Veja como o Monitoramento MHS acompanha vazão, vibração e o caminho completo do fluido.</h3>
+</div>
+<a class="lux-button shrink-0" href="mailto:contato@maishidrosolucoes.com.br?subject=Demonstração%20do%20Monitoramento%20MHS">
+                    Solicitar demonstração
+                    <i class="fas fa-arrow-right text-[9px]"></i>
+</a>
+</div>
+<footer class="pt-14 pb-2 flex flex-col sm:flex-row gap-4 items-center justify-between text-[9px] uppercase tracking-[0.14em] text-gray-600">
+<p>© MHS — Mais Hidro Soluções</p>
+<p>Bombas • Vazão • Vibração • Pressão • Transferência de fluidos</p>
+</footer>
+</div>
+</section>
+<!-- Modal técnico -->
+<div aria-labelledby="modal-title" aria-modal="true" class="modal fixed inset-0 z-[100] flex items-center justify-center bg-brand-darker/90 backdrop-blur-md p-4" id="techModal" role="dialog">
+<div class="modal-content glass-card w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl relative border border-brand-teal/25">
+<div class="bg-black/30 p-5 md:p-6 flex justify-between items-center border-b border-white/5">
+<div>
+<p class="text-[8px] uppercase tracking-[0.26em] text-brand-teal mb-2">Módulo de monitoramento</p>
+<h2 class="text-2xl md:text-3xl font-black text-white tracking-tight" id="modal-title"></h2>
+</div>
+<button aria-label="Fechar detalhes do módulo" class="w-10 h-10 rounded-full bg-white/5 hover:bg-brand-red flex items-center justify-center text-white transition" onclick="closeModal()" type="button">
+<i class="fas fa-times"></i>
+</button>
+</div>
+<div class="p-6 md:p-8 grid lg:grid-cols-[0.82fr_1.18fr] gap-8">
+<div class="modal-icon-panel rounded-2xl p-6 border border-white/5 relative min-h-[320px] flex flex-col items-center justify-center overflow-hidden">
+<div class="absolute w-64 h-64 rounded-full border border-brand-teal/10"></div>
+<div class="absolute w-44 h-44 rounded-full border border-white/5 border-dashed"></div>
+<div class="module-icon w-28 h-28 rounded-3xl text-4xl relative z-10">
+<i class="fas fa-chart-line" id="modal-icon"></i>
+</div>
+<div class="w-full mt-8 bg-black/25 rounded-xl p-4 text-center border border-white/5 relative z-10">
+<p class="text-[9px] text-gray-500 uppercase tracking-wider mb-1">Cobertura operacional</p>
+<p class="text-lg md:text-xl font-bold text-white" id="modal-cap"></p>
+</div>
+</div>
+<div>
+<p class="text-gray-300 text-sm leading-7 mb-6 bg-white/[0.035] p-4 rounded-xl border-l-2 border-brand-teal" id="modal-desc"></p>
+<div class="grid sm:grid-cols-2 gap-3 mb-6">
+<div class="bg-black/20 p-4 rounded-xl border border-white/5">
+<p class="text-[9px] text-gray-500 uppercase tracking-wider">Histórico</p>
+<p class="font-bold text-sm text-white mt-2" id="modal-peso"></p>
+</div>
+<div class="bg-black/20 p-4 rounded-xl border border-white/5">
+<p class="text-[9px] text-gray-500 uppercase tracking-wider">Disponibilidade</p>
+<p class="font-bold text-sm text-brand-teal mt-2" id="modal-pot"></p>
+</div>
+<div class="bg-black/20 p-4 rounded-xl border border-white/5">
+<p class="text-[9px] text-gray-500 uppercase tracking-wider">Atualização</p>
+<p class="font-bold text-sm text-white mt-2" id="modal-dim"></p>
+</div>
+<div class="bg-black/20 p-4 rounded-xl border border-white/5">
+<p class="text-[9px] text-gray-500 uppercase tracking-wider">Integração</p>
+<p class="font-bold text-sm text-white mt-2" id="modal-diam"></p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-4 rounded-xl border border-green-500/10 bg-green-500/5">
+<span class="status-dot"></span>
+<p class="text-[10px] text-gray-300">Módulo integrado ao ecossistema de monitoramento e gestão MHS.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // Dados dos módulos de monitoramento
+        const produtosData = [
+            {
+                id: 0,
+                modelo: "Nível & Volume",
+                rating: "TEMPO REAL",
+                dimensoes: "Leitura contínua",
+                capacidadeMax: "Reservatórios e tanques",
+                peso: "Curvas, mínimos e máximos",
+                diametro: "Sensores de campo",
+                potencia: "Acompanhamento contínuo",
+                descricao: "Acompanhamento contínuo de nível e volume com indicadores percentuais, conversões por geometria, histórico de variações e alertas configuráveis para limites operacionais.",
+                icone: "fa-water"
+            },
+            {
+                id: 1,
+                modelo: "Vazão",
+                rating: "PRECISÃO",
+                dimensoes: "Dados instantâneos",
+                capacidadeMax: "Linhas e bombeamentos",
+                peso: "Totalização por período",
+                diametro: "Medidores de vazão",
+                potencia: "Leitura contínua",
+                descricao: "Visualização da vazão instantânea e acumulada para acompanhar desempenho hidráulico, identificar desvios de operação e comparar resultados por turno, dia ou período.",
+                icone: "fa-gauge-high"
+            },
+            {
+                id: 2,
+                modelo: "Vibração",
+                rating: "PREDITIVO",
+                dimensoes: "Amostragem recorrente",
+                capacidadeMax: "Motores e conjuntos",
+                peso: "Tendências e ocorrências",
+                diametro: "Sensores industriais",
+                potencia: "Análise contínua",
+                descricao: "Monitoramento de vibração para reconhecer alterações de comportamento, apoiar a manutenção preditiva e antecipar condições que podem comprometer a disponibilidade dos equipamentos.",
+                icone: "fa-wave-square"
+            },
+            {
+                id: 3,
+                modelo: "Tempo de Operação",
+                rating: "RASTREÁVEL",
+                dimensoes: "Contagem automática",
+                capacidadeMax: "Ativos e processos",
+                peso: "Horas por ciclo e período",
+                diametro: "Painéis e comandos",
+                potencia: "Registro contínuo",
+                descricao: "Controle preciso das horas trabalhadas, ciclos de acionamento, intervalos de parada e disponibilidade operacional para apoiar manutenção, produtividade e planejamento.",
+                icone: "fa-clock"
+            },
+            {
+                id: 4,
+                modelo: "Automação",
+                rating: "INTEGRADO",
+                dimensoes: "Eventos em tempo real",
+                capacidadeMax: "Comandos e rotinas",
+                peso: "Logs completos de atividade",
+                diametro: "CLPs e painéis",
+                potencia: "Operação conectada",
+                descricao: "Supervisão das atividades de automação, estados de comando, rotinas programadas e eventos executados, com rastreabilidade para compreender cada ação do processo.",
+                icone: "fa-gears"
+            },
+            {
+                id: 5,
+                modelo: "Monitoramento por Câmeras",
+                rating: "AO VIVO",
+                dimensoes: "Transmissão remota",
+                capacidadeMax: "Áreas e pontos críticos",
+                peso: "Registros por ocorrência",
+                diametro: "Câmeras IP",
+                potencia: "Visualização segura",
+                descricao: "Acompanhamento visual integrado ao painel operacional para validar condições de campo, inspecionar áreas críticas e responder com mais agilidade a eventos e alarmes.",
+                icone: "fa-video"
+            },
+            {
+                id: 6,
+                modelo: "Alertas & Eventos",
+                rating: "INTELIGENTE",
+                dimensoes: "Notificação imediata",
+                capacidadeMax: "Regras personalizadas",
+                peso: "Linha do tempo auditável",
+                diametro: "Todos os módulos",
+                potencia: "Monitoramento de eventos",
+                descricao: "Centralização de alertas, anomalias e eventos operacionais com prioridades, limites configuráveis e contexto suficiente para acelerar a análise e a tomada de decisão.",
+                icone: "fa-bell"
+            },
+            {
+                id: 7,
+                modelo: "Gestão à Vista",
+                rating: "360°",
+                dimensoes: "Painéis atualizados",
+                capacidadeMax: "Operação completa",
+                peso: "Indicadores consolidados",
+                diametro: "Web, TV e mobile",
+                potencia: "Acesso por perfil",
+                descricao: "Dashboards integrados para transformar dados técnicos em visão gerencial, reunindo indicadores, históricos, câmeras, automação e desempenho em uma experiência única.",
+                icone: "fa-table-columns"
+            },
+            {
+                id: 8,
+                modelo: "Bombas de Água",
+                rating: "ESPECIALIZADO",
+                dimensoes: "Estado em tempo real",
+                capacidadeMax: "Conjuntos motor-bomba",
+                peso: "Partidas, paradas e horas",
+                diametro: "CLPs, relés e sensores",
+                potencia: "Supervisão contínua",
+                descricao: "Visão dedicada de cada bomba de água com estado operacional, horas trabalhadas, partidas, comandos, permissivos, alarmes e correlação com as variáveis hidráulicas.",
+                icone: "fa-fan"
+            },
+            {
+                id: 9,
+                modelo: "Pressão de Sucção e Recalque",
+                rating: "HIDRÁULICO",
+                dimensoes: "Leitura sincronizada",
+                capacidadeMax: "Linhas de bombeamento",
+                peso: "Curvas e desvios",
+                diametro: "Transmissores de pressão",
+                potencia: "Acompanhamento contínuo",
+                descricao: "Monitoramento dos pontos de sucção e recalque para acompanhar diferencial de pressão, comportamento da linha e condições que afetam o desempenho do bombeamento.",
+                icone: "fa-gauge"
+            },
+            {
+                id: 10,
+                modelo: "Transferência de Fluidos",
+                rating: "PONTA A PONTA",
+                dimensoes: "Ciclo em tempo real",
+                capacidadeMax: "Origem, linha e destino",
+                peso: "Volumes e eventos por ciclo",
+                diametro: "Vazão, nível, válvulas e CLP",
+                potencia: "Rastreabilidade completa",
+                descricao: "Acompanhamento do fluido desde a origem até o destino, reunindo vazão, volume transferido, níveis, válvulas, estados da bomba e sequência automática em uma única visão.",
+                icone: "fa-right-left"
+            },
+            {
+                id: 11,
+                modelo: "Desempenho Hidráulico",
+                rating: "ANALÍTICO",
+                dimensoes: "Tendências correlacionadas",
+                capacidadeMax: "Bombas e estações",
+                peso: "Comparativos por período",
+                diametro: "Vazão, pressão e vibração",
+                potencia: "Análise histórica",
+                descricao: "Correlação entre vazão, pressão, vibração e tempo de operação para comparar conjuntos, identificar perda de desempenho e orientar decisões de manutenção e operação.",
+                icone: "fa-chart-line"
+            }
+        ];
+
+        function renderCards() {
+      const grid = document.getElementById('product-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+            produtosData.forEach((prod, index) => {
+                const card = document.createElement('article');
+                card.className = 'module-card p-5 md:p-6 cursor-pointer';
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('role', 'button');
+                card.setAttribute('aria-label', `Ver detalhes do módulo ${prod.modelo}`);
+                card.onclick = () => openModal(prod.id);
+                card.onkeydown = (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openModal(prod.id);
+                    }
+                };
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between relative z-10">
+                        <div class="module-icon">
+                            <i class="fas ${prod.icone}"></i>
+                        </div>
+                        <span class="module-index">${String(index + 1).padStart(2, '0')}</span>
+                    </div>
+
+                    <div class="relative z-10 mt-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brand-teal shadow-[0_0_8px_rgba(34,199,238,0.8)]"></span>
+                            <span class="text-[8px] font-bold tracking-[0.18em] text-brand-teal">${prod.rating}</span>
+                        </div>
+
+                        <h3 class="text-[15px] font-bold text-white leading-snug min-h-[42px]">${prod.modelo}</h3>
+                        <p class="text-[10px] text-gray-500 leading-5 mt-3 line-clamp-3">${prod.descricao}</p>
+                    </div>
+
+                    <div class="relative z-10 mt-5 pt-4 border-t border-white/[0.07] flex items-center justify-between gap-4">
+                        <p class="text-[9px] text-gray-400 leading-4">${prod.capacidadeMax}</p>
+                        <span class="w-7 h-7 rounded-full border border-brand-teal/25 bg-brand-teal/10 grid place-items-center text-brand-teal shrink-0">
+                            <i class="fas fa-arrow-right text-[8px]"></i>
+                        </span>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        const modal = document.getElementById('techModal');
+        let previousBodyOverflow = '';
+
+        function openModal(id) {
+            const prod = produtosData.find((item) => item.id === id);
+            if (!prod) return;
+
+            document.getElementById('modal-icon').className = `fas ${prod.icone}`;
+            document.getElementById('modal-title').innerText = prod.modelo;
+            document.getElementById('modal-desc').innerText = prod.descricao;
+            document.getElementById('modal-dim').innerText = prod.dimensoes;
+            document.getElementById('modal-cap').innerText = prod.capacidadeMax;
+            document.getElementById('modal-peso').innerText = prod.peso;
+            document.getElementById('modal-diam').innerText = prod.diametro;
+            document.getElementById('modal-pot').innerText = prod.potencia;
+
+            previousBodyOverflow = document.body.style.overflow;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = previousBodyOverflow;
+        }
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', renderCards);
+    </script>
+</body>
+</html>

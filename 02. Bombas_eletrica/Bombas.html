@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Bombas Centrifugas e Eletricas | MHS</title>
+    <meta name="description" content="Catalogo tecnico de bombas centrifugas e eletricas para projetos MHS: transferencia, irrigacao, pressurizacao, poco profundo e operacoes industriais.">
+    <style>
+        :root {
+            color-scheme: dark;
+            --brand-dark: #182540;
+            --brand-darker: #0a101a;
+            --brand-teal: #0088AC;
+            --brand-red: #E42927;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --soft: #cbd5e1;
+            --line: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.055);
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+        }
+
+        * {
+            box-sizing: border-box;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        *::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: calc(88px + var(--safe-top));
+            overflow-x: hidden;
+            background: var(--brand-darker);
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100svh;
+            margin: 0;
+            overflow-x: hidden;
+            color: var(--text);
+            background:
+                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px),
+                radial-gradient(circle at 50% 0%, rgba(0, 136, 172, 0.15), transparent 34rem),
+                var(--brand-darker);
+            background-size: 42px 42px, 42px 42px, auto, auto;
+            font-family: Poppins, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .section-x {
+            padding-left: max(1rem, var(--safe-left));
+            padding-right: max(1rem, var(--safe-right));
+        }
+
+        .shell {
+            width: min(100%, 86rem);
+            margin: 0 auto;
+        }
+
+        .navbar {
+            position: fixed;
+            inset: 0 0 auto;
+            z-index: 50;
+            background: linear-gradient(180deg, rgba(10, 16, 26, 0.86), rgba(10, 16, 26, 0));
+        }
+
+        .nav-inner {
+            width: min(100%, 86rem);
+            margin: 0 auto;
+            padding: calc(0.85rem + var(--safe-top)) max(1rem, var(--safe-right)) 0.85rem max(1rem, var(--safe-left));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .brand-link {
+            display: inline-flex;
+            align-items: center;
+            flex: 0 0 auto;
+        }
+
+        .brand-logo-frame {
+            position: relative;
+            width: 5.35rem;
+            height: 3.9rem;
+            flex: 0 0 auto;
+            overflow: hidden;
+        }
+
+        .brand-logo {
+            width: 6.72rem;
+            max-width: none;
+            height: auto;
+            display: block;
+            transform: translate(-0.71rem, -0.73rem);
+        }
+
+        .desktop-nav {
+            display: none;
+            align-items: center;
+            gap: 1.35rem;
+            padding: 0.62rem 1.2rem;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid var(--line);
+            color: #cbd5e1;
+            font-size: 0.84rem;
+            font-weight: 750;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .desktop-nav a {
+            transition: color 0.2s ease;
+        }
+
+        .desktop-nav a:hover,
+        .desktop-nav a:focus-visible {
+            color: var(--brand-teal);
+            outline: none;
+        }
+
+        .nav-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            flex: 0 0 auto;
+        }
+
+        .nav-cta {
+            min-height: 2.55rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .nav-cta {
+            padding: 0 1rem;
+            color: var(--brand-darker);
+            background: var(--brand-teal);
+            border-color: rgba(0, 136, 172, 0.82);
+            font-size: 0.78rem;
+            font-weight: 950;
+            white-space: nowrap;
+            box-shadow: 0 0 22px rgba(0, 136, 172, 0.26);
+        }
+
+        .nav-cta:hover,
+        .nav-cta:focus-visible {
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .hero {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            padding-top: clamp(6.25rem, 12vw, 8rem);
+            padding-bottom: clamp(2.8rem, 7vw, 5rem);
+        }
+
+        .hero-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            gap: clamp(1.75rem, 5vw, 4rem);
+            align-items: center;
+        }
+
+        .hero-intro {
+            position: relative;
+            isolation: isolate;
+            width: 100%;
+            padding-bottom: clamp(15rem, 22vw, 20rem);
+            text-align: center;
+        }
+
+        .hero-water {
+            position: absolute;
+            z-index: -1;
+            bottom: 0;
+            left: calc(0px - max(1rem, (100vw - 86rem) / 2));
+            width: clamp(44rem, 58vw, 56rem);
+            height: auto;
+            display: block;
+            opacity: 0.3;
+            filter: saturate(0.92) brightness(0.88);
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .hero-title {
+            max-width: 12ch;
+            margin: 1rem auto;
+            color: #ffffff;
+            font-size: clamp(2.75rem, 11vw, 5.4rem);
+            font-weight: 950;
+            line-height: 0.9;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        .hero-title span {
+            display: inline-block;
+            color: transparent;
+            background: linear-gradient(90deg, var(--brand-teal), #8fd7ff, #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .hero-copy {
+            max-width: 62ch;
+            margin: 0 auto;
+            color: #cbd5e1;
+            font-size: clamp(0.96rem, 1.5vw, 1.12rem);
+            line-height: 1.72;
+        }
+
+        .button-primary {
+            min-height: 3.05rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding: 0 1.25rem;
+            font-weight: 950;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .button-primary {
+            color: var(--brand-darker);
+            background: var(--brand-teal);
+            border: 1px solid rgba(0, 136, 172, 0.9);
+        }
+
+        .button-primary:hover,
+        .button-primary:focus-visible {
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .hero-visual {
+            position: relative;
+            z-index: 3;
+            min-height: clamp(20rem, 54vw, 34rem);
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+        }
+
+        .hero-visual::before {
+            content: "";
+            position: absolute;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 136, 172, 0.24);
+            pointer-events: none;
+        }
+
+        .hero-visual::before {
+            width: min(84vw, 34rem);
+            height: min(84vw, 34rem);
+        }
+
+        .pump-carousel {
+            position: relative;
+            z-index: 2;
+            width: min(100%, 38rem);
+            height: clamp(18rem, 38vw, 30rem);
+            isolation: isolate;
+            touch-action: pan-y;
+            user-select: none;
+        }
+
+        .carousel-orbit {
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+        }
+
+        .carousel-item {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: clamp(8rem, 42%, 15rem);
+            aspect-ratio: 1;
+            margin: 0;
+            padding: 0;
+            opacity: 0;
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            transform-origin: center;
+            will-change: transform, opacity;
+        }
+
+        .carousel-item:focus-visible {
+            outline: 2px solid #8fd7ff;
+            outline-offset: 5px;
+        }
+
+        .carousel-item-media {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f7f8fa;
+            border: 0;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.34);
+            transition: box-shadow 0.25s ease;
+            transform-origin: center;
+            will-change: transform, box-shadow;
+        }
+
+        .carousel-item-media::after {
+            content: "";
+            position: absolute;
+            inset: -45%;
+            opacity: 0;
+            background: linear-gradient(100deg, transparent 42%, rgba(255,255,255,0.42) 50%, transparent 58%);
+            transform: translateX(-90%) rotate(8deg);
+            pointer-events: none;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .carousel-item.is-front .carousel-item-media {
+            animation: carouselGlow 3.4s ease-in-out infinite;
+        }
+
+        .carousel-item.is-front .carousel-item-media::after {
+            animation: carouselSheen 3.4s ease-in-out infinite;
+        }
+
+        .carousel-item.is-error img {
+            display: none;
+        }
+
+        .carousel-item.is-error .carousel-item-media::before {
+            content: "Imagem indisponivel";
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            color: #475569;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .hero-metrics {
+            position: absolute;
+            z-index: 3;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.65rem;
+        }
+
+        .metric {
+            min-height: 4.6rem;
+            padding: 0.8rem;
+            border-radius: 16px;
+            background: rgba(10, 16, 26, 0.74);
+            border: 1px solid var(--line);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .metric strong {
+            display: block;
+            color: #ffffff;
+            font-size: clamp(1rem, 3vw, 1.35rem);
+            line-height: 1;
+        }
+
+        .metric span {
+            display: block;
+            margin-top: 0.35rem;
+            color: var(--muted);
+            font-size: 0.66rem;
+            font-weight: 850;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        @keyframes carouselGlow {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 24px 54px rgba(0, 136, 172, 0.22), 0 18px 40px rgba(0, 0, 0, 0.38);
+            }
+            50% {
+                transform: scale(1.055);
+                box-shadow: 0 28px 66px rgba(143, 215, 255, 0.34), 0 20px 44px rgba(0, 0, 0, 0.42);
+            }
+        }
+
+        @keyframes carouselSheen {
+            0%, 62% { opacity: 0; transform: translateX(-90%) rotate(8deg); }
+            72% { opacity: 0.34; }
+            88%, 100% { opacity: 0; transform: translateX(90%) rotate(8deg); }
+        }
+
+        .section {
+            position: relative;
+            padding-top: clamp(3.5rem, 7vw, 5.5rem);
+            padding-bottom: clamp(3.5rem, 7vw, 5.5rem);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: clamp(1.25rem, 3vw, 2rem);
+        }
+
+        .section-kicker {
+            margin: 0 0 0.4rem;
+            color: var(--brand-teal);
+            font-size: 0.7rem;
+            font-weight: 950;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            margin: 0;
+            color: #ffffff;
+            font-size: clamp(1.7rem, 5vw, 3rem);
+            font-weight: 950;
+            line-height: 1;
+            letter-spacing: 0;
+        }
+
+        .section-copy {
+            max-width: 48ch;
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.62;
+        }
+
+        #produtos {
+            isolation: isolate;
+            overflow: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background:
+                radial-gradient(circle at 50% 54%, rgba(0, 136, 172, 0.13), transparent 31rem),
+                linear-gradient(180deg, rgba(5, 11, 19, 0.38), rgba(10, 16, 26, 0.72));
+        }
+
+        .exploded-layout {
+            position: relative;
+        }
+
+        .exploded-header {
+            position: relative;
+            z-index: 3;
+            width: min(100%, 72rem);
+            margin: 0 auto;
+            text-align: center;
+            container-type: inline-size;
+        }
+
+        .exploded-title {
+            margin: 0 0 1rem;
+            color: #ffffff;
+            font-size: clamp(0.92rem, 5.2cqi, 4rem);
+            font-weight: 950;
+            line-height: 0.98;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+
+        .exploded-lead {
+            width: min(100%, 42rem);
+            margin: 0 auto;
+            color: #b8c5d6;
+            font-size: clamp(0.98rem, 1.6vw, 1.12rem);
+            line-height: 1.72;
+        }
+
+        .exploded-stage {
+            position: relative;
+            min-height: clamp(39rem, 47vw, 44rem);
+            margin-top: clamp(1rem, 3vw, 2.4rem);
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-rows: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .exploded-stage::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            inset: 10% 13%;
+            border: 1px solid rgba(0, 136, 172, 0.18);
+            border-radius: 50%;
+            box-shadow: inset 0 0 80px rgba(0, 136, 172, 0.035);
+        }
+
+        .exploded-visual {
+            position: absolute;
+            z-index: 4;
+            top: 50%;
+            left: 50%;
+            width: min(74%, 58rem);
+            margin: 0;
+            transform: translate(-50%, -50%);
+        }
+
+        .exploded-assembly {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2 / 1;
+            isolation: isolate;
+        }
+
+        .exploded-assembly::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            inset: 17% 9% 11%;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(0, 136, 172, 0.1), transparent 68%);
+            filter: blur(18px);
+            opacity: 0.72;
+        }
+
+        .exploded-piece {
+            --spread-x: 0px;
+            --spread-y: 0px;
+            --focus-x: 0px;
+            --focus-y: 0px;
+            --touch-x: 0px;
+            --touch-y: 0px;
+            --drag-x: 0px;
+            --drag-y: 0px;
+            position: absolute;
+            z-index: 1;
+            width: 12%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 8px;
+            outline: 0;
+            color: inherit;
+            background: transparent;
+            cursor: grab;
+            touch-action: none;
+            visibility: hidden;
+            transform: translate3d(var(--drag-x), var(--drag-y), 0) scale(1);
+            transform-origin: 50% 50%;
+            transition:
+                transform 0.52s cubic-bezier(0.2, 0.8, 0.2, 1),
+                opacity 0.3s ease,
+                filter 0.3s ease;
+            will-change: transform;
+        }
+
+        .exploded-piece.is-loaded {
+            visibility: visible;
+        }
+
+        .exploded-piece img {
+            width: 100%;
+            height: auto;
+            display: block;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            filter: drop-shadow(0 14px 16px rgba(0, 0, 0, 0.38));
+            transition: filter 0.3s ease;
+        }
+
+        .exploded-piece[data-piece="1"] { left: 2.58%; top: 71.18%; width: 15.4%; --spread-x: -8px; --spread-y: 6px; --focus-x: -12px; --focus-y: 9px; --touch-x: -2px; --touch-y: 1px; }
+        .exploded-piece[data-piece="2"] { left: 14.94%; top: 66.91%; width: 11.97%; --spread-x: -7px; --spread-y: 5px; --focus-x: -10px; --focus-y: 8px; --touch-x: -2px; --touch-y: 1px; }
+        .exploded-piece[data-piece="3"] { left: 24.68%; top: 61.19%; width: 10.28%; --spread-x: -5px; --spread-y: 3px; --focus-x: -8px; --focus-y: 5px; --touch-x: -1px; --touch-y: 1px; }
+        .exploded-piece[data-piece="4"] { left: 27.63%; top: 32.59%; width: 26.27%; --spread-x: -2px; --spread-y: 1px; --focus-x: -4px; --focus-y: 2px; --touch-x: 0; --touch-y: 0; }
+        .exploded-piece[data-piece="5"] { left: 46.45%; top: 41.37%; width: 11.93%; --spread-x: 2px; --spread-y: -2px; --focus-x: 4px; --focus-y: -4px; --touch-x: 1px; --touch-y: -1px; }
+        .exploded-piece[data-piece="6"] { left: 56.73%; top: 38.89%; width: 6.32%; --spread-x: 4px; --spread-y: -3px; --focus-x: 7px; --focus-y: -5px; --touch-x: 1px; --touch-y: -1px; }
+        .exploded-piece[data-piece="7"] { left: 61.25%; top: 30%; width: 12.5%; --spread-x: 6px; --spread-y: -4px; --focus-x: 9px; --focus-y: -7px; --touch-x: 2px; --touch-y: -1px; }
+        .exploded-piece[data-piece="8"] { left: 71.76%; top: 27%; width: 7.4%; --spread-x: 8px; --spread-y: -5px; --focus-x: 12px; --focus-y: -8px; --touch-x: 2px; --touch-y: -1px; }
+        .exploded-piece[data-piece="9"] { left: 76.39%; top: -0.4%; width: 24.21%; --spread-x: 9px; --spread-y: -6px; --focus-x: 13px; --focus-y: -9px; --touch-x: 2px; --touch-y: -1px; }
+
+        .exploded-piece[data-piece="1"] { --assemble-x: clamp(28px, 6vw, 82px); --assemble-y: clamp(-48px, -3.5vw, -18px); --reveal-delay: 0ms; }
+        .exploded-piece[data-piece="2"] { --assemble-x: clamp(24px, 4.8vw, 65px); --assemble-y: clamp(-38px, -2.8vw, -15px); --reveal-delay: 14ms; }
+        .exploded-piece[data-piece="3"] { --assemble-x: clamp(18px, 3.4vw, 45px); --assemble-y: clamp(-27px, -2vw, -11px); --reveal-delay: 28ms; }
+        .exploded-piece[data-piece="4"] { --assemble-x: clamp(6px, 1vw, 14px); --assemble-y: clamp(-9px, -0.65vw, -4px); --reveal-delay: 42ms; }
+        .exploded-piece[data-piece="5"] { --assemble-x: clamp(-13px, -0.9vw, -5px); --assemble-y: clamp(4px, 0.55vw, 8px); --reveal-delay: 56ms; }
+        .exploded-piece[data-piece="6"] { --assemble-x: clamp(-30px, -2vw, -12px); --assemble-y: clamp(8px, 1.15vw, 16px); --reveal-delay: 70ms; }
+        .exploded-piece[data-piece="7"] { --assemble-x: clamp(-45px, -3.2vw, -18px); --assemble-y: clamp(12px, 1.8vw, 25px); --reveal-delay: 84ms; }
+        .exploded-piece[data-piece="8"] { --assemble-x: clamp(-60px, -4.2vw, -22px); --assemble-y: clamp(16px, 2.5vw, 34px); --reveal-delay: 98ms; }
+        .exploded-piece[data-piece="9"] { --assemble-x: clamp(-78px, -5.5vw, -28px); --assemble-y: clamp(20px, 3.2vw, 44px); --reveal-delay: 112ms; }
+
+        .exploded-assembly.is-revealing .exploded-piece.is-loaded {
+            animation: explodedAssemblyReveal 2500ms cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay) both;
+            pointer-events: none;
+        }
+
+        @keyframes explodedAssemblyReveal {
+            0% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+            38% {
+                opacity: 0.82;
+                transform: translate3d(var(--assemble-x), var(--assemble-y), 0) scale(0.97);
+            }
+            48% {
+                opacity: 0.82;
+                transform: translate3d(var(--assemble-x), var(--assemble-y), 0) scale(0.97);
+            }
+            88% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1.008);
+            }
+            100% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
+
+        .exploded-piece:focus-visible {
+            outline: 1px solid rgba(91, 222, 255, 0.82);
+            outline-offset: 4px;
+        }
+
+        .exploded-piece.is-active {
+            z-index: 8;
+            transform: translate3d(var(--focus-x), var(--focus-y), 0) scale(1.12);
+        }
+
+        .exploded-piece.is-active img {
+            filter:
+                brightness(1.1)
+                saturate(1.08)
+                drop-shadow(0 0 12px rgba(67, 219, 255, 0.42))
+                drop-shadow(0 22px 24px rgba(0, 0, 0, 0.42));
+        }
+
+        .exploded-assembly.has-active .exploded-piece:not(.is-active) {
+            opacity: 0.48;
+            filter: saturate(0.72) brightness(0.82);
+        }
+
+        .exploded-fallback {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .exploded-assembly:hover .exploded-piece {
+                transform: translate3d(var(--spread-x), var(--spread-y), 0);
+            }
+
+            .exploded-assembly:has(.exploded-piece:hover) .exploded-piece:not(:hover) {
+                opacity: 0.48;
+                filter: saturate(0.72) brightness(0.82);
+            }
+
+            .exploded-assembly .exploded-piece:hover {
+                z-index: 9;
+                opacity: 1;
+                transform: translate3d(var(--focus-x), var(--focus-y), 0) scale(1.13);
+            }
+
+            .exploded-piece:hover img {
+                filter:
+                    brightness(1.12)
+                    saturate(1.1)
+                    drop-shadow(0 0 14px rgba(67, 219, 255, 0.46))
+                    drop-shadow(0 24px 26px rgba(0, 0, 0, 0.44));
+            }
+        }
+
+        .exploded-piece.is-dragging,
+        .exploded-piece.is-returning {
+            z-index: 12;
+            opacity: 1;
+            transform: translate3d(var(--drag-x), var(--drag-y), 0) scale(1.07) !important;
+            transition: none;
+        }
+
+        .exploded-piece.is-dragging {
+            cursor: grabbing;
+        }
+
+        .exploded-piece.is-returning {
+            pointer-events: none;
+        }
+
+        .exploded-piece.is-dragging img,
+        .exploded-piece.is-returning img {
+            filter:
+                brightness(1.08)
+                saturate(1.06)
+                drop-shadow(0 0 12px rgba(67, 219, 255, 0.32))
+                drop-shadow(0 22px 24px rgba(0, 0, 0, 0.42));
+        }
+
+        .exploded-assembly.has-elastic-motion .exploded-piece:not(.is-dragging):not(.is-returning) {
+            opacity: 0.58;
+            filter: saturate(0.78) brightness(0.88);
+        }
+
+        .exploded-pillar {
+            --card-x: 0px;
+            --card-y: 0px;
+            position: relative;
+            z-index: 2;
+            width: min(100%, 17rem);
+            align-self: start;
+            padding: 1rem 1.1rem 1.05rem;
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-radius: 8px;
+            background: rgba(8, 15, 25, 0.82);
+            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transform: translate3d(var(--card-x), var(--card-y), 0);
+        }
+
+        .exploded-pillar:nth-of-type(odd) {
+            --card-x: clamp(1rem, 3vw, 3rem);
+        }
+
+        .exploded-pillar:nth-of-type(even) {
+            --card-x: clamp(-3rem, -3vw, -1rem);
+            justify-self: end;
+        }
+
+        .exploded-pillar:nth-of-type(-n + 2) {
+            --card-y: clamp(2rem, 4vw, 3.5rem);
+        }
+
+        .exploded-pillar:nth-of-type(n + 3) {
+            --card-y: clamp(-3.5rem, -4vw, -2rem);
+            align-self: end;
+        }
+
+        .exploded-pillar::after {
+            display: none;
+        }
+
+        .exploded-pillar:nth-of-type(odd)::after {
+            left: 100%;
+        }
+
+        .exploded-pillar:nth-of-type(even)::after {
+            right: 100%;
+            transform: rotate(180deg);
+        }
+
+        .exploded-pillar h3 {
+            display: block;
+            margin: 0;
+            color: #ffffff;
+            font-size: clamp(1.05rem, 2vw, 1.24rem);
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .exploded-pillar h3::before {
+            display: none;
+        }
+
+        .exploded-pillar p {
+            margin: 0.4rem 0 0;
+            color: #9eacbd;
+            font-size: 0.78rem;
+            line-height: 1.48;
+        }
+
+        .exploded-footer {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-top: -0.7rem;
+            text-align: center;
+        }
+
+        .exploded-note {
+            max-width: 29rem;
+            margin: 0;
+            color: #64748b;
+            font-size: 0.7rem;
+            line-height: 1.55;
+        }
+
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+            gap: 0.9rem;
+        }
+
+        .workflow-card {
+            min-height: 11rem;
+            padding: 1rem;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.045);
+            border: 1px solid var(--line);
+        }
+
+        .workflow-number {
+            display: block;
+            color: rgba(255,255,255,0.18);
+            font-size: 3rem;
+            font-weight: 950;
+            line-height: 0.9;
+        }
+
+        .workflow-card h3 {
+            margin: 0.7rem 0 0.45rem;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .workflow-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.84rem;
+            line-height: 1.55;
+        }
+
+        .cta-panel {
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            gap: 1rem;
+            padding: clamp(1.25rem, 4vw, 2rem);
+            border-radius: 26px;
+            background:
+                linear-gradient(135deg, rgba(24,37,64,0.96), rgba(10,16,26,0.98)),
+                rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.32);
+        }
+
+        .cta-panel h2 {
+            margin: 0;
+            color: #ffffff;
+            font-size: clamp(1.55rem, 4vw, 2.35rem);
+            line-height: 1.1;
+        }
+
+        .cta-panel p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: grid;
+            place-items: center;
+            padding: calc(1rem + var(--safe-top)) max(1rem, var(--safe-right)) calc(1rem + var(--safe-bottom)) max(1rem, var(--safe-left));
+            background: rgba(10,16,26,0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.24s ease, visibility 0.24s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            width: min(100%, 76rem);
+            max-height: min(92vh, 54rem);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border-radius: 28px;
+            background: linear-gradient(180deg, rgba(24,37,64,0.98), rgba(10,16,26,0.98));
+            border: 1px solid rgba(0,136,172,0.28);
+            box-shadow: 0 34px 90px rgba(0,0,0,0.52);
+            transform: translateY(14px) scale(0.98);
+            transition: transform 0.24s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1.1rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .modal-kicker {
+            margin: 0 0 0.18rem;
+            color: var(--brand-teal);
+            font-size: 0.64rem;
+            font-weight: 950;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .modal-title {
+            margin: 0;
+            color: #ffffff;
+            font-size: clamp(1.35rem, 4vw, 2.25rem);
+            line-height: 1;
+        }
+
+        .modal-close {
+            width: 2.65rem;
+            height: 2.65rem;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            border-radius: 999px;
+            color: #ffffff;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--line);
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus-visible {
+            background: rgba(228,41,39,0.88);
+            outline: none;
+        }
+
+        .modal-body {
+            overflow-y: auto;
+            padding: clamp(1rem, 3vw, 1.35rem);
+        }
+
+        .modal-layout {
+            display: grid;
+            gap: 1.1rem;
+        }
+
+        .modal-product-visual {
+            min-height: 20rem;
+            display: grid;
+            place-items: center;
+            border-radius: 22px;
+            background:
+                radial-gradient(circle at 50% 45%, rgba(0,136,172,0.16), transparent 56%),
+                rgba(0,0,0,0.18);
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .modal-copy {
+            margin: 0 0 1rem;
+            color: #cbd5e1;
+            font-size: 0.94rem;
+            line-height: 1.7;
+            background: rgba(255,255,255,0.045);
+            border-left: 4px solid var(--brand-teal);
+            border-radius: 14px;
+            padding: 1rem;
+        }
+
+        .modal-spec-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.7rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-spec {
+            min-height: 5.3rem;
+            padding: 0.85rem;
+            border-radius: 16px;
+            background: rgba(0,0,0,0.18);
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .modal-spec span {
+            display: block;
+            color: #64748b;
+            font-size: 0.62rem;
+            font-weight: 950;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .modal-spec strong {
+            display: block;
+            margin-top: 0.45rem;
+            color: #ffffff;
+            font-size: clamp(1rem, 3vw, 1.34rem);
+            line-height: 1.14;
+        }
+
+        .modal-list {
+            display: grid;
+            gap: 0.55rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .modal-list li {
+            position: relative;
+            padding-left: 1rem;
+            color: #cbd5e1;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .modal-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.62em;
+            width: 0.36rem;
+            height: 0.36rem;
+            border-radius: 999px;
+            background: var(--brand-teal);
+        }
+
+        @media (min-width: 768px) {
+            .hero-grid {
+                grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.92fr);
+            }
+
+            .hero-title,
+            .hero-copy {
+                transform: translateY(clamp(1.925rem, 2.75vw, 3.3rem));
+            }
+
+            .pump-carousel {
+                transform: translateY(-1.75rem);
+            }
+
+            .desktop-nav {
+                display: flex;
+            }
+
+            .exploded-footer {
+                width: min(100%, 62rem);
+                margin: 1.8rem auto 0;
+                justify-content: space-between;
+                gap: 2.5rem;
+                text-align: left;
+            }
+
+            .exploded-note {
+                max-width: 38rem;
+                color: #7f8da1;
+                font-size: 0.76rem;
+            }
+
+            .exploded-footer .button-primary {
+                flex: 0 0 auto;
+            }
+
+            .cta-panel {
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .nav-inner {
+                gap: 0.65rem;
+            }
+
+            .brand-logo-frame {
+                width: 4.7rem;
+                height: 3.45rem;
+            }
+
+            .brand-logo {
+                width: 5.9rem;
+                transform: translate(-0.62rem, -0.64rem);
+            }
+
+            .nav-cta {
+                padding: 0 0.82rem;
+                font-size: 0.72rem;
+            }
+
+            .hero {
+                padding-top: 7.25rem;
+                padding-bottom: 2.25rem;
+            }
+
+            .hero-title {
+                max-width: 10ch;
+            }
+
+            .hero-intro {
+                padding-bottom: 1rem;
+            }
+
+            .hero-water {
+                top: calc(100% - 8.79rem);
+                bottom: auto;
+                width: min(150vw, 42rem);
+                opacity: 0.24;
+            }
+
+            .pump-carousel {
+                width: 100%;
+                height: 18rem;
+            }
+
+            .carousel-item {
+                width: min(46%, 10.5rem);
+            }
+
+            .hero-metrics {
+                position: relative;
+                width: 100%;
+                margin-top: -1.6rem;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 0.4rem;
+            }
+
+            .metric {
+                min-width: 0;
+                min-height: 5rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 0.65rem 0.5rem;
+                text-align: center;
+            }
+
+            .metric strong {
+                font-size: 1rem;
+            }
+
+            .metric span {
+                margin-top: 0.4rem;
+                font-size: 0.56rem;
+                line-height: 1.3;
+                letter-spacing: 0;
+                overflow-wrap: anywhere;
+            }
+
+            .workflow-grid {
+                gap: 0.65rem;
+            }
+
+            .workflow-card {
+                min-height: 0;
+                padding: 0.8rem 0.9rem 0.9rem;
+                border-radius: 8px;
+            }
+
+            .workflow-number {
+                font-size: 2.2rem;
+                line-height: 0.85;
+            }
+
+            .workflow-card h3 {
+                margin: 0.48rem 0 0.3rem;
+                font-size: 0.94rem;
+            }
+
+            .workflow-card p {
+                font-size: 0.76rem;
+                line-height: 1.45;
+            }
+
+            .section-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .exploded-stage {
+                min-height: auto;
+                margin-top: 1.5rem;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-rows: auto;
+                gap: 0.65rem;
+            }
+
+            .exploded-stage::before {
+                inset: 1.25rem -22% auto;
+                height: 16rem;
+            }
+
+            .exploded-visual {
+                position: relative;
+                top: auto;
+                left: auto;
+                width: 100%;
+                grid-column: 1 / -1;
+                grid-row: 1;
+                margin: 0 auto;
+                transform: none;
+            }
+
+            .exploded-piece.is-active {
+                transform: translate3d(var(--touch-x), var(--touch-y), 0) scale(1.1);
+            }
+
+            .exploded-pillar {
+                --card-x: 0px;
+                --card-y: 0px;
+                width: 100%;
+                min-height: 7.2rem;
+                align-self: stretch;
+                padding: 0.9rem;
+            }
+
+            .exploded-pillar:nth-of-type(n) {
+                --card-x: 0px;
+                --card-y: 0px;
+                justify-self: stretch;
+                align-self: stretch;
+                text-align: left;
+            }
+
+            .exploded-pillar::after {
+                display: none;
+            }
+
+            .exploded-pillar p {
+                margin-left: 0;
+                font-size: 0.72rem;
+            }
+
+            .exploded-pillar h3 {
+                font-size: 0.96rem;
+            }
+
+            .exploded-footer {
+                margin-top: 1.35rem;
+                flex-direction: column;
+            }
+
+            .exploded-footer .button-primary {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .pump-carousel {
+                height: 17rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" aria-label="Navegacao principal">
+        <div class="nav-inner">
+            <a href="../crm.html" class="brand-link" aria-label="Voltar ao hub MHS">
+                <span class="brand-logo-frame">
+                    <img class="brand-logo" src="../01.%20Flutuantes/logo_mhs.png" alt="Mais Hidro Solucoes">
+                </span>
+            </a>
+
+            <div class="desktop-nav" aria-label="Secoes da pagina">
+                <a href="../crm.html">Hub MHS</a>
+                <a href="#home">Inicio</a>
+                <a href="#produtos">Tecnologia</a>
+                <a href="#engenharia">Engenharia</a>
+            </div>
+
+            <div class="nav-actions">
+                <a class="nav-cta" href="#contato">Solicitar Projeto</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero section-x">
+        <div class="shell hero-grid">
+            <div class="hero-intro">
+                <h1 class="hero-title">Bombas <span>eletricas</span></h1>
+                <p class="hero-copy">Na Mais Hidro Solu&ccedil;&otilde;es, fornecemos, sob demanda, diversos tipos de bombas, incluindo modelos industriais/multiest&aacute;gios, submersos, injetores, centr&iacute;fugos e pressurizadores. Atendemos com efici&ecirc;ncia &agrave;s demandas de transfer&ecirc;ncia e pressuriza&ccedil;&atilde;o de fluidos nos setores industrial, constru&ccedil;&atilde;o civil, irriga&ccedil;&atilde;o, minera&ccedil;&atilde;o e carcinicultura.</p>
+                <img class="hero-water" src="./agua_fundo.png" alt="" aria-hidden="true" loading="eager" decoding="async">
+            </div>
+
+            <div class="hero-visual">
+                <div id="hero-carousel" class="pump-carousel" role="region" aria-label="Carrossel de modelos de bombas">
+                    <div id="carousel-orbit" class="carousel-orbit"></div>
+                </div>
+                <div class="hero-metrics">
+                    <div class="metric"><strong>90+</strong><span>tipos de bombas</span></div>
+                    <div class="metric"><strong>1800+</strong><span>versoes tecnicas</span></div>
+                    <div class="metric"><strong>300 cv</strong><span>potencia ate</span></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="produtos" class="section section-x">
+            <div class="shell exploded-layout">
+                <header class="exploded-header">
+                    <h2 class="exploded-title">Engenharia que inspira confian&ccedil;a.</h2>
+                    <p class="exploded-lead">Cada solu&ccedil;&atilde;o MHS combina sele&ccedil;&atilde;o t&eacute;cnica, cuidado operacional e acompanhamento pr&oacute;ximo para entregar desempenho consistente em campo.</p>
+                </header>
+
+                <div class="exploded-stage">
+                    <article class="exploded-pillar">
+                        <h3>Qualidade</h3>
+                        <p>Sele&ccedil;&atilde;o criteriosa para desempenho superior.</p>
+                    </article>
+
+                    <article class="exploded-pillar">
+                        <h3>Seguran&ccedil;a</h3>
+                        <p>Opera&ccedil;&atilde;o protegida em cada aplica&ccedil;&atilde;o.</p>
+                    </article>
+
+                    <article class="exploded-pillar">
+                        <h3>Confiabilidade</h3>
+                        <p>Efici&ecirc;ncia est&aacute;vel por mais tempo.</p>
+                    </article>
+
+                    <article class="exploded-pillar">
+                        <h3>Servi&ccedil;o</h3>
+                        <p>Suporte t&eacute;cnico do projeto ao p&oacute;s-venda.</p>
+                    </article>
+
+                    <figure class="exploded-visual">
+                        <div id="exploded-assembly" class="exploded-assembly" role="group" aria-label="Vista explodida interativa de uma bomba centrifuga eletrica">
+                            <button class="exploded-piece" type="button" data-piece="1" aria-label="Destacar tampa frontal">
+                                <img src="./1.png" alt="Tampa frontal da bomba" loading="lazy" decoding="async">
+                            </button>
+                            <button class="exploded-piece" type="button" data-piece="2" aria-label="Destacar rotor">
+                                <img src="./2.png" alt="Rotor da bomba" loading="lazy" decoding="async">
+                            </button>
+                            <button class="exploded-piece" type="button" data-piece="3" aria-label="Destacar junta frontal">
+                                <img src="./3.png" alt="Junta frontal da bomba" loading="lazy" decoding="async">
+                            </button>
+                            <button class="exploded-piece" type="button" data-piece="4" aria-label="Destacar carcaca hidraulica">
+                                <img src="./4.png" alt="Carcaca hidraulica da bomba" loading="lazy" decoding="async">
+                            </button>
+                            <button class="exploded-piece" type="button" data-piece="5" aria-label="Destacar flange e selo mecanico">
+                                <img src="./5.png" alt="Flange e selo mecanico da bomba" loading="lazy" decoding="async">
+                            </button>
+                            <button class="exploded-piece" type="button" data-piece="6" aria-label="Destacar eixo e anel de vedacao">
+                                <img src="./6.png" alt="Eixo e anel de vedacao da bomba" loading="lazy" decoding="async">
+                            </button>
+                            <button class="exploded-piece" type="button" data-piece="7" aria-label="Destacar tampa traseira">
+                                <img src="./7.png" alt="Tampa traseira da bomba" loading="lazy" decoding="async">
+                            </button>
+                            <button class="exploded-piece" type="button" data-piece="8" aria-label="Destacar conjunto de vedacao">
+                                <img src="./8.png" alt="Conjunto de vedacao da bomba" loading="lazy" decoding="async">
+                            </button>
+                            <button class="exploded-piece" type="button" data-piece="9" aria-label="Destacar motor eletrico">
+                                <img src="./9.png" alt="Motor eletrico da bomba" loading="lazy" decoding="async">
+                            </button>
+                            <noscript>
+                                <img class="exploded-fallback" src="./vista_explodida.png" alt="Vista explodida de uma bomba centrifuga eletrica">
+                            </noscript>
+                        </div>
+                    </figure>
+                </div>
+
+                <div class="exploded-footer">
+                    <p class="exploded-note">Vista t&eacute;cnica ilustrativa. A constru&ccedil;&atilde;o e os componentes variam conforme a linha e o ponto de opera&ccedil;&atilde;o.</p>
+                    <a class="button-primary" href="#contato">Dimensionar com a MHS</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="engenharia" class="section section-x">
+            <div class="shell">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Dimensionamento orientado</h2>
+                    </div>
+                    <p class="section-copy">A bomba correta nasce da leitura do sistema, nao apenas da potencia do motor.</p>
+                </div>
+
+                <div class="workflow-grid">
+                    <article class="workflow-card">
+                        <span class="workflow-number">01</span>
+                        <h3>Dados hidraulicos</h3>
+                        <p>Levantamos vazao, altura manometrica, succao, recalque, fluido, temperatura e perdas previstas.</p>
+                    </article>
+                    <article class="workflow-card">
+                        <span class="workflow-number">02</span>
+                        <h3>Curva de operacao</h3>
+                        <p>Selecionamos a familia por ponto de trabalho, eficiencia, NPSH disponivel e margem operacional.</p>
+                    </article>
+                    <article class="workflow-card">
+                        <span class="workflow-number">03</span>
+                        <h3>Conjunto completo</h3>
+                        <p>Integramos bomba, motor, base, vedacao, tubulacao, protecao eletrica e acessorios de campo.</p>
+                    </article>
+                    <article class="workflow-card">
+                        <span class="workflow-number">04</span>
+                        <h3>Entrega assistida</h3>
+                        <p>Apoio tecnico para instalacao, partida, operacao, manutencao e ajustes do sistema.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato" class="section section-x">
+            <div class="shell">
+                <div class="cta-panel">
+                    <div>
+                        <p class="section-kicker">Solicite analise</p>
+                        <h2>Encontre a bomba ideal para o seu projeto</h2>
+                        <p>Envie vazao, altura manometrica, aplicacao e regime de operacao. A MHS analisa o sistema completo para selecionar a bomba e a configuracao corretas.</p>
+                    </div>
+                    <a class="button-primary" href="https://wa.me/5585982031499?text=Ol%C3%A1%2C%20gostaria%20de%20dimensionar%20uma%20bomba%20el%C3%A9trica%20para%20meu%20projeto%20MHS." target="_blank" rel="noopener noreferrer">Falar com engenharia</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const carouselPumps = [
+            {
+                src: './carrossel_bombas/centrifuga%20(2).png',
+                alt: 'Bomba centrifuga verde com acoplamento direto'
+            },
+            {
+                src: './carrossel_bombas/7.png',
+                alt: 'Bomba centrifuga vermelha flangeada'
+            },
+            {
+                src: './carrossel_bombas/8.png',
+                alt: 'Bomba amarela para operacao de campo'
+            },
+            {
+                src: './carrossel_bombas/centrifuga.png',
+                alt: 'Bomba centrifuga compacta verde'
+            },
+            {
+                src: './carrossel_bombas/centrifuga%20(3).png',
+                alt: 'Conjunto motobomba portatil'
+            }
+        ];
+
+        const pumpLines = [
+            {
+                id: 'serie-c',
+                model: 'Serie C',
+                category: 'Centrifugas',
+                type: 'Centrifuga monoestagio',
+                models: 'C4 N1, C6 N4 e C7 R7',
+                shortModels: 'C4 / C6 / C7',
+                flow: 'Ate 24,5 m3/h',
+                head: 'Ate 39 m',
+                power: '1/3 a 3 cv',
+                rotation: '3.500 rpm',
+                build: 'Bocais roscados',
+                color: '#0088AC',
+                accent: '#8fd7ff',
+                description: 'Bombas compactas de acoplamento direto para transferencia de agua limpa, abastecimento, irrigacao leve e servicos gerais.',
+                features: [
+                    'C4 N1: 1/3 cv, vazao ate 5,8 m3/h e pressao maxima de 18 m.',
+                    'C6 N4: 1 cv, vazao ate 9,8 m3/h e pressao maxima de 29 m.',
+                    'C7 R7: 3 cv, vazao ate 24,5 m3/h e pressao maxima de 39 m.',
+                    'Outros modelos C, CE e K podem ser selecionados conforme o ponto de operacao.'
+                ]
+            },
+            {
+                id: 'serie-gk',
+                model: 'Serie GK',
+                category: 'Centrifugas',
+                type: 'Centrifuga monoestagio',
+                models: 'GK 5, GK 7 e GK 8',
+                shortModels: 'GK 5 / 7 / 8',
+                flow: 'Ate 54,6 m3/h',
+                head: 'Ate 25 m',
+                power: '1,5 a 5 cv',
+                rotation: '3.500 rpm',
+                build: 'Bocais roscados',
+                color: '#2dd4bf',
+                accent: '#a7f3d0',
+                description: 'Linha de maior vazao para transferencia, captacao, irrigacao e circulacao, com construcao simples e selo mecanico.',
+                features: [
+                    'GK 5: 1,5 cv, vazao ate 38,4 m3/h e pressao maxima de 13 m.',
+                    'GK 7: 3 cv, vazao ate 43 m3/h e pressao maxima de 21 m.',
+                    'GK 8: opcoes de 4 e 5 cv, vazao ate 54,6 m3/h e pressao maxima de 25 m.',
+                    'A selecao considera diametro dos bocais, pressao e rendimento no ponto de trabalho.'
+                ]
+            },
+            {
+                id: 'serie-kn-200',
+                model: 'Serie KN 200',
+                category: 'Centrifugas',
+                type: 'Centrifuga normalizada',
+                models: 'KN 50-200, KN 65-200 e KN 80-200',
+                shortModels: 'KN 50 / 65 / 80-200',
+                flow: 'Ate 295 m3/h',
+                head: 'Ate 97 m',
+                power: '3 a 100 cv',
+                rotation: '1.750 / 3.500 rpm',
+                build: 'Back-pull-out',
+                color: '#38bdf8',
+                accent: '#bae6fd',
+                description: 'Bombas normalizadas com construcao back-pull-out para processos, irrigacao e transferencia que exigem manutencao facilitada e ampla faixa hidraulica.',
+                features: [
+                    'Modelos de referencia: KN 50-200, KN 65-200 e KN 80-200.',
+                    'Disponiveis nas tabelas de 1.750 e 3.500 rpm, com diferentes rotores e potencias.',
+                    'Bocais roscados ou flangeados conforme o modelo selecionado.',
+                    'A faixa exibida combina as configuracoes catalogadas dos tres modelos destacados.'
+                ]
+            },
+            {
+                id: 'serie-irr',
+                model: 'Serie IRR BP / AP',
+                category: 'Centrifugas',
+                type: 'Centrifuga flangeada',
+                models: 'IRR 80-65-159, 100-80-159 e 125-100-170',
+                shortModels: 'IRR BP / AP',
+                flow: 'Ate 280 m3/h',
+                head: 'Ate 54 m',
+                power: '7,5 a 60 cv',
+                rotation: '3.500 rpm',
+                build: 'Flanges ABNT PB-15',
+                color: '#22c55e',
+                accent: '#bbf7d0',
+                description: 'Linha robusta para irrigacao, captacao, aducao e transferencia de maior porte, disponivel monobloco ou mancalizada.',
+                features: [
+                    'IRR 80-65-159 BP: opcoes de 7,5 a 20 cv.',
+                    'IRR 100-80-159 BP: opcoes de 15 a 40 cv.',
+                    'IRR 125-100-170 BP: opcoes de 30 a 60 cv.',
+                    'Vedacao por selo mecanico ou gaxeta; outros tamanhos IRR seguem sob consulta.'
+                ]
+            },
+            {
+                id: 'serie-gr',
+                model: 'Serie GR Garimpo',
+                category: 'Garimpo',
+                type: 'Bomba tipo draga',
+                models: 'GR 3x3 e GR 4x4',
+                shortModels: 'GR 3x3 / GR 4x4',
+                flow: 'Ate 150 m3/h',
+                head: 'Ate 44 m',
+                power: '3 a 25 cv',
+                rotation: '1.750 / 3.500 rpm',
+                build: 'Rotor semiaberto',
+                color: '#818cf8',
+                accent: '#c7d2fe',
+                description: 'Bombas mancalizadas com rotor semiaberto para operacoes de draga e garimpo, com opcoes de acionamento eletrico ou diesel.',
+                features: [
+                    'GR 3x3: ate 105 m3/h e 44 m com acionamento eletrico.',
+                    'GR 4x4: ate 150 m3/h e 44 m com acionamento eletrico.',
+                    'Versoes diesel catalogadas entre 1.800 e 3.000 rpm.',
+                    'Vedacao por gaxeta e conjunto mancalizado para a aplicacao severa.'
+                ]
+            },
+            {
+                id: 'combate-incendio',
+                model: 'Combate a Incendio',
+                category: 'Incendio',
+                type: 'Centrifuga monoestagio',
+                models: 'HK-I, GK-I, C8E-I, C10R-I e DK-I 65',
+                shortModels: 'HK / GK / C8E / C10R-I',
+                flow: 'Ate 54,6 m3/h',
+                head: 'Ate 106 m',
+                power: '1,5 a 30 cv',
+                rotation: '3.500 rpm',
+                build: 'Roscada ou flangeada',
+                color: '#f97316',
+                accent: '#fed7aa',
+                description: 'Bombas catalogadas para conjuntos de combate a incendio, com diferentes faixas de pressao, potencias e opcoes de bocais.',
+                features: [
+                    'Exemplos: HK 5-I, GK 8-I, C8E 10-I, C10R 12-I e DK-I 65.',
+                    'Motores Jet Pump IP-21 ou JM IP-55 conforme a potencia selecionada.',
+                    'Bocais roscados ou flangeados com contraflanges conforme o modelo.',
+                    'O conjunto deve ser especificado pela demanda, risco e requisitos aplicaveis ao projeto.'
+                ]
+            },
+            {
+                id: 'jockey-ie',
+                model: 'Bombas Jockey IE',
+                category: 'Incendio',
+                type: 'Manutencao de pressao',
+                models: 'IE-2, IE-3, IE-4, IE-5, IE-6 e IE-7',
+                shortModels: 'IE-2 a IE-7',
+                flow: 'Ate 2,66 m3/h',
+                head: 'Ate 140 m',
+                power: '1/2 a 3 cv',
+                rotation: '3.500 rpm',
+                build: 'Bico e venturi',
+                color: '#e42927',
+                accent: '#fecaca',
+                description: 'Linha Jockey para manutencao da pressao da rede e compensacao de pequenas perdas sem acionar a bomba principal.',
+                features: [
+                    'Modelos IE-2 a IE-7, com potencias de 1/2 a 3 cv.',
+                    'Bocais de succao e recalque de 3/4 de polegada.',
+                    'Faixa catalogada para pequenas vazoes e alturas de ate 140 m.',
+                    'A Jockey deve ser selecionada em conjunto com a bomba principal e o sistema de comando.'
+                ]
+            }
+        ];
+
+        const filters = [...new Set(pumpLines.map((item) => item.category))];
+        let activeFilter = filters[0] || '';
+        let activeProductIndex = 0;
+        const catalogCarouselState = {
+            activeIndex: 0,
+            pointerId: null,
+            pointerStartX: null,
+            pointerDeltaX: 0,
+            suppressClick: false
+        };
+
+        function pumpSvg(product, variant = 'card') {
+            const isHero = variant === 'hero';
+            const width = isHero ? 820 : 520;
+            const height = isHero ? 520 : 360;
+            const color = product?.color || '#0088AC';
+            const accent = product?.accent || '#8fd7ff';
+            const label = product?.model || 'Bomba eletrica';
+
+            return `
+                <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${label}">
+                    <defs>
+                        <linearGradient id="body-${variant}-${product?.id || 'hero'}" x1="0" x2="1" y1="0" y2="1">
+                            <stop offset="0" stop-color="#f8fafc"/>
+                            <stop offset="0.52" stop-color="#b7c1cb"/>
+                            <stop offset="1" stop-color="#657283"/>
+                        </linearGradient>
+                        <linearGradient id="motor-${variant}-${product?.id || 'hero'}" x1="0" x2="1">
+                            <stop offset="0" stop-color="${color}"/>
+                            <stop offset="1" stop-color="#182540"/>
+                        </linearGradient>
+                    </defs>
+                    <g transform="${isHero ? 'translate(92 98) scale(1.15)' : 'translate(38 62)'}">
+                        <ellipse cx="235" cy="238" rx="205" ry="28" fill="rgba(0,0,0,0.28)"/>
+                        <rect x="68" y="198" width="318" height="28" rx="8" fill="#28344b"/>
+                        <rect x="118" y="160" width="60" height="58" rx="10" fill="#5b6676"/>
+                        <rect x="268" y="164" width="78" height="54" rx="10" fill="#5b6676"/>
+                        <rect x="174" y="90" width="190" height="106" rx="34" fill="url(#motor-${variant}-${product?.id || 'hero'})"/>
+                        <g opacity="0.28" stroke="#ffffff" stroke-width="5">
+                            <line x1="206" y1="104" x2="206" y2="184"/>
+                            <line x1="238" y1="104" x2="238" y2="184"/>
+                            <line x1="270" y1="104" x2="270" y2="184"/>
+                            <line x1="302" y1="104" x2="302" y2="184"/>
+                            <line x1="334" y1="104" x2="334" y2="184"/>
+                        </g>
+                        <circle cx="142" cy="144" r="78" fill="url(#body-${variant}-${product?.id || 'hero'})"/>
+                        <circle cx="142" cy="144" r="42" fill="#182540"/>
+                        <circle cx="142" cy="144" r="24" fill="${accent}"/>
+                        <path d="M64 114 C40 113 26 126 26 146 L26 185 L86 185 L86 132 C86 122 78 115 64 114Z" fill="url(#body-${variant}-${product?.id || 'hero'})"/>
+                        <path d="M92 76 C96 46 118 30 150 30 L198 30 L198 73 L152 73 C136 73 126 82 124 96Z" fill="url(#body-${variant}-${product?.id || 'hero'})"/>
+                        <rect x="352" y="120" width="70" height="34" rx="12" fill="#7b8796"/>
+                        <rect x="414" y="128" width="54" height="18" rx="9" fill="${accent}"/>
+                        <rect x="206" y="70" width="100" height="24" rx="10" fill="#111827"/>
+                    </g>
+                </svg>
+            `;
+        }
+
+        function whatsappUrl(product) {
+            const text = `Ola, gostaria de selecionar um modelo da linha ${product.model} (${product.models}) para um projeto MHS.`;
+            return WHATSAPP_BASE + encodeURIComponent(text);
+        }
+
+        function initHeroCarousel() {
+            const carousel = document.getElementById('hero-carousel');
+            const orbit = document.getElementById('carousel-orbit');
+            if (!carousel || !orbit || carouselPumps.length === 0) return;
+
+            orbit.innerHTML = carouselPumps.map((pump, index) => `
+                <button type="button" class="carousel-item" aria-label="Exibir ${pump.alt}" data-carousel-index="${index}">
+                    <span class="carousel-item-media">
+                        <img src="${pump.src}" alt="${pump.alt}" draggable="false" decoding="async" loading="eager"${index === 0 ? ' fetchpriority="high"' : ''}>
+                    </span>
+                </button>
+            `).join('');
+
+            const items = Array.from(orbit.querySelectorAll('.carousel-item'));
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const frontAngle = Math.PI / 2;
+            const step = (Math.PI * 2) / items.length;
+            const dwellDuration = 3400;
+            const transitionDuration = 1800;
+            let rotation = frontAngle;
+            let snapTarget = null;
+            let transitionFrom = rotation;
+            let transitionElapsed = 0;
+            let frontIndex = -1;
+            let frameId = 0;
+            let cycleTimer = 0;
+            let previousTime = 0;
+            let isVisible = true;
+            let isHovered = false;
+            let hasFocus = false;
+
+            function shortestAngle(angle) {
+                return Math.atan2(Math.sin(angle), Math.cos(angle));
+            }
+
+            function renderCarousel() {
+                const width = Math.max(carousel.clientWidth, 280);
+                const height = Math.max(carousel.clientHeight, 250);
+                const isCompact = width < 520;
+                const radiusX = width * (isCompact ? 0.34 : 0.35);
+                const radiusY = height * (isCompact ? 0.085 : 0.12);
+                let nearestIndex = 0;
+                let nearestDepth = -1;
+
+                items.forEach((item, index) => {
+                    const angle = rotation + (index * step);
+                    const sine = Math.sin(angle);
+                    const depth = (sine + 1) / 2;
+                    const depthCurve = depth * depth;
+                    const x = Math.cos(angle) * radiusX;
+                    const y = sine * radiusY;
+                    const scale = 0.48 + (depthCurve * 0.74);
+                    const opacity = 0.16 + (depthCurve * 0.84);
+
+                    item.style.zIndex = String(Math.round(depth * 100) + 1);
+                    item.style.opacity = opacity.toFixed(3);
+                    item.style.transform = `translate(-50%, -50%) translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) scale(${scale.toFixed(3)})`;
+
+                    if (depth > nearestDepth) {
+                        nearestDepth = depth;
+                        nearestIndex = index;
+                    }
+                });
+
+                if (nearestIndex !== frontIndex) {
+                    frontIndex = nearestIndex;
+                    items.forEach((item, index) => {
+                        const isFront = index === frontIndex;
+                        item.classList.toggle('is-front', isFront);
+                        item.setAttribute('aria-current', isFront ? 'true' : 'false');
+                    });
+                }
+            }
+
+            function canAutoCycle() {
+                return isVisible && !document.hidden && !reducedMotion.matches && !isHovered && !hasFocus;
+            }
+
+            function clearCycleTimer() {
+                if (!cycleTimer) return;
+                clearTimeout(cycleTimer);
+                cycleTimer = 0;
+            }
+
+            function scheduleNextItem() {
+                if (!canAutoCycle() || snapTarget !== null || cycleTimer) return;
+
+                cycleTimer = window.setTimeout(() => {
+                    cycleTimer = 0;
+                    const nextIndex = (frontIndex - 1 + items.length) % items.length;
+                    focusItem(nextIndex);
+                }, dwellDuration);
+            }
+
+            function syncAnimation() {
+                const canRunTransition = snapTarget !== null && isVisible && !document.hidden && !reducedMotion.matches;
+
+                if (canRunTransition && !frameId) {
+                    previousTime = performance.now();
+                    frameId = requestAnimationFrame(animateCarousel);
+                } else if (!canRunTransition && frameId) {
+                    cancelAnimationFrame(frameId);
+                    frameId = 0;
+                }
+
+                if (snapTarget === null && canAutoCycle()) {
+                    scheduleNextItem();
+                } else {
+                    clearCycleTimer();
+                }
+            }
+
+            function animateCarousel(time) {
+                frameId = 0;
+                const delta = Math.min(Math.max(time - previousTime, 0), 48);
+                previousTime = time;
+
+                if (snapTarget !== null) {
+                    transitionElapsed = Math.min(transitionElapsed + delta, transitionDuration);
+                    const progress = transitionElapsed / transitionDuration;
+                    const easing = 0.5 - (Math.cos(Math.PI * progress) / 2);
+                    rotation = transitionFrom + ((snapTarget - transitionFrom) * easing);
+
+                    if (progress >= 1) {
+                        rotation = snapTarget;
+                        snapTarget = null;
+                        transitionElapsed = 0;
+                    }
+                }
+
+                renderCarousel();
+                syncAnimation();
+            }
+
+            function focusItem(index) {
+                const normalizedIndex = (index + items.length) % items.length;
+                const itemAngle = rotation + (normalizedIndex * step);
+                const adjustment = shortestAngle(frontAngle - itemAngle);
+
+                clearCycleTimer();
+
+                if (reducedMotion.matches) {
+                    rotation += adjustment;
+                    snapTarget = null;
+                    transitionElapsed = 0;
+                    renderCarousel();
+                    return;
+                }
+
+                transitionFrom = rotation;
+                snapTarget = rotation + adjustment;
+                transitionElapsed = 0;
+                syncAnimation();
+            }
+
+            items.forEach((item, index) => {
+                item.addEventListener('click', () => focusItem(index));
+                item.querySelector('img').addEventListener('error', () => item.classList.add('is-error'));
+            });
+
+            carousel.addEventListener('mouseenter', () => {
+                isHovered = true;
+                syncAnimation();
+            });
+
+            carousel.addEventListener('mouseleave', () => {
+                isHovered = false;
+                syncAnimation();
+            });
+
+            carousel.addEventListener('focusin', () => {
+                hasFocus = true;
+                syncAnimation();
+            });
+
+            carousel.addEventListener('focusout', (event) => {
+                if (!carousel.contains(event.relatedTarget)) {
+                    hasFocus = false;
+                    syncAnimation();
+                }
+            });
+
+            carousel.addEventListener('keydown', (event) => {
+                if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+                event.preventDefault();
+                const direction = event.key === 'ArrowRight' ? 1 : -1;
+                const nextIndex = (frontIndex + direction + items.length) % items.length;
+                focusItem(nextIndex);
+                items[nextIndex].focus({ preventScroll: true });
+            });
+
+            document.addEventListener('visibilitychange', syncAnimation);
+            window.addEventListener('resize', renderCarousel, { passive: true });
+
+            if (typeof reducedMotion.addEventListener === 'function') {
+                reducedMotion.addEventListener('change', () => {
+                    if (reducedMotion.matches && snapTarget !== null) {
+                        rotation = snapTarget;
+                        snapTarget = null;
+                        transitionElapsed = 0;
+                    }
+                    renderCarousel();
+                    syncAnimation();
+                });
+            }
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    isVisible = entries[0]?.isIntersecting ?? true;
+                    syncAnimation();
+                }, { threshold: 0.08 });
+                observer.observe(carousel);
+            }
+
+            renderCarousel();
+            syncAnimation();
+        }
+
+        function initExplodedView() {
+            const assembly = document.getElementById('exploded-assembly');
+            if (!assembly) return;
+
+            const pieces = [...assembly.querySelectorAll('.exploded-piece')];
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const springFrames = new WeakMap();
+            let activePointer = null;
+
+            const setDragOffset = (piece, x, y) => {
+                piece.style.setProperty('--drag-x', `${x.toFixed(2)}px`);
+                piece.style.setProperty('--drag-y', `${y.toFixed(2)}px`);
+            };
+
+            const stopSpring = (piece, reset = false) => {
+                const frame = springFrames.get(piece);
+                if (frame) cancelAnimationFrame(frame);
+                springFrames.delete(piece);
+                piece.classList.remove('is-returning');
+                if (reset) setDragOffset(piece, 0, 0);
+            };
+
+            const springHome = (piece, velocityX, velocityY) => {
+                piece.classList.remove('is-dragging');
+                piece.classList.add('is-returning');
+                piece.setAttribute('aria-grabbed', 'false');
+
+                if (reducedMotion) {
+                    setDragOffset(piece, 0, 0);
+                    piece.classList.remove('is-returning');
+                    assembly.classList.remove('has-elastic-motion');
+                    return;
+                }
+
+                let x = Number.parseFloat(piece.style.getPropertyValue('--drag-x')) || 0;
+                let y = Number.parseFloat(piece.style.getPropertyValue('--drag-y')) || 0;
+                let vx = Math.max(-900, Math.min(900, velocityX));
+                let vy = Math.max(-900, Math.min(900, velocityY));
+                let previousTime = performance.now();
+
+                const tick = (currentTime) => {
+                    const deltaTime = Math.min((currentTime - previousTime) / 1000, 0.032);
+                    previousTime = currentTime;
+
+                    vx += -118 * x * deltaTime;
+                    vy += -118 * y * deltaTime;
+
+                    const damping = Math.exp(-14.5 * deltaTime);
+                    vx *= damping;
+                    vy *= damping;
+                    x += vx * deltaTime;
+                    y += vy * deltaTime;
+                    setDragOffset(piece, x, y);
+
+                    const settled = Math.abs(x) < 0.12 && Math.abs(y) < 0.12 && Math.abs(vx) < 2 && Math.abs(vy) < 2;
+                    if (settled) {
+                        setDragOffset(piece, 0, 0);
+                        piece.classList.remove('is-returning');
+                        springFrames.delete(piece);
+                        assembly.classList.remove('has-elastic-motion');
+                        return;
+                    }
+
+                    springFrames.set(piece, requestAnimationFrame(tick));
+                };
+
+                springFrames.set(piece, requestAnimationFrame(tick));
+            };
+
+            pieces.forEach((piece) => {
+                const image = piece.querySelector('img');
+                if (!image) return;
+                piece.setAttribute('aria-pressed', 'false');
+                piece.setAttribute('aria-grabbed', 'false');
+
+                const revealPiece = () => piece.classList.add('is-loaded');
+                const hideMissingPiece = () => {
+                    piece.hidden = true;
+                    piece.setAttribute('aria-hidden', 'true');
+                };
+
+                if (image.complete) {
+                    image.naturalWidth > 0 ? revealPiece() : hideMissingPiece();
+                } else {
+                    image.addEventListener('load', revealPiece, { once: true });
+                    image.addEventListener('error', hideMissingPiece, { once: true });
+                }
+
+                piece.addEventListener('click', () => {
+                    if (piece.dataset.dragged === 'true') return;
+                    const shouldActivate = !piece.classList.contains('is-active');
+                    pieces.forEach((item) => {
+                        item.classList.remove('is-active');
+                        item.setAttribute('aria-pressed', 'false');
+                    });
+                    assembly.classList.toggle('has-active', shouldActivate);
+                    if (shouldActivate) {
+                        piece.classList.add('is-active');
+                        piece.setAttribute('aria-pressed', 'true');
+                    }
+                });
+
+                piece.addEventListener('pointerdown', (event) => {
+                    if (activePointer || (event.pointerType === 'mouse' && event.button !== 0)) return;
+
+                    pieces.forEach((item) => {
+                        stopSpring(item, true);
+                        item.classList.remove('is-active');
+                        item.setAttribute('aria-pressed', 'false');
+                    });
+                    assembly.classList.remove('has-active');
+                    assembly.classList.add('has-elastic-motion');
+
+                    activePointer = {
+                        piece,
+                        pointerId: event.pointerId,
+                        startX: event.clientX,
+                        startY: event.clientY,
+                        lastX: 0,
+                        lastY: 0,
+                        lastTime: event.timeStamp,
+                        velocityX: 0,
+                        velocityY: 0,
+                        moved: false
+                    };
+
+                    piece.classList.add('is-dragging');
+                    piece.setAttribute('aria-grabbed', 'true');
+                    piece.setPointerCapture?.(event.pointerId);
+                    event.preventDefault();
+                });
+
+                piece.addEventListener('pointermove', (event) => {
+                    if (!activePointer || activePointer.piece !== piece || activePointer.pointerId !== event.pointerId) return;
+
+                    const rawX = event.clientX - activePointer.startX;
+                    const rawY = event.clientY - activePointer.startY;
+                    const distance = Math.hypot(rawX, rawY);
+                    const elasticLimit = Math.min(190, Math.max(70, assembly.clientWidth * 0.18));
+                    const resistedDistance = elasticLimit * (1 - Math.exp(-distance / elasticLimit));
+                    const factor = distance > 0 ? resistedDistance / distance : 0;
+                    const x = rawX * factor;
+                    const y = rawY * factor;
+                    const deltaTime = Math.max((event.timeStamp - activePointer.lastTime) / 1000, 0.001);
+
+                    activePointer.velocityX = (x - activePointer.lastX) / deltaTime;
+                    activePointer.velocityY = (y - activePointer.lastY) / deltaTime;
+                    activePointer.lastX = x;
+                    activePointer.lastY = y;
+                    activePointer.lastTime = event.timeStamp;
+                    activePointer.moved = activePointer.moved || distance > 5;
+                    setDragOffset(piece, x, y);
+                    event.preventDefault();
+                });
+
+                const releasePiece = (event) => {
+                    if (!activePointer || activePointer.piece !== piece || activePointer.pointerId !== event.pointerId) return;
+
+                    const releaseDelay = Math.max((event.timeStamp - activePointer.lastTime) / 1000, 0);
+                    const releaseDamping = Math.exp(-12 * releaseDelay);
+                    const velocityX = activePointer.velocityX * releaseDamping;
+                    const velocityY = activePointer.velocityY * releaseDamping;
+                    const moved = activePointer.moved;
+                    activePointer = null;
+                    if (piece.hasPointerCapture?.(event.pointerId)) piece.releasePointerCapture(event.pointerId);
+                    piece.dataset.dragged = moved ? 'true' : 'false';
+                    window.setTimeout(() => {
+                        piece.dataset.dragged = 'false';
+                    }, 0);
+                    if (moved) {
+                        springHome(piece, velocityX, velocityY);
+                    } else {
+                        piece.classList.remove('is-dragging');
+                        piece.setAttribute('aria-grabbed', 'false');
+                        setDragOffset(piece, 0, 0);
+                        assembly.classList.remove('has-elastic-motion');
+                    }
+                };
+
+                piece.addEventListener('pointerup', releasePiece);
+                piece.addEventListener('pointercancel', releasePiece);
+            });
+
+            document.addEventListener('pointerdown', (event) => {
+                if (!assembly.contains(event.target)) {
+                    assembly.classList.remove('has-active');
+                    pieces.forEach((piece) => {
+                        piece.classList.remove('is-active');
+                        piece.setAttribute('aria-pressed', 'false');
+                    });
+                }
+            });
+        }
+
+        function initExplodedReveal() {
+            const assembly = document.getElementById('exploded-assembly');
+            if (!assembly || !('IntersectionObserver' in window)) return;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            let armed = true;
+            let cleanupTimer = null;
+            let startTimer = null;
+
+            const visibleRatio = () => {
+                const rect = assembly.getBoundingClientRect();
+                const visibleHeight = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
+                return rect.height > 0 ? visibleHeight / rect.height : 0;
+            };
+
+            const playReveal = () => {
+                window.clearTimeout(cleanupTimer);
+                assembly.classList.remove('is-revealing');
+                void assembly.offsetWidth;
+                assembly.classList.add('is-revealing');
+                cleanupTimer = window.setTimeout(() => {
+                    assembly.classList.remove('is-revealing');
+                }, 2900);
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                const entry = entries[0];
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.82 && armed) {
+                    armed = false;
+                    window.clearTimeout(startTimer);
+                    startTimer = window.setTimeout(() => {
+                        if (visibleRatio() >= 0.78) {
+                            playReveal();
+                        } else {
+                            armed = true;
+                        }
+                    }, 320);
+                } else if (!entry.isIntersecting || entry.intersectionRatio <= 0.08) {
+                    window.clearTimeout(startTimer);
+                    armed = true;
+                }
+            }, { threshold: [0, 0.08, 0.5, 0.82, 1] });
+
+            observer.observe(assembly);
+        }
+
+        function renderFilters() {
+            const target = document.getElementById('filter-bar');
+            target.innerHTML = filters.map((filter) => `
+                <button type="button" class="filter-button${filter === activeFilter ? ' is-active' : ''}" data-filter="${filter}">
+                    ${filter}
+                </button>
+            `).join('');
+
+            target.querySelectorAll('[data-filter]').forEach((button) => {
+                button.addEventListener('click', () => {
+                    activeFilter = button.dataset.filter;
+                    renderFilters();
+                    renderProducts(0);
+                });
+            });
+        }
+
+        function getVisibleProducts() {
+            if (!activeFilter) return pumpLines;
+            return pumpLines.filter((item) => item.category === activeFilter);
+        }
+
+        function renderProducts(targetIndex = 0) {
+            const grid = document.getElementById('product-grid');
+            const dots = document.getElementById('catalog-carousel-dots');
+            const products = getVisibleProducts();
+            if (!grid || !dots) return;
+
+            catalogCarouselState.activeIndex = Math.min(Math.max(targetIndex, 0), Math.max(products.length - 1, 0));
+            grid.classList.add('is-initializing');
+
+            grid.innerHTML = products.map((product, index) => `
+                <article class="product-card" data-carousel-index="${index}">
+                    <div class="product-card-visual" aria-hidden="true">${pumpSvg(product)}</div>
+                    <span class="product-category">${product.category}</span>
+                    <h3 class="product-title">${product.model}</h3>
+                    <p class="product-desc">${product.description}</p>
+                    <div class="product-specs">
+                        <div class="spec-pill"><span>Vazao</span><strong>${product.flow}</strong></div>
+                        <div class="spec-pill"><span>Altura</span><strong>${product.head}</strong></div>
+                        <div class="spec-pill"><span>Potencia</span><strong>${product.power}</strong></div>
+                        <div class="spec-pill"><span>Modelos</span><strong>${product.shortModels}</strong></div>
+                    </div>
+                    <div class="product-actions">
+                        <button type="button" class="product-open" data-product-id="${product.id}">Ver ficha</button>
+                        <a class="product-contact" href="${whatsappUrl(product)}" target="_blank" rel="noopener noreferrer" aria-label="Solicitar ${product.model}">&nearr;</a>
+                    </div>
+                </article>
+            `).join('');
+
+            dots.innerHTML = products.map((product, index) => `
+                <button type="button" class="catalog-carousel-dot" data-carousel-dot="${index}" aria-label="Selecionar ${product.model}"></button>
+            `).join('');
+
+            grid.querySelectorAll('.product-card').forEach((card, index) => {
+                card.addEventListener('click', (event) => {
+                    if (catalogCarouselState.suppressClick || event.target.closest('button, a')) return;
+                    setActiveCatalogProduct(index);
+                });
+            });
+
+            grid.querySelectorAll('[data-product-id]').forEach((button, index) => {
+                button.addEventListener('click', () => {
+                    if (catalogCarouselState.suppressClick) return;
+                    setActiveCatalogProduct(index);
+                    openProduct(button.dataset.productId);
+                });
+            });
+
+            grid.querySelectorAll('.product-contact').forEach((link) => {
+                link.addEventListener('click', (event) => {
+                    if (!catalogCarouselState.suppressClick) return;
+                    event.preventDefault();
+                });
+            });
+
+            dots.querySelectorAll('[data-carousel-dot]').forEach((dot) => {
+                dot.addEventListener('click', () => setActiveCatalogProduct(Number(dot.dataset.carouselDot)));
+            });
+
+            updateCatalogCarousel();
+            void grid.offsetWidth;
+            grid.classList.remove('is-initializing');
+        }
+
+        function changeCatalogGroup(direction) {
+            if (!filters.length) return;
+
+            const currentGroupIndex = Math.max(filters.indexOf(activeFilter), 0);
+            const nextGroupIndex = (currentGroupIndex + direction + filters.length) % filters.length;
+            activeFilter = filters[nextGroupIndex];
+            renderFilters();
+
+            const nextProducts = getVisibleProducts();
+            const targetIndex = direction > 0 ? 0 : Math.max(nextProducts.length - 1, 0);
+            renderProducts(targetIndex);
+        }
+
+        function setActiveCatalogProduct(index) {
+            const products = getVisibleProducts();
+            if (!products.length) return;
+
+            if (index < 0) {
+                changeCatalogGroup(-1);
+                return;
+            }
+
+            if (index >= products.length) {
+                changeCatalogGroup(1);
+                return;
+            }
+
+            catalogCarouselState.activeIndex = index;
+            updateCatalogCarousel();
+        }
+
+        function updateCatalogCarousel() {
+            const viewport = document.getElementById('catalog-carousel-viewport');
+            const track = document.getElementById('product-grid');
+            const prevButton = document.getElementById('catalog-carousel-prev');
+            const nextButton = document.getElementById('catalog-carousel-next');
+            const dotsContainer = document.getElementById('catalog-carousel-dots');
+            const cards = track ? Array.from(track.children) : [];
+            const dots = dotsContainer ? Array.from(dotsContainer.children) : [];
+            const activeCard = cards[catalogCarouselState.activeIndex];
+            if (!viewport || !track || !prevButton || !nextButton || !dotsContainer || !activeCard) return;
+
+            cards.forEach((card, index) => {
+                const distance = Math.abs(index - catalogCarouselState.activeIndex);
+                const isNeighbor = distance === 1 || distance === cards.length - 1;
+                const isActive = index === catalogCarouselState.activeIndex;
+
+                card.classList.toggle('is-active', isActive);
+                card.classList.toggle('is-neighbor', !isActive && isNeighbor);
+                card.setAttribute('aria-current', isActive ? 'true' : 'false');
+            });
+
+            dots.forEach((dot, index) => {
+                const isActive = index === catalogCarouselState.activeIndex;
+                dot.classList.toggle('is-active', isActive);
+                dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+            });
+
+            const hasCatalogNavigation = pumpLines.length > 1;
+            const hasMultipleCards = cards.length > 1;
+            prevButton.classList.toggle('is-hidden', !hasCatalogNavigation);
+            nextButton.classList.toggle('is-hidden', !hasCatalogNavigation);
+            dotsContainer.classList.toggle('is-hidden', !hasMultipleCards);
+            prevButton.disabled = !hasCatalogNavigation;
+            nextButton.disabled = !hasCatalogNavigation;
+
+            const activeCenter = activeCard.offsetLeft + (activeCard.offsetWidth / 2);
+            const viewportCenter = viewport.clientWidth / 2;
+            track.style.transform = `translate3d(${(viewportCenter - activeCenter).toFixed(2)}px, 0, 0)`;
+        }
+
+        function finishCatalogDrag(viewport, pointerId) {
+            if (catalogCarouselState.pointerStartX === null) return;
+
+            const distance = catalogCarouselState.pointerDeltaX;
+            if (Math.abs(distance) > 24) {
+                catalogCarouselState.suppressClick = true;
+                window.setTimeout(() => {
+                    catalogCarouselState.suppressClick = false;
+                }, 180);
+            }
+
+            if (Math.abs(distance) > 42) {
+                setActiveCatalogProduct(catalogCarouselState.activeIndex + (distance < 0 ? 1 : -1));
+            }
+
+            if (pointerId !== null && viewport.hasPointerCapture?.(pointerId)) {
+                viewport.releasePointerCapture(pointerId);
+            }
+
+            catalogCarouselState.pointerId = null;
+            catalogCarouselState.pointerStartX = null;
+            catalogCarouselState.pointerDeltaX = 0;
+            viewport.classList.remove('is-dragging');
+        }
+
+        function bindCatalogCarousel() {
+            const viewport = document.getElementById('catalog-carousel-viewport');
+            const prevButton = document.getElementById('catalog-carousel-prev');
+            const nextButton = document.getElementById('catalog-carousel-next');
+            if (!viewport || !prevButton || !nextButton) return;
+
+            prevButton.addEventListener('click', () => {
+                setActiveCatalogProduct(catalogCarouselState.activeIndex - 1);
+            });
+
+            nextButton.addEventListener('click', () => {
+                setActiveCatalogProduct(catalogCarouselState.activeIndex + 1);
+            });
+
+            viewport.addEventListener('keydown', (event) => {
+                if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+                event.preventDefault();
+                setActiveCatalogProduct(catalogCarouselState.activeIndex + (event.key === 'ArrowRight' ? 1 : -1));
+            });
+
+            viewport.addEventListener('pointerdown', (event) => {
+                if (event.pointerType === 'mouse' && event.button !== 0) return;
+                if (event.target.closest('button, a')) return;
+
+                catalogCarouselState.pointerId = event.pointerId;
+                catalogCarouselState.pointerStartX = event.clientX;
+                catalogCarouselState.pointerDeltaX = 0;
+                viewport.classList.add('is-dragging');
+                viewport.setPointerCapture?.(event.pointerId);
+            });
+
+            viewport.addEventListener('pointermove', (event) => {
+                if (catalogCarouselState.pointerStartX === null || event.pointerId !== catalogCarouselState.pointerId) return;
+                catalogCarouselState.pointerDeltaX = event.clientX - catalogCarouselState.pointerStartX;
+            });
+
+            viewport.addEventListener('pointerup', (event) => finishCatalogDrag(viewport, event.pointerId));
+            viewport.addEventListener('pointercancel', (event) => finishCatalogDrag(viewport, event.pointerId));
+            window.addEventListener('resize', () => window.requestAnimationFrame(updateCatalogCarousel), { passive: true });
+        }
+
+        function openProduct(id) {
+            const index = pumpLines.findIndex((item) => item.id === id);
+            if (index < 0) return;
+
+            activeProductIndex = index;
+            const product = pumpLines[index];
+            const modal = document.getElementById('product-modal');
+
+            document.getElementById('modal-title').textContent = product.model;
+            document.getElementById('modal-description').textContent = product.description;
+            document.getElementById('modal-visual').innerHTML = pumpSvg(product, 'modal');
+            document.getElementById('modal-flow').textContent = product.flow;
+            document.getElementById('modal-head').textContent = product.head;
+            document.getElementById('modal-power').textContent = product.power;
+            document.getElementById('modal-rotation').textContent = product.rotation;
+            document.getElementById('modal-build').textContent = product.build;
+            document.getElementById('modal-models').textContent = product.models;
+            document.getElementById('modal-features').innerHTML = product.features.map((feature) => `<li>${feature}</li>`).join('');
+            document.getElementById('modal-whatsapp').href = whatsappUrl(product);
+
+            modal.classList.add('active');
+            document.body.classList.add('is-modal-open');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.remove('active');
+            document.body.classList.remove('is-modal-open');
+        }
+
+        function openNextProduct() {
+            const nextIndex = (activeProductIndex + 1) % pumpLines.length;
+            openProduct(pumpLines[nextIndex].id);
+        }
+
+        function bindModal() {
+            const modal = document.getElementById('product-modal');
+            document.getElementById('modal-close').addEventListener('click', closeProductModal);
+            document.getElementById('modal-next').addEventListener('click', openNextProduct);
+
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) closeProductModal();
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modal.classList.contains('active')) closeProductModal();
+            });
+        }
+
+        function init() {
+            initHeroCarousel();
+            initExplodedView();
+            initExplodedReveal();
+        }
+
+        init();
+    </script>
+</body>
+</html>

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Bombas Centrifugas e Eletricas | MHS</title>
-    <meta name="description" content="Catalogo tecnico de bombas centrifugas e eletricas para projetos MHS: transferencia, irrigacao, pressurizacao, poco profundo e operacoes industriais.">
+    <title>Bombas Centr&iacute;fugas e El&eacute;tricas | MHS</title>
+    <meta name="description" content="Cat&aacute;logo t&eacute;cnico de bombas centr&iacute;fugas e el&eacute;tricas para projetos MHS: transfer&ecirc;ncia, irriga&ccedil;&atilde;o, pressuriza&ccedil;&atilde;o, po&ccedil;o profundo e opera&ccedil;&otilde;es industriais.">
     <style>
         :root {
             color-scheme: dark;
@@ -870,30 +870,144 @@
         }
 
         .cta-panel {
-            position: relative;
-            overflow: hidden;
-            display: grid;
-            gap: 1rem;
-            padding: clamp(1.25rem, 4vw, 2rem);
-            border-radius: 26px;
-            background:
-                linear-gradient(135deg, rgba(24,37,64,0.96), rgba(10,16,26,0.98)),
-                rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 30px 70px rgba(0,0,0,0.32);
+            display: flex;
+            justify-content: center;
         }
 
-        .cta-panel h2 {
+        #contato {
+            padding-top: clamp(1.5rem, 3vw, 2.5rem);
+            padding-bottom: clamp(2.5rem, 5vw, 4rem);
+        }
+
+        .related-solutions {
+            padding-top: 0;
+            padding-bottom: clamp(3.5rem, 7vw, 5.5rem);
+        }
+
+        .related-header {
+            max-width: 40rem;
+            margin: 0 auto clamp(1.4rem, 3vw, 2rem);
+            text-align: center;
+        }
+
+        .related-header h2 {
             margin: 0;
             color: #ffffff;
-            font-size: clamp(1.55rem, 4vw, 2.35rem);
+            font-size: clamp(1.45rem, 3vw, 2rem);
             line-height: 1.1;
         }
 
-        .cta-panel p {
-            margin: 0;
+        .related-header p {
+            margin: 0.55rem 0 0;
             color: var(--muted);
+            font-size: 0.84rem;
             line-height: 1.6;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            width: min(100%, 64rem);
+            margin: 0 auto;
+        }
+
+        .related-card {
+            position: relative;
+            min-height: 14rem;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(10rem, 0.9fr);
+            align-items: center;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background:
+                radial-gradient(circle at 82% 42%, rgba(0,136,172,0.12), transparent 42%),
+                rgba(255,255,255,0.025);
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+        }
+
+        .related-card:hover,
+        .related-card:focus-visible {
+            transform: translateY(-3px);
+            border-color: rgba(34,199,238,0.34);
+            background:
+                radial-gradient(circle at 82% 42%, rgba(0,136,172,0.18), transparent 46%),
+                rgba(255,255,255,0.04);
+            outline: none;
+        }
+
+        .related-copy {
+            position: relative;
+            z-index: 2;
+            padding: 1.35rem 0 1.35rem 1.35rem;
+        }
+
+        .related-copy span {
+            display: block;
+            color: var(--brand-teal);
+            font-size: 0.64rem;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .related-copy h3 {
+            margin: 0.4rem 0 0;
+            color: #ffffff;
+            font-size: clamp(1.1rem, 2.1vw, 1.45rem);
+            line-height: 1.15;
+        }
+
+        .related-copy p {
+            margin: 0.55rem 0 0;
+            color: var(--muted);
+            font-size: 0.76rem;
+            line-height: 1.55;
+        }
+
+        .related-link-label {
+            margin-top: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: #dff8fd;
+            font-size: 0.76rem;
+            font-weight: 850;
+        }
+
+        .related-link-label::after {
+            content: "\2192";
+            color: var(--brand-teal);
+            font-size: 1rem;
+            transition: transform 0.25s ease;
+        }
+
+        .related-card:hover .related-link-label::after,
+        .related-card:focus-visible .related-link-label::after {
+            transform: translateX(4px);
+        }
+
+        .related-media {
+            height: 100%;
+            min-height: 14rem;
+            display: grid;
+            place-items: center;
+            padding: 1rem 0.75rem 1rem 0;
+        }
+
+        .related-media img {
+            display: block;
+            width: 100%;
+            height: 11rem;
+            object-fit: contain;
+            filter: drop-shadow(0 22px 24px rgba(0,0,0,0.38));
+            transition: transform 0.35s ease;
+        }
+
+        .related-card:hover .related-media img,
+        .related-card:focus-visible .related-media img {
+            transform: scale(1.035);
         }
 
         .modal {
@@ -1106,10 +1220,6 @@
                 flex: 0 0 auto;
             }
 
-            .cta-panel {
-                grid-template-columns: minmax(0, 1fr) auto;
-                align-items: center;
-            }
         }
 
         @media (max-width: 767px) {
@@ -1130,6 +1240,28 @@
             .nav-cta {
                 padding: 0 0.82rem;
                 font-size: 0.72rem;
+            }
+
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .related-card {
+                min-height: 12rem;
+                grid-template-columns: minmax(0, 1.05fr) minmax(8.5rem, 0.95fr);
+            }
+
+            .related-copy {
+                padding: 1.1rem 0 1.1rem 1.1rem;
+            }
+
+            .related-media {
+                min-height: 12rem;
+                padding-right: 0.35rem;
+            }
+
+            .related-media img {
+                height: 9.5rem;
             }
 
             .hero {
@@ -1311,17 +1443,17 @@
     </style>
 </head>
 <body>
-    <nav class="navbar" aria-label="Navegacao principal">
+    <nav class="navbar" aria-label="Navega&ccedil;&atilde;o principal">
         <div class="nav-inner">
             <a href="../crm.html" class="brand-link" aria-label="Voltar ao hub MHS">
                 <span class="brand-logo-frame">
-                    <img class="brand-logo" src="../01.%20Flutuantes/logo_mhs.png" alt="Mais Hidro Solucoes">
+                    <img class="brand-logo" src="../01.%20Flutuantes/logo_mhs.png" alt="Mais Hidro Solu&ccedil;&otilde;es">
                 </span>
             </a>
 
-            <div class="desktop-nav" aria-label="Secoes da pagina">
+            <div class="desktop-nav" aria-label="Se&ccedil;&otilde;es da p&aacute;gina">
                 <a href="../crm.html">Hub MHS</a>
-                <a href="#home">Inicio</a>
+                <a href="#home">In&iacute;cio</a>
                 <a href="#produtos">Tecnologia</a>
                 <a href="#engenharia">Engenharia</a>
             </div>
@@ -1335,9 +1467,9 @@
     <header id="home" class="hero section-x">
         <div class="shell hero-grid">
             <div class="hero-intro">
-                <h1 class="hero-title">Bombas <span>eletricas</span></h1>
-                <p class="hero-copy">Na Mais Hidro Solu&ccedil;&otilde;es, fornecemos, sob demanda, diversos tipos de bombas, incluindo modelos industriais/multiest&aacute;gios, submersos, injetores, centr&iacute;fugos e pressurizadores. Atendemos com efici&ecirc;ncia &agrave;s demandas de transfer&ecirc;ncia e pressuriza&ccedil;&atilde;o de fluidos nos setores industrial, constru&ccedil;&atilde;o civil, irriga&ccedil;&atilde;o, minera&ccedil;&atilde;o e carcinicultura.</p>
-                <img class="hero-water" src="./agua_fundo.png" alt="" aria-hidden="true" loading="eager" decoding="async">
+                <h1 class="hero-title">Bombas <span>el&eacute;tricas</span></h1>
+                <p class="hero-copy">Na Mais Hidro Solu&ccedil;&otilde;es, fornecemos, sob demanda, diversos tipos de bombas, incluindo modelos industriais e multiest&aacute;gios, submers&iacute;veis, injetores, centr&iacute;fugos e pressurizadores. Atendemos com efici&ecirc;ncia &agrave;s demandas de transfer&ecirc;ncia e pressuriza&ccedil;&atilde;o de fluidos nos setores industrial, de constru&ccedil;&atilde;o civil, irriga&ccedil;&atilde;o, minera&ccedil;&atilde;o e carcinicultura.</p>
+                <img class="hero-water" src="./Maetrial_apoio/agua_fundo.png" alt="" aria-hidden="true" loading="eager" decoding="async">
             </div>
 
             <div class="hero-visual">
@@ -1346,8 +1478,8 @@
                 </div>
                 <div class="hero-metrics">
                     <div class="metric"><strong>90+</strong><span>tipos de bombas</span></div>
-                    <div class="metric"><strong>1800+</strong><span>versoes tecnicas</span></div>
-                    <div class="metric"><strong>300 cv</strong><span>potencia ate</span></div>
+                    <div class="metric"><strong>1000</strong><span>vers&otilde;es t&eacute;cnicas</span></div>
+                    <div class="metric"><strong>300 cv</strong><span>pot&ecirc;ncia at&eacute;</span></div>
                 </div>
             </div>
         </div>
@@ -1358,7 +1490,7 @@
             <div class="shell exploded-layout">
                 <header class="exploded-header">
                     <h2 class="exploded-title">Engenharia que inspira confian&ccedil;a.</h2>
-                    <p class="exploded-lead">Cada solu&ccedil;&atilde;o MHS combina sele&ccedil;&atilde;o t&eacute;cnica, cuidado operacional e acompanhamento pr&oacute;ximo para entregar desempenho consistente em campo.</p>
+                    <p class="exploded-lead">Cada solu&ccedil;&atilde;o combina sele&ccedil;&atilde;o t&eacute;cnica, cuidado operacional e acompanhamento pr&oacute;ximo para entregar desempenho consistente em campo.</p>
                 </header>
 
                 <div class="exploded-stage">
@@ -1383,44 +1515,40 @@
                     </article>
 
                     <figure class="exploded-visual">
-                        <div id="exploded-assembly" class="exploded-assembly" role="group" aria-label="Vista explodida interativa de uma bomba centrifuga eletrica">
+                        <div id="exploded-assembly" class="exploded-assembly" role="group" aria-label="Vista explodida interativa de uma bomba centr&iacute;fuga el&eacute;trica">
                             <button class="exploded-piece" type="button" data-piece="1" aria-label="Destacar tampa frontal">
-                                <img src="./1.png" alt="Tampa frontal da bomba" loading="lazy" decoding="async">
+                                <img src="./vista_explodida/1.png" alt="Tampa frontal da bomba" loading="lazy" decoding="async">
                             </button>
                             <button class="exploded-piece" type="button" data-piece="2" aria-label="Destacar rotor">
-                                <img src="./2.png" alt="Rotor da bomba" loading="lazy" decoding="async">
+                                <img src="./vista_explodida/2.png" alt="Rotor da bomba" loading="lazy" decoding="async">
                             </button>
                             <button class="exploded-piece" type="button" data-piece="3" aria-label="Destacar junta frontal">
-                                <img src="./3.png" alt="Junta frontal da bomba" loading="lazy" decoding="async">
+                                <img src="./vista_explodida/3.png" alt="Junta frontal da bomba" loading="lazy" decoding="async">
                             </button>
-                            <button class="exploded-piece" type="button" data-piece="4" aria-label="Destacar carcaca hidraulica">
-                                <img src="./4.png" alt="Carcaca hidraulica da bomba" loading="lazy" decoding="async">
+                            <button class="exploded-piece" type="button" data-piece="4" aria-label="Destacar carca&ccedil;a hidr&aacute;ulica">
+                                <img src="./vista_explodida/4.png" alt="Carca&ccedil;a hidr&aacute;ulica da bomba" loading="lazy" decoding="async">
                             </button>
-                            <button class="exploded-piece" type="button" data-piece="5" aria-label="Destacar flange e selo mecanico">
-                                <img src="./5.png" alt="Flange e selo mecanico da bomba" loading="lazy" decoding="async">
+                            <button class="exploded-piece" type="button" data-piece="5" aria-label="Destacar flange e selo mec&acirc;nico">
+                                <img src="./vista_explodida/5.png" alt="Flange e selo mec&acirc;nico da bomba" loading="lazy" decoding="async">
                             </button>
-                            <button class="exploded-piece" type="button" data-piece="6" aria-label="Destacar eixo e anel de vedacao">
-                                <img src="./6.png" alt="Eixo e anel de vedacao da bomba" loading="lazy" decoding="async">
+                            <button class="exploded-piece" type="button" data-piece="6" aria-label="Destacar eixo e anel de veda&ccedil;&atilde;o">
+                                <img src="./vista_explodida/6.png" alt="Eixo e anel de veda&ccedil;&atilde;o da bomba" loading="lazy" decoding="async">
                             </button>
                             <button class="exploded-piece" type="button" data-piece="7" aria-label="Destacar tampa traseira">
-                                <img src="./7.png" alt="Tampa traseira da bomba" loading="lazy" decoding="async">
+                                <img src="./vista_explodida/7.png" alt="Tampa traseira da bomba" loading="lazy" decoding="async">
                             </button>
-                            <button class="exploded-piece" type="button" data-piece="8" aria-label="Destacar conjunto de vedacao">
-                                <img src="./8.png" alt="Conjunto de vedacao da bomba" loading="lazy" decoding="async">
+                            <button class="exploded-piece" type="button" data-piece="8" aria-label="Destacar conjunto de veda&ccedil;&atilde;o">
+                                <img src="./vista_explodida/8.png" alt="Conjunto de veda&ccedil;&atilde;o da bomba" loading="lazy" decoding="async">
                             </button>
-                            <button class="exploded-piece" type="button" data-piece="9" aria-label="Destacar motor eletrico">
-                                <img src="./9.png" alt="Motor eletrico da bomba" loading="lazy" decoding="async">
+                            <button class="exploded-piece" type="button" data-piece="9" aria-label="Destacar motor el&eacute;trico">
+                                <img src="./vista_explodida/9.png" alt="Motor el&eacute;trico da bomba" loading="lazy" decoding="async">
                             </button>
-                            <noscript>
-                                <img class="exploded-fallback" src="./vista_explodida.png" alt="Vista explodida de uma bomba centrifuga eletrica">
-                            </noscript>
                         </div>
                     </figure>
                 </div>
 
                 <div class="exploded-footer">
                     <p class="exploded-note">Vista t&eacute;cnica ilustrativa. A constru&ccedil;&atilde;o e os componentes variam conforme a linha e o ponto de opera&ccedil;&atilde;o.</p>
-                    <a class="button-primary" href="#contato">Dimensionar com a MHS</a>
                 </div>
             </div>
         </section>
@@ -1431,29 +1559,29 @@
                     <div>
                         <h2 class="section-title">Dimensionamento orientado</h2>
                     </div>
-                    <p class="section-copy">A bomba correta nasce da leitura do sistema, nao apenas da potencia do motor.</p>
+                    <p class="section-copy">A bomba correta nasce da leitura do sistema, n&atilde;o apenas da pot&ecirc;ncia do motor.</p>
                 </div>
 
                 <div class="workflow-grid">
                     <article class="workflow-card">
                         <span class="workflow-number">01</span>
-                        <h3>Dados hidraulicos</h3>
-                        <p>Levantamos vazao, altura manometrica, succao, recalque, fluido, temperatura e perdas previstas.</p>
+                        <h3>Dados hidr&aacute;ulicos</h3>
+                        <p>Levantamos a vaz&atilde;o, a altura manom&eacute;trica, a suc&ccedil;&atilde;o e o recalque, assim como o l&iacute;quido a ser bombeado.</p>
                     </article>
                     <article class="workflow-card">
                         <span class="workflow-number">02</span>
-                        <h3>Curva de operacao</h3>
-                        <p>Selecionamos a familia por ponto de trabalho, eficiencia, NPSH disponivel e margem operacional.</p>
+                        <h3>Curva de opera&ccedil;&atilde;o</h3>
+                        <p>Selecionamos a fam&iacute;lia pelo ponto de trabalho e pela efici&ecirc;ncia.</p>
                     </article>
                     <article class="workflow-card">
                         <span class="workflow-number">03</span>
-                        <h3>Conjunto completo</h3>
-                        <p>Integramos bomba, motor, base, vedacao, tubulacao, protecao eletrica e acessorios de campo.</p>
+                        <h3>Equipamento</h3>
+                        <p>Integramos bomba, motor, base, veda&ccedil;&atilde;o, tubula&ccedil;&atilde;o, prote&ccedil;&atilde;o el&eacute;trica e acess&oacute;rios de campo.</p>
                     </article>
                     <article class="workflow-card">
                         <span class="workflow-number">04</span>
                         <h3>Entrega assistida</h3>
-                        <p>Apoio tecnico para instalacao, partida, operacao, manutencao e ajustes do sistema.</p>
+                        <p>Apoio t&eacute;cnico para instala&ccedil;&atilde;o, partida, opera&ccedil;&atilde;o, manuten&ccedil;&atilde;o e ajustes do sistema.</p>
                     </article>
                 </div>
             </div>
@@ -1462,12 +1590,42 @@
         <section id="contato" class="section section-x">
             <div class="shell">
                 <div class="cta-panel">
-                    <div>
-                        <p class="section-kicker">Solicite analise</p>
-                        <h2>Encontre a bomba ideal para o seu projeto</h2>
-                        <p>Envie vazao, altura manometrica, aplicacao e regime de operacao. A MHS analisa o sistema completo para selecionar a bomba e a configuracao corretas.</p>
-                    </div>
-                    <a class="button-primary" href="https://wa.me/5585982031499?text=Ol%C3%A1%2C%20gostaria%20de%20dimensionar%20uma%20bomba%20el%C3%A9trica%20para%20meu%20projeto%20MHS." target="_blank" rel="noopener noreferrer">Falar com engenharia</a>
+                    <a class="button-primary" href="https://wa.me/5585982031499?text=Ol%C3%A1%2C%20gostaria%20de%20dimensionar%20uma%20bomba%20el%C3%A9trica%20para%20meu%20projeto%20MHS." target="_blank" rel="noopener noreferrer">Fale com a engenharia</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="related-solutions section-x" aria-labelledby="related-solutions-title">
+            <div class="shell">
+                <header class="related-header">
+                    <h2 id="related-solutions-title">Outras solu&ccedil;&otilde;es de bombeamento</h2>
+                    <p>Conhe&ccedil;a equipamentos MHS desenvolvidos para opera&ccedil;&otilde;es espec&iacute;ficas.</p>
+                </header>
+
+                <div class="related-grid">
+                    <a class="related-card" href="../01.%20Flutuantes/flutuantes.html" aria-label="Conhecer bombas sobre flutuantes">
+                        <div class="related-copy">
+                            <span>Capta&ccedil;&atilde;o</span>
+                            <h3>Bombas sobre flutuantes</h3>
+                            <p>Solu&ccedil;&otilde;es para capta&ccedil;&atilde;o em reservat&oacute;rios, viveiros e canais.</p>
+                            <strong class="related-link-label">Conhecer modelos</strong>
+                        </div>
+                        <div class="related-media">
+                            <img src="../01.%20Flutuantes/miniatura_flut.png" alt="Bomba instalada sobre flutuante MHS" loading="lazy" decoding="async">
+                        </div>
+                    </a>
+
+                    <a class="related-card" href="../03.%20Bomba_despesca/bba_despesca.html" aria-label="Conhecer a bomba de despesca">
+                        <div class="related-copy">
+                            <span>Carcinicultura</span>
+                            <h3>Bomba de despesca</h3>
+                            <p>Equipamento m&oacute;vel para agilizar a transfer&ecirc;ncia durante a despesca de camar&atilde;o.</p>
+                            <strong class="related-link-label">Ver equipamento</strong>
+                        </div>
+                        <div class="related-media">
+                            <img src="../03.%20Bomba_despesca/conjunto_da_bomba.png" alt="Conjunto de bomba de despesca MHS" loading="lazy" decoding="async">
+                        </div>
+                    </a>
                 </div>
             </div>
         </section>
@@ -1477,178 +1635,178 @@
         const carouselPumps = [
             {
                 src: './carrossel_bombas/centrifuga%20(2).png',
-                alt: 'Bomba centrifuga verde com acoplamento direto'
+                alt: 'Bomba centrífuga verde com acoplamento direto'
             },
             {
                 src: './carrossel_bombas/7.png',
-                alt: 'Bomba centrifuga vermelha flangeada'
+                alt: 'Bomba centrífuga vermelha flangeada'
             },
             {
                 src: './carrossel_bombas/8.png',
-                alt: 'Bomba amarela para operacao de campo'
+                alt: 'Bomba amarela para operação em campo'
             },
             {
                 src: './carrossel_bombas/centrifuga.png',
-                alt: 'Bomba centrifuga compacta verde'
+                alt: 'Bomba centrífuga compacta verde'
             },
             {
                 src: './carrossel_bombas/centrifuga%20(3).png',
-                alt: 'Conjunto motobomba portatil'
+                alt: 'Conjunto motobomba portátil'
             }
         ];
 
         const pumpLines = [
             {
                 id: 'serie-c',
-                model: 'Serie C',
-                category: 'Centrifugas',
-                type: 'Centrifuga monoestagio',
+                model: 'Série C',
+                category: 'Centrífugas',
+                type: 'Centrífuga monoestágio',
                 models: 'C4 N1, C6 N4 e C7 R7',
                 shortModels: 'C4 / C6 / C7',
-                flow: 'Ate 24,5 m3/h',
-                head: 'Ate 39 m',
+                flow: 'Até 24,5 m³/h',
+                head: 'Até 39 m',
                 power: '1/3 a 3 cv',
                 rotation: '3.500 rpm',
                 build: 'Bocais roscados',
                 color: '#0088AC',
                 accent: '#8fd7ff',
-                description: 'Bombas compactas de acoplamento direto para transferencia de agua limpa, abastecimento, irrigacao leve e servicos gerais.',
+                description: 'Bombas compactas de acoplamento direto para transferência de água limpa, abastecimento, irrigação leve e serviços gerais.',
                 features: [
-                    'C4 N1: 1/3 cv, vazao ate 5,8 m3/h e pressao maxima de 18 m.',
-                    'C6 N4: 1 cv, vazao ate 9,8 m3/h e pressao maxima de 29 m.',
-                    'C7 R7: 3 cv, vazao ate 24,5 m3/h e pressao maxima de 39 m.',
-                    'Outros modelos C, CE e K podem ser selecionados conforme o ponto de operacao.'
+                    'C4 N1: 1/3 cv, vazão até 5,8 m³/h e pressão máxima de 18 m.',
+                    'C6 N4: 1 cv, vazão até 9,8 m³/h e pressão máxima de 29 m.',
+                    'C7 R7: 3 cv, vazão até 24,5 m³/h e pressão máxima de 39 m.',
+                    'Outros modelos C, CE e K podem ser selecionados conforme o ponto de operação.'
                 ]
             },
             {
                 id: 'serie-gk',
-                model: 'Serie GK',
-                category: 'Centrifugas',
-                type: 'Centrifuga monoestagio',
+                model: 'Série GK',
+                category: 'Centrífugas',
+                type: 'Centrífuga monoestágio',
                 models: 'GK 5, GK 7 e GK 8',
                 shortModels: 'GK 5 / 7 / 8',
-                flow: 'Ate 54,6 m3/h',
-                head: 'Ate 25 m',
+                flow: 'Até 54,6 m³/h',
+                head: 'Até 25 m',
                 power: '1,5 a 5 cv',
                 rotation: '3.500 rpm',
                 build: 'Bocais roscados',
                 color: '#2dd4bf',
                 accent: '#a7f3d0',
-                description: 'Linha de maior vazao para transferencia, captacao, irrigacao e circulacao, com construcao simples e selo mecanico.',
+                description: 'Linha de maior vazão para transferência, captação, irrigação e circulação, com construção simples e selo mecânico.',
                 features: [
-                    'GK 5: 1,5 cv, vazao ate 38,4 m3/h e pressao maxima de 13 m.',
-                    'GK 7: 3 cv, vazao ate 43 m3/h e pressao maxima de 21 m.',
-                    'GK 8: opcoes de 4 e 5 cv, vazao ate 54,6 m3/h e pressao maxima de 25 m.',
-                    'A selecao considera diametro dos bocais, pressao e rendimento no ponto de trabalho.'
+                    'GK 5: 1,5 cv, vazão até 38,4 m³/h e pressão máxima de 13 m.',
+                    'GK 7: 3 cv, vazão até 43 m³/h e pressão máxima de 21 m.',
+                    'GK 8: opções de 4 e 5 cv, vazão até 54,6 m³/h e pressão máxima de 25 m.',
+                    'A seleção considera diâmetro dos bocais, pressão e rendimento no ponto de trabalho.'
                 ]
             },
             {
                 id: 'serie-kn-200',
-                model: 'Serie KN 200',
-                category: 'Centrifugas',
-                type: 'Centrifuga normalizada',
+                model: 'Série KN 200',
+                category: 'Centrífugas',
+                type: 'Centrífuga normalizada',
                 models: 'KN 50-200, KN 65-200 e KN 80-200',
                 shortModels: 'KN 50 / 65 / 80-200',
-                flow: 'Ate 295 m3/h',
-                head: 'Ate 97 m',
+                flow: 'Até 295 m³/h',
+                head: 'Até 97 m',
                 power: '3 a 100 cv',
                 rotation: '1.750 / 3.500 rpm',
                 build: 'Back-pull-out',
                 color: '#38bdf8',
                 accent: '#bae6fd',
-                description: 'Bombas normalizadas com construcao back-pull-out para processos, irrigacao e transferencia que exigem manutencao facilitada e ampla faixa hidraulica.',
+                description: 'Bombas normalizadas com construção back-pull-out para processos, irrigação e transferência que exigem manutenção facilitada e ampla faixa hidráulica.',
                 features: [
-                    'Modelos de referencia: KN 50-200, KN 65-200 e KN 80-200.',
-                    'Disponiveis nas tabelas de 1.750 e 3.500 rpm, com diferentes rotores e potencias.',
+                    'Modelos de referência: KN 50-200, KN 65-200 e KN 80-200.',
+                    'Disponíveis nas tabelas de 1.750 e 3.500 rpm, com diferentes rotores e potências.',
                     'Bocais roscados ou flangeados conforme o modelo selecionado.',
-                    'A faixa exibida combina as configuracoes catalogadas dos tres modelos destacados.'
+                    'A faixa exibida combina as configurações catalogadas dos três modelos destacados.'
                 ]
             },
             {
                 id: 'serie-irr',
-                model: 'Serie IRR BP / AP',
-                category: 'Centrifugas',
-                type: 'Centrifuga flangeada',
+                model: 'Série IRR BP / AP',
+                category: 'Centrífugas',
+                type: 'Centrífuga flangeada',
                 models: 'IRR 80-65-159, 100-80-159 e 125-100-170',
                 shortModels: 'IRR BP / AP',
-                flow: 'Ate 280 m3/h',
-                head: 'Ate 54 m',
+                flow: 'Até 280 m³/h',
+                head: 'Até 54 m',
                 power: '7,5 a 60 cv',
                 rotation: '3.500 rpm',
                 build: 'Flanges ABNT PB-15',
                 color: '#22c55e',
                 accent: '#bbf7d0',
-                description: 'Linha robusta para irrigacao, captacao, aducao e transferencia de maior porte, disponivel monobloco ou mancalizada.',
+                description: 'Linha robusta para irrigação, captação, adução e transferência de maior porte, disponível nas versões monobloco ou mancalizada.',
                 features: [
-                    'IRR 80-65-159 BP: opcoes de 7,5 a 20 cv.',
-                    'IRR 100-80-159 BP: opcoes de 15 a 40 cv.',
-                    'IRR 125-100-170 BP: opcoes de 30 a 60 cv.',
-                    'Vedacao por selo mecanico ou gaxeta; outros tamanhos IRR seguem sob consulta.'
+                    'IRR 80-65-159 BP: opções de 7,5 a 20 cv.',
+                    'IRR 100-80-159 BP: opções de 15 a 40 cv.',
+                    'IRR 125-100-170 BP: opções de 30 a 60 cv.',
+                    'Vedação por selo mecânico ou gaxeta; outros tamanhos IRR seguem sob consulta.'
                 ]
             },
             {
                 id: 'serie-gr',
-                model: 'Serie GR Garimpo',
+                model: 'Série GR Garimpo',
                 category: 'Garimpo',
                 type: 'Bomba tipo draga',
                 models: 'GR 3x3 e GR 4x4',
                 shortModels: 'GR 3x3 / GR 4x4',
-                flow: 'Ate 150 m3/h',
-                head: 'Ate 44 m',
+                flow: 'Até 150 m³/h',
+                head: 'Até 44 m',
                 power: '3 a 25 cv',
                 rotation: '1.750 / 3.500 rpm',
                 build: 'Rotor semiaberto',
                 color: '#818cf8',
                 accent: '#c7d2fe',
-                description: 'Bombas mancalizadas com rotor semiaberto para operacoes de draga e garimpo, com opcoes de acionamento eletrico ou diesel.',
+                description: 'Bombas mancalizadas com rotor semiaberto para operações de draga e garimpo, com opções de acionamento elétrico ou diesel.',
                 features: [
-                    'GR 3x3: ate 105 m3/h e 44 m com acionamento eletrico.',
-                    'GR 4x4: ate 150 m3/h e 44 m com acionamento eletrico.',
-                    'Versoes diesel catalogadas entre 1.800 e 3.000 rpm.',
-                    'Vedacao por gaxeta e conjunto mancalizado para a aplicacao severa.'
+                    'GR 3x3: até 105 m³/h e 44 m com acionamento elétrico.',
+                    'GR 4x4: até 150 m³/h e 44 m com acionamento elétrico.',
+                    'Versões a diesel catalogadas entre 1.800 e 3.000 rpm.',
+                    'Vedação por gaxeta e conjunto mancalizado para a aplicação severa.'
                 ]
             },
             {
                 id: 'combate-incendio',
-                model: 'Combate a Incendio',
-                category: 'Incendio',
-                type: 'Centrifuga monoestagio',
+                model: 'Combate a Incêndio',
+                category: 'Incêndio',
+                type: 'Centrífuga monoestágio',
                 models: 'HK-I, GK-I, C8E-I, C10R-I e DK-I 65',
                 shortModels: 'HK / GK / C8E / C10R-I',
-                flow: 'Ate 54,6 m3/h',
-                head: 'Ate 106 m',
+                flow: 'Até 54,6 m³/h',
+                head: 'Até 106 m',
                 power: '1,5 a 30 cv',
                 rotation: '3.500 rpm',
                 build: 'Roscada ou flangeada',
                 color: '#f97316',
                 accent: '#fed7aa',
-                description: 'Bombas catalogadas para conjuntos de combate a incendio, com diferentes faixas de pressao, potencias e opcoes de bocais.',
+                description: 'Bombas catalogadas para conjuntos de combate a incêndio, com diferentes faixas de pressão, potências e opções de bocais.',
                 features: [
                     'Exemplos: HK 5-I, GK 8-I, C8E 10-I, C10R 12-I e DK-I 65.',
-                    'Motores Jet Pump IP-21 ou JM IP-55 conforme a potencia selecionada.',
+                    'Motores Jet Pump IP-21 ou JM IP-55 conforme a potência selecionada.',
                     'Bocais roscados ou flangeados com contraflanges conforme o modelo.',
-                    'O conjunto deve ser especificado pela demanda, risco e requisitos aplicaveis ao projeto.'
+                    'O conjunto deve ser especificado pela demanda, pelo risco e pelos requisitos aplicáveis ao projeto.'
                 ]
             },
             {
                 id: 'jockey-ie',
                 model: 'Bombas Jockey IE',
-                category: 'Incendio',
-                type: 'Manutencao de pressao',
+                category: 'Incêndio',
+                type: 'Manutenção de pressão',
                 models: 'IE-2, IE-3, IE-4, IE-5, IE-6 e IE-7',
                 shortModels: 'IE-2 a IE-7',
-                flow: 'Ate 2,66 m3/h',
-                head: 'Ate 140 m',
+                flow: 'Até 2,66 m³/h',
+                head: 'Até 140 m',
                 power: '1/2 a 3 cv',
                 rotation: '3.500 rpm',
                 build: 'Bico e venturi',
                 color: '#e42927',
                 accent: '#fecaca',
-                description: 'Linha Jockey para manutencao da pressao da rede e compensacao de pequenas perdas sem acionar a bomba principal.',
+                description: 'Linha Jockey para manutenção da pressão da rede e compensação de pequenas perdas sem acionar a bomba principal.',
                 features: [
-                    'Modelos IE-2 a IE-7, com potencias de 1/2 a 3 cv.',
-                    'Bocais de succao e recalque de 3/4 de polegada.',
-                    'Faixa catalogada para pequenas vazoes e alturas de ate 140 m.',
+                    'Modelos IE-2 a IE-7, com potências de 1/2 a 3 cv.',
+                    'Bocais de sucção e recalque de 3/4 de polegada.',
+                    'Faixa catalogada para pequenas vazões e alturas de até 140 m.',
                     'A Jockey deve ser selecionada em conjunto com a bomba principal e o sistema de comando.'
                 ]
             }
@@ -1671,7 +1829,7 @@
             const height = isHero ? 520 : 360;
             const color = product?.color || '#0088AC';
             const accent = product?.accent || '#8fd7ff';
-            const label = product?.model || 'Bomba eletrica';
+            const label = product?.model || 'Bomba elétrica';
 
             return `
                 <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${label}">
@@ -1713,7 +1871,7 @@
         }
 
         function whatsappUrl(product) {
-            const text = `Ola, gostaria de selecionar um modelo da linha ${product.model} (${product.models}) para um projeto MHS.`;
+            const text = `Olá, gostaria de selecionar um modelo da linha ${product.model} (${product.models}) para um projeto MHS.`;
             return WHATSAPP_BASE + encodeURIComponent(text);
         }
 
@@ -2213,9 +2371,9 @@
                     <h3 class="product-title">${product.model}</h3>
                     <p class="product-desc">${product.description}</p>
                     <div class="product-specs">
-                        <div class="spec-pill"><span>Vazao</span><strong>${product.flow}</strong></div>
+                        <div class="spec-pill"><span>Vazão</span><strong>${product.flow}</strong></div>
                         <div class="spec-pill"><span>Altura</span><strong>${product.head}</strong></div>
-                        <div class="spec-pill"><span>Potencia</span><strong>${product.power}</strong></div>
+                        <div class="spec-pill"><span>Potência</span><strong>${product.power}</strong></div>
                         <div class="spec-pill"><span>Modelos</span><strong>${product.shortModels}</strong></div>
                     </div>
                     <div class="product-actions">

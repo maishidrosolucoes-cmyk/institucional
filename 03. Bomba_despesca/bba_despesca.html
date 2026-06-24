@@ -1,0 +1,3006 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="Bomba de Despesca MHS para transferência contínua de peixes e água em operações aquícolas, com projeto integrado do viveiro ao destino."
+    >
+    <title>Bomba de Despesca | Mais Hidro Soluções</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        rel="stylesheet"
+    >
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-dark": "#182540",
+                        "brand-darker": "#0a101a",
+                        "brand-teal": "#0088AC",
+                        "brand-cyan": "#22c7ee",
+                        "brand-red": "#E42927",
+                        "glass-bg": "rgba(255, 255, 255, 0.04)",
+                        "glass-border": "rgba(255, 255, 255, 0.08)"
+                    },
+                    fontFamily: {
+                        sans: ["Poppins", "sans-serif"]
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        :root {
+            --brand-dark: #182540;
+            --brand-darker: #0a101a;
+            --brand-teal: #0088AC;
+            --brand-cyan: #22c7ee;
+            --brand-red: #E42927;
+            --surface: #07111d;
+            --surface-soft: #0b1826;
+            --text-main: #f5f8fb;
+            --text-muted: #8795a8;
+            --line: rgba(255, 255, 255, 0.08);
+            --cyan-line: rgba(34, 199, 238, 0.27);
+        }
+
+        * {
+            box-sizing: border-box;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        *::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at 80% 2%, rgba(0, 136, 172, 0.16), transparent 24%),
+                radial-gradient(circle at 7% 34%, rgba(24, 37, 64, 0.28), transparent 25%),
+                radial-gradient(circle at 78% 74%, rgba(0, 136, 172, 0.08), transparent 24%),
+                #050a11;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.016) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.016) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.7) 58%, transparent 96%);
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--brand-cyan);
+            outline-offset: 4px;
+        }
+
+        .site-noise {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            opacity: 0.34;
+            background:
+                radial-gradient(circle at 8% 14%, rgba(255,255,255,0.48) 0 1px, transparent 1.4px),
+                radial-gradient(circle at 26% 36%, rgba(255,255,255,0.32) 0 1px, transparent 1.3px),
+                radial-gradient(circle at 69% 17%, rgba(34,199,238,0.56) 0 1px, transparent 1.4px),
+                radial-gradient(circle at 89% 56%, rgba(255,255,255,0.3) 0 1px, transparent 1.3px),
+                radial-gradient(circle at 18% 79%, rgba(34,199,238,0.4) 0 1px, transparent 1.4px);
+            background-size: 360px 290px, 430px 380px, 520px 420px, 590px 470px, 480px 400px;
+        }
+
+        .section-shell {
+            position: relative;
+            isolation: isolate;
+        }
+
+        .section-shell::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: min(1180px, calc(100% - 48px));
+            height: 1px;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, transparent, rgba(0, 136, 172, 0.36), transparent);
+        }
+
+        .nav-shell {
+            border-bottom: 0;
+            background: transparent;
+            transition: none;
+        }
+
+        .nav-shell.scrolled {
+            border-color: transparent;
+            background: transparent;
+            backdrop-filter: none;
+        }
+
+        .despesca-brand-logo {
+            width: clamp(86px, 10vw, 126px);
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.34));
+        }
+
+        .mobile-menu {
+            display: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            background: rgba(5, 10, 17, 0.96);
+            backdrop-filter: blur(18px);
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #72dcf5;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.27em;
+            text-transform: uppercase;
+        }
+
+        .section-label::before {
+            content: "";
+            width: 24px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--brand-cyan));
+        }
+
+        .section-title {
+            color: #fff;
+            font-weight: 800;
+            letter-spacing: -0.045em;
+            line-height: 1.06;
+        }
+
+        .text-gradient {
+            color: transparent;
+            background: linear-gradient(90deg, #49d9f7, #0088AC 58%, #9beaf9);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .lux-button,
+        .ghost-button {
+            display: inline-flex;
+            min-height: 46px;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-radius: 999px;
+            padding: 0 23px;
+            font-size: 11px;
+            font-weight: 800;
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease,
+                border-color 0.3s ease,
+                background 0.3s ease,
+                filter 0.3s ease;
+        }
+
+        .lux-button {
+            color: #041019;
+            background: linear-gradient(135deg, #42d9f6, #0088AC);
+            box-shadow:
+                0 15px 36px rgba(0, 136, 172, 0.28),
+                inset 0 1px 0 rgba(255, 255, 255, 0.45);
+        }
+
+        .lux-button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.07);
+            box-shadow:
+                0 19px 45px rgba(0, 136, 172, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.48);
+        }
+
+        .ghost-button {
+            color: #dde7ef;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        .ghost-button:hover {
+            transform: translateY(-2px);
+            border-color: rgba(34, 199, 238, 0.5);
+            background: rgba(0, 136, 172, 0.08);
+        }
+
+        .hero {
+            min-height: 790px;
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: 40px;
+            right: -180px;
+            width: 680px;
+            height: 680px;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(0,136,172,0.23), rgba(0,136,172,0.055) 47%, transparent 70%);
+            filter: blur(10px);
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 4;
+        }
+
+        .hero-title {
+            max-width: 780px;
+            color: #fff;
+            font-size: clamp(3.2rem, 7vw, 6.9rem);
+            font-weight: 900;
+            letter-spacing: -0.07em;
+            line-height: 0.91;
+        }
+
+        .harvest-visual {
+            position: relative;
+            width: min(100%, 620px);
+            min-height: 600px;
+            margin-left: auto;
+            perspective: 1300px;
+        }
+
+        .harvest-bg-banner {
+            position: absolute;
+            left: 32%;
+            top: 45%;
+            z-index: 2;
+            width: min(206%, 1280px);
+            max-width: none;
+            height: auto;
+            transform: translate(-50%, -50%) rotate(-2deg);
+            opacity: 0.8;
+            pointer-events: none;
+            user-select: none;
+            filter:
+                drop-shadow(0 32px 44px rgba(0,0,0,0.32))
+                saturate(1.06);
+        }
+
+        .harvest-model-stage {
+            position: absolute;
+            inset: 3% -4% 7%;
+            z-index: 3;
+            overflow: visible;
+            pointer-events: auto;
+        }
+
+        .harvest-model-stage::after {
+            content: "";
+            position: absolute;
+            left: 17%;
+            right: 17%;
+            bottom: 8%;
+            height: 10%;
+            z-index: -1;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(0,0,0,0.55), transparent 70%);
+            filter: blur(11px);
+            opacity: 0;
+            transform: scaleX(0.86);
+            transition: opacity 0.6s ease;
+        }
+
+        .harvest-model-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            opacity: 0;
+            pointer-events: none;
+            touch-action: none;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            filter: drop-shadow(0 38px 34px rgba(0,0,0,0.34));
+            transition: opacity 0.65s ease;
+        }
+
+        .harvest-model-canvas.is-dragging {
+            cursor: grabbing;
+        }
+
+        .harvest-model-loading,
+        .harvest-model-error {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            transform: translate(-50%, -50%);
+            color: #92a4b8;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: opacity 0.35s ease;
+        }
+
+        .harvest-model-loader {
+            width: 1.2rem;
+            height: 1.2rem;
+            flex: 0 0 auto;
+            border: 2px solid rgba(34,199,238,0.16);
+            border-top-color: var(--brand-cyan);
+            border-radius: 50%;
+            animation: modelLoaderSpin 0.8s linear infinite;
+        }
+
+        .harvest-model-error {
+            display: none;
+            max-width: 15rem;
+            color: #9eacbd;
+            line-height: 1.6;
+            text-align: center;
+            white-space: normal;
+        }
+
+        .harvest-visual.model-ready .harvest-model-canvas,
+        .harvest-visual.model-ready .harvest-model-stage::after {
+            opacity: 1;
+        }
+
+        .harvest-visual.model-ready .harvest-model-canvas {
+            pointer-events: auto;
+        }
+
+        .harvest-visual.model-ready .harvest-model-loading {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .model-static-fallback {
+            display: none;
+        }
+
+        .harvest-visual.model-failed .harvest-model-stage {
+            display: none;
+        }
+
+        .harvest-visual.model-failed .model-static-fallback {
+            display: block;
+        }
+
+        @keyframes modelLoaderSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .pump-machine {
+            position: absolute;
+            left: 50%;
+            top: 49%;
+            width: 430px;
+            height: 310px;
+            transform: translate(-50%, -50%) rotateY(-8deg) rotateX(4deg);
+            filter: drop-shadow(0 45px 52px rgba(0,0,0,0.54));
+        }
+
+        .pump-base {
+            position: absolute;
+            left: 58px;
+            right: 45px;
+            bottom: 30px;
+            height: 44px;
+            border: 1px solid rgba(139,231,248,0.26);
+            border-radius: 12px;
+            background:
+                linear-gradient(180deg, rgba(23,65,83,0.96), rgba(4,14,23,0.98));
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.12),
+                0 17px 28px rgba(0,0,0,0.38);
+            transform: skewX(-12deg);
+        }
+
+        .pump-base::before,
+        .pump-base::after {
+            content: "";
+            position: absolute;
+            bottom: -16px;
+            width: 44px;
+            height: 18px;
+            border: 1px solid rgba(139,231,248,0.18);
+            border-radius: 0 0 8px 8px;
+            background: #07131f;
+        }
+
+        .pump-base::before {
+            left: 34px;
+        }
+
+        .pump-base::after {
+            right: 34px;
+        }
+
+        .pump-housing {
+            position: absolute;
+            left: 76px;
+            top: 76px;
+            width: 185px;
+            height: 185px;
+            border: 1px solid rgba(139,231,248,0.42);
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 40% 35%, rgba(255,255,255,0.18), transparent 18%),
+                radial-gradient(circle at center, rgba(34,199,238,0.28), rgba(4,37,51,0.96) 48%, #06111d 72%);
+            box-shadow:
+                0 0 48px rgba(0,136,172,0.28),
+                inset 0 0 35px rgba(34,199,238,0.15),
+                inset 0 1px 0 rgba(255,255,255,0.18);
+        }
+
+        .pump-housing::before {
+            content: "";
+            position: absolute;
+            inset: 23px;
+            border: 1px solid rgba(255,255,255,0.16);
+            border-radius: 50%;
+            background:
+                conic-gradient(
+                    from 0deg,
+                    rgba(34,199,238,0.42),
+                    transparent 14%,
+                    rgba(34,199,238,0.24) 30%,
+                    transparent 44%,
+                    rgba(34,199,238,0.4) 62%,
+                    transparent 77%,
+                    rgba(34,199,238,0.24)
+                );
+            animation: impellerSpin 9s linear infinite;
+        }
+
+        .pump-housing::after {
+            content: "MHS";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 68px;
+            height: 68px;
+            display: grid;
+            place-items: center;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(139,231,248,0.36);
+            border-radius: 18px;
+            color: #dff9ff;
+            background: linear-gradient(145deg, rgba(34,199,238,0.35), rgba(4,30,42,0.96));
+            box-shadow: 0 0 26px rgba(34,199,238,0.18);
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+        }
+
+        @keyframes impellerSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .pump-motor {
+            position: absolute;
+            right: 55px;
+            top: 112px;
+            width: 150px;
+            height: 104px;
+            border: 1px solid rgba(139,231,248,0.28);
+            border-radius: 20px 35px 35px 20px;
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.06) 0 6px,
+                    transparent 6px 13px
+                ),
+                linear-gradient(145deg, #10324a, #071522 70%);
+            box-shadow:
+                0 21px 32px rgba(0,0,0,0.36),
+                inset 0 1px 0 rgba(255,255,255,0.12);
+        }
+
+        .pump-motor::before {
+            content: "";
+            position: absolute;
+            right: -24px;
+            top: 28px;
+            width: 27px;
+            height: 48px;
+            border: 1px solid rgba(139,231,248,0.22);
+            border-radius: 0 14px 14px 0;
+            background: #071521;
+        }
+
+        .pump-motor::after {
+            content: "";
+            position: absolute;
+            left: -22px;
+            top: 42px;
+            width: 24px;
+            height: 20px;
+            background: linear-gradient(180deg, #1d607b, #0a2434);
+            border-top: 1px solid rgba(139,231,248,0.26);
+            border-bottom: 1px solid rgba(139,231,248,0.18);
+        }
+
+        .pipe-in,
+        .pipe-out {
+            position: absolute;
+            height: 62px;
+            border: 1px solid rgba(139,231,248,0.32);
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(139,231,248,0.17),
+                    rgba(0,136,172,0.11) 34%,
+                    rgba(4,16,26,0.92) 72%
+                );
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.16),
+                0 0 28px rgba(0,136,172,0.16);
+            overflow: hidden;
+        }
+
+        .pipe-in {
+            left: -24px;
+            top: 139px;
+            width: 118px;
+            border-radius: 32px 0 0 32px;
+        }
+
+        .pipe-out {
+            left: 171px;
+            top: 14px;
+            width: 210px;
+            transform: rotate(-4deg);
+            border-radius: 30px 30px 12px 12px;
+        }
+
+        .pipe-flow {
+            position: absolute;
+            inset: 8px;
+            border-radius: inherit;
+            overflow: hidden;
+            background:
+                linear-gradient(90deg, rgba(34,199,238,0.04), rgba(34,199,238,0.28), rgba(34,199,238,0.06));
+        }
+
+        .pipe-flow::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0 26px,
+                    rgba(139,231,248,0.33) 27px 30px,
+                    transparent 31px 54px
+                );
+            animation: flowMove 3s linear infinite;
+        }
+
+        @keyframes flowMove {
+            to {
+                transform: translateX(54px);
+            }
+        }
+
+        .fish-token {
+            position: absolute;
+            z-index: 3;
+            color: #9ceaf8;
+            filter: drop-shadow(0 0 7px rgba(34,199,238,0.55));
+            animation: fishTransit 6.5s linear infinite;
+        }
+
+        .fish-token.one {
+            left: -3%;
+            top: 46%;
+            font-size: 20px;
+        }
+
+        .fish-token.two {
+            left: 17%;
+            top: 39%;
+            font-size: 15px;
+            animation-delay: -2.2s;
+        }
+
+        .fish-token.three {
+            left: 37%;
+            top: 26%;
+            font-size: 18px;
+            animation-delay: -4.5s;
+        }
+
+        @keyframes fishTransit {
+            0% {
+                transform: translate(-30px, 22px) rotate(-2deg);
+                opacity: 0;
+            }
+            12% {
+                opacity: 0.85;
+            }
+            48% {
+                transform: translate(180px, 4px) rotate(-10deg);
+                opacity: 0.9;
+            }
+            78% {
+                transform: translate(310px, -88px) rotate(-10deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(430px, -105px) rotate(-8deg);
+                opacity: 0;
+            }
+        }
+
+        .cta-shell {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(34,199,238,0.16);
+            border-radius: 32px;
+            background:
+                radial-gradient(circle at 78% 28%, rgba(34,199,238,0.18), transparent 28%),
+                linear-gradient(135deg, rgba(13,35,52,0.98), rgba(5,11,18,0.99));
+            box-shadow:
+                0 46px 100px rgba(0,0,0,0.45),
+                0 0 60px rgba(0,136,172,0.07),
+                inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+
+        .cta-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(34,199,238,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34,199,238,0.03) 1px, transparent 1px);
+            background-size: 36px 36px;
+            mask-image: linear-gradient(90deg, transparent, #000);
+        }
+
+        .cta-fish {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(139,231,248,0.12);
+            font-size: 260px;
+            filter: drop-shadow(0 0 50px rgba(34,199,238,0.1));
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+            visibility: hidden;
+            opacity: 0;
+            background: rgba(2,7,12,0.8);
+            backdrop-filter: blur(13px);
+            transition: opacity 0.28s ease, visibility 0.28s ease;
+        }
+
+        .modal-backdrop.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-panel {
+            width: min(100%, 720px);
+            max-height: min(86vh, 760px);
+            overflow-y: auto;
+            border: 1px solid rgba(34,199,238,0.22);
+            border-radius: 26px;
+            background:
+                radial-gradient(circle at 78% 10%, rgba(0,136,172,0.18), transparent 28%),
+                linear-gradient(145deg, rgba(12,27,42,0.99), rgba(4,10,17,0.99));
+            box-shadow:
+                0 55px 130px rgba(0,0,0,0.62),
+                inset 0 1px 0 rgba(255,255,255,0.07);
+            transform: translateY(18px) scale(0.98);
+            transition: transform 0.28s ease;
+        }
+
+        .modal-backdrop.active .modal-panel {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-detail {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 16px;
+            padding: 17px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .modal-detail:last-child {
+            border-bottom: 0;
+        }
+
+        .kit-showcase {
+            display: block;
+            margin-top: 44px;
+        }
+
+        .solution-overview {
+            position: relative;
+            width: min(100%, 62rem);
+            margin: clamp(1.8rem, 4vw, 3.2rem) auto 0;
+            overflow: hidden;
+        }
+
+        .solution-overview::after {
+            content: "";
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            bottom: 2%;
+            height: 16%;
+            z-index: -1;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.5);
+            filter: blur(24px);
+        }
+
+        .solution-overview img {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            filter:
+                drop-shadow(0 28px 32px rgba(0,0,0,0.34))
+                saturate(1.04)
+                contrast(1.02);
+        }
+
+        .kit-stage {
+            position: relative;
+            min-height: 0;
+            padding: clamp(8px, 1.2vw, 16px);
+            border: 1px solid rgba(34,199,238,0.14);
+            border-bottom: 0;
+            border-radius: clamp(18px, 2.2vw, 30px) clamp(18px, 2.2vw, 30px) 0 0;
+            overflow: hidden;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .kit-stage::before,
+        .kit-stage::after {
+            display: none;
+        }
+
+        .kit-stage.has-selection::before,
+        .kit-stage.has-selection::after {
+            opacity: 0;
+        }
+
+        .kit-banner-wrap {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            aspect-ratio: 2 / 1;
+        }
+
+        .kit-banner-base {
+            position: relative;
+            z-index: 1;
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter:
+                drop-shadow(0 26px 34px rgba(0,0,0,0.42))
+                saturate(1.02)
+                contrast(1.02);
+            user-select: none;
+            pointer-events: none;
+            transform: scale(1);
+            opacity: 1;
+            transition:
+                opacity 420ms ease,
+                transform 720ms cubic-bezier(0.22, 0.76, 0.2, 1),
+                filter 620ms ease;
+            will-change: opacity, transform, filter;
+        }
+
+        .kit-part {
+            position: absolute;
+            left: var(--x);
+            top: var(--y);
+            z-index: var(--z, 5);
+            width: var(--w);
+            min-width: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 22px;
+            background: transparent;
+            cursor: pointer;
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+            transition:
+                left 520ms cubic-bezier(0.22, 0.76, 0.2, 1),
+                top 520ms cubic-bezier(0.22, 0.76, 0.2, 1),
+                transform 420ms cubic-bezier(0.22, 0.76, 0.2, 1),
+                opacity 300ms ease;
+            will-change: left, top, transform, opacity;
+        }
+
+        .kit-part::before {
+            content: "";
+            position: absolute;
+            inset: 9%;
+            z-index: -1;
+            border: 1px solid rgba(34,199,238,0);
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(34,199,238,0.18), transparent 62%);
+            box-shadow: 0 0 0 rgba(34,199,238,0);
+            opacity: 0;
+            transform: scale(0.94);
+            transition: opacity 260ms ease, transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+        }
+
+        .kit-part img {
+            display: block;
+            width: 100%;
+            height: auto;
+            opacity: 0;
+            filter:
+                drop-shadow(0 18px 22px rgba(0,0,0,0.32))
+                saturate(1.04)
+                contrast(1.02);
+            transform: scale(1);
+            transition: opacity 260ms ease, transform 320ms ease, filter 320ms ease;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .kit-banner-wrap:not(.has-selection) .kit-part:hover,
+        .kit-banner-wrap:not(.has-selection) .kit-part:focus-visible,
+        .kit-banner-wrap:not(.has-selection) .kit-part.is-active {
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+        }
+
+        .kit-banner-wrap:not(.has-selection) .kit-part:hover img,
+        .kit-banner-wrap:not(.has-selection) .kit-part:focus-visible img,
+        .kit-banner-wrap:not(.has-selection) .kit-part.is-active img {
+            opacity: 0;
+            transform: scale(1);
+        }
+
+        .kit-banner-wrap.has-selection .kit-banner-base {
+            opacity: 0;
+            transform: scale(0.972);
+            filter:
+                drop-shadow(0 0 1px rgba(255,255,255,0.2))
+                drop-shadow(0 12px 18px rgba(0,0,0,0.18))
+                saturate(0.86)
+                brightness(0.78)
+                blur(3px);
+        }
+
+        .kit-banner-wrap.has-selection .kit-part:not(.is-active) {
+            pointer-events: none;
+            transform: translate(-50%, -50%) rotate(var(--r, 0deg)) scale(0.94);
+        }
+
+        .kit-banner-wrap.has-selection .kit-part.is-active {
+            left: 50%;
+            top: 50%;
+            z-index: 20;
+            pointer-events: auto;
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(var(--r, 0deg)) scale(1.25);
+        }
+
+        .kit-banner-wrap.has-pump-pair .kit-part[data-kit-part="1"].is-active {
+            left: 36%;
+        }
+
+        .kit-banner-wrap.has-pump-pair .kit-part[data-kit-part="2"].is-active {
+            left: 66%;
+        }
+
+        .kit-banner-wrap.has-selection .kit-part.is-active img {
+            opacity: 1;
+            transform: scale(1);
+            filter:
+                drop-shadow(0 30px 32px rgba(0,0,0,0.52))
+                saturate(1.1)
+                contrast(1.04);
+        }
+
+        .kit-hotspot {
+            aspect-ratio: 1;
+        }
+
+        .kit-hotspot::before {
+            inset: 24%;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(34,199,238,0.28), transparent 64%);
+        }
+
+        .kit-part-01 { --x: 14.9%; --y: 49.5%; --w: 29%; --focus-w: 46%; --z: 8; }
+        .kit-part-02 { --x: 18.2%; --y: 35.2%; --w: 9.5%; --focus-w: 38%; --z: 15; display: block; }
+        .kit-part-03 { --x: 64.6%; --y: 51.2%; --w: 22%; --focus-w: 38%; --z: 5; }
+        .kit-part-04 { --x: 38.5%; --y: 34.5%; --w: 20%; --focus-w: 36%; --z: 9; }
+        .kit-part-05 { --x: 85.4%; --y: 19.6%; --w: 12%; --focus-w: 34%; --z: 11; }
+        .kit-part-06 { --x: 73.8%; --y: 43%; --w: 16%; --focus-w: 39%; --z: 12; }
+        .kit-part-07 { --x: 88.3%; --y: 68%; --w: 22%; --focus-w: 42%; --z: 10; }
+        .kit-part-08 { --x: 66.3%; --y: 77%; --w: 21%; --focus-w: 42%; --z: 12; }
+        .kit-part-09 { --x: 68.5%; --y: 88.5%; --w: 9%; --focus-w: 32%; --z: 14; }
+        .kit-part-10 { --x: 43%; --y: 78%; --w: 21%; --focus-w: 38%; --z: 9; }
+
+        .kit-panel {
+            position: relative;
+            right: auto;
+            bottom: auto;
+            z-index: 3;
+            display: grid;
+            grid-template-columns: minmax(12.5rem, 0.34fr) minmax(0, 0.66fr);
+            column-gap: clamp(1rem, 2.4vw, 2rem);
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            padding: clamp(14px, 1.8vw, 20px);
+            border: 1px solid rgba(34,199,238,0.14);
+            border-radius: 0 0 clamp(18px, 2.2vw, 30px) clamp(18px, 2.2vw, 30px);
+            background: rgba(4,12,20,0.92);
+        }
+
+        .kit-description {
+            min-width: 0;
+        }
+
+        .kit-panel::before {
+            display: none;
+        }
+
+        .kit-complement-image {
+            width: min(100%, 61.25rem);
+            margin: clamp(1.2rem, 2.4vw, 1.8rem) auto 0;
+        }
+
+        .kit-complement-image img {
+            display: block;
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 28px 30px rgba(0,0,0,0.32));
+        }
+
+        .differentials-strip {
+            margin-top: clamp(1.25rem, 2.6vw, 2rem);
+            padding: 0;
+            color: inherit;
+        }
+
+        .differentials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(1rem, 4vw, 4rem);
+            align-items: start;
+        }
+
+        .differential-item {
+            display: grid;
+            justify-items: center;
+            gap: 0.52rem;
+            text-align: center;
+        }
+
+        .differential-item i {
+            color: inherit;
+            font-size: clamp(1.45rem, 2.2vw, 2rem);
+            line-height: 1;
+        }
+
+        .differential-item h3 {
+            margin: 0;
+            color: inherit;
+            font-size: clamp(0.62rem, 1vw, 0.78rem);
+            font-weight: 800;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .differentials-copy {
+            margin: clamp(1.35rem, 2.8vw, 2.1rem) 0 0;
+            padding: 0;
+            color: var(--text-muted);
+            font-size: clamp(0.78rem, 1.25vw, 0.95rem);
+            line-height: 1.65;
+            text-align: center;
+        }
+
+        .differentials-copy strong {
+            color: inherit;
+            font-weight: 800;
+        }
+
+        .differentials-video {
+            width: 100%;
+            margin: clamp(1.5rem, 3vw, 2.5rem) auto 0;
+        }
+
+        .external-video-player {
+            position: relative;
+            display: grid;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            place-items: center;
+            overflow: hidden;
+            border: 1px solid rgba(34,199,238,0.14);
+            border-radius: clamp(16px, 2vw, 24px);
+            background: #03080d;
+            box-shadow:
+                0 28px 64px rgba(0,0,0,0.34),
+                inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .external-video-player::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(2,8,13,0.08), rgba(2,8,13,0.54)),
+                radial-gradient(circle at center, transparent 32%, rgba(2,8,13,0.26));
+        }
+
+        .external-video-poster,
+        .external-video-player video,
+        .external-video-player iframe {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            object-fit: cover;
+        }
+
+        .external-video-player.has-video::after,
+        .external-video-player.has-video .external-video-poster,
+        .external-video-player.has-video .external-video-empty {
+            display: none;
+        }
+
+        .external-video-empty {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            justify-items: center;
+            gap: 0.7rem;
+            padding: 1.5rem;
+            color: #d9e7ef;
+            text-align: center;
+        }
+
+        .external-video-empty i {
+            display: grid;
+            width: 3.5rem;
+            height: 3.5rem;
+            place-items: center;
+            border: 1px solid rgba(34,199,238,0.3);
+            border-radius: 50%;
+            color: var(--brand-cyan);
+            background: rgba(0,136,172,0.12);
+            box-shadow: 0 0 34px rgba(0,136,172,0.2);
+        }
+
+        .external-video-empty strong {
+            font-size: 0.8rem;
+        }
+
+        .external-video-empty span {
+            max-width: 24rem;
+            color: var(--text-muted);
+            font-size: 0.66rem;
+            line-height: 1.6;
+        }
+
+        .kit-active-number {
+            display: none;
+        }
+
+        .kit-description > span {
+            display: block;
+            font-size: 8px;
+        }
+
+        #kitActiveTitle {
+            display: block;
+            grid-column: 1;
+            margin: 0.34rem 0 0;
+            font-size: clamp(1.24rem, 2vw, 1.68rem);
+            line-height: 1.08;
+        }
+
+        #kitActiveCopy {
+            display: block;
+            grid-column: 1;
+            max-width: 21rem;
+            margin: 0.42rem 0 0;
+            font-size: 0.72rem;
+            line-height: 1.52;
+        }
+
+        .kit-legend {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-column: 2;
+            grid-row: 1 / span 3;
+            align-self: stretch;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .kit-control {
+            display: grid;
+            grid-template-columns: 26px minmax(0, 1fr);
+            align-items: center;
+            width: 100%;
+            min-height: 42px;
+            gap: 7px;
+            padding: 6px;
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px;
+            color: #aab7c6;
+            background: rgba(255,255,255,0.025);
+            text-align: left;
+            cursor: pointer;
+            transition:
+                color 0.25s ease,
+                border-color 0.25s ease,
+                background 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        .kit-control:hover,
+        .kit-control:focus-visible,
+        .kit-control.is-active {
+            color: #fff;
+            border-color: rgba(34,199,238,0.32);
+            background: rgba(34,199,238,0.08);
+            transform: translateY(-1px);
+        }
+
+        .kit-control-index {
+            display: grid;
+            height: 26px;
+            place-items: center;
+            border-radius: 8px;
+            color: var(--brand-cyan);
+            background: rgba(34,199,238,0.09);
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+        }
+
+        .kit-control strong {
+            display: block;
+            color: inherit;
+            font-size: 10px;
+            line-height: 1.16;
+        }
+
+        .kit-control > span:last-child > span {
+            display: none;
+        }
+
+        @media (min-width: 1100px) {
+            .solution-intro {
+                position: relative;
+                left: 50%;
+                width: min(calc(100vw - 40px), 1800px);
+                max-width: none !important;
+                margin-right: 0;
+                margin-left: 0;
+                transform: translateX(-50%);
+                text-align: center;
+            }
+
+            .solution-intro .section-title {
+                width: 100%;
+                max-width: none;
+                margin-right: auto;
+                margin-left: auto;
+                font-size: clamp(2rem, 3.15vw, 3rem);
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            .solution-intro .section-title .text-gradient {
+                display: inline;
+            }
+
+            .solution-intro > p {
+                width: 100%;
+                max-width: none;
+                font-size: clamp(0.68rem, 0.86vw, 0.875rem);
+                white-space: nowrap;
+            }
+
+            .kit-showcase {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) clamp(230px, 17vw, 300px);
+                grid-template-areas:
+                    "stage navigation"
+                    "description navigation"
+                    "complement complement";
+                width: min(calc(100vw - 40px), 1800px);
+                margin-top: clamp(2.2rem, 4vw, 3.5rem);
+                margin-left: 50%;
+                column-gap: clamp(0.8rem, 1.4vw, 1.4rem);
+                row-gap: 0;
+                transform: translateX(-50%);
+                align-items: start;
+            }
+
+            .kit-stage {
+                grid-area: stage;
+                height: clamp(430px, 30vw, 560px);
+                padding: clamp(8px, 0.8vw, 14px);
+                border: 1px solid rgba(34,199,238,0.14);
+                border-radius: clamp(18px, 1.8vw, 26px) clamp(18px, 1.8vw, 26px) 0 0;
+                background:
+                    radial-gradient(circle at center, rgba(0,136,172,0.055), transparent 60%),
+                    rgba(2,8,14,0.38);
+            }
+
+            .kit-banner-wrap {
+                height: 100%;
+                aspect-ratio: auto;
+            }
+
+            .kit-panel {
+                display: contents;
+            }
+
+            .kit-description {
+                grid-area: description;
+                display: none;
+                grid-template-columns: minmax(12rem, 0.3fr) minmax(0, 0.7fr);
+                grid-template-rows: auto auto;
+                column-gap: clamp(1.2rem, 2.3vw, 2.5rem);
+                align-items: center;
+                min-height: 84px;
+                padding: 0.85rem clamp(1.15rem, 2vw, 2rem);
+                border: 1px solid rgba(34,199,238,0.14);
+                border-top: 0;
+                border-radius: 0 0 clamp(16px, 1.5vw, 22px) clamp(16px, 1.5vw, 22px);
+                background:
+                    linear-gradient(110deg, rgba(0,136,172,0.07), transparent 45%),
+                    rgba(4,12,20,0.88);
+            }
+
+            .kit-showcase.has-selection .kit-description {
+                display: grid;
+            }
+
+            .kit-showcase:not(.has-selection) .kit-stage {
+                border-radius: clamp(18px, 1.8vw, 26px);
+            }
+
+            .kit-description > span {
+                grid-column: 1;
+                grid-row: 1;
+                align-self: end;
+            }
+
+            #kitActiveTitle {
+                grid-column: 1;
+                grid-row: 2;
+                align-self: start;
+                margin-top: 0.4rem;
+                font-size: clamp(1.35rem, 1.65vw, 1.9rem);
+            }
+
+            #kitActiveCopy {
+                grid-column: 2;
+                grid-row: 1 / span 2;
+                max-width: none;
+                margin: 0;
+                font-size: clamp(0.7rem, 0.78vw, 0.86rem);
+                line-height: 1.65;
+            }
+
+            .kit-legend {
+                grid-area: navigation;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                grid-template-rows: repeat(10, minmax(38px, 1fr));
+                align-self: stretch;
+                gap: 7px;
+                margin: 0;
+                height: 100%;
+                padding: 0.65rem;
+                border: 1px solid rgba(34,199,238,0.14);
+                border-radius: clamp(18px, 1.8vw, 26px);
+                background:
+                    linear-gradient(180deg, rgba(0,136,172,0.055), transparent 44%),
+                    rgba(4,12,20,0.84);
+            }
+
+            .kit-control {
+                grid-template-columns: 27px minmax(0, 1fr);
+                min-height: 0;
+                padding: 0.32rem 0.48rem;
+                border-radius: 11px;
+            }
+
+            .kit-control-index {
+                width: 27px;
+                height: 27px;
+                font-size: 0.54rem;
+            }
+
+            .kit-control strong {
+                font-size: clamp(0.58rem, 0.64vw, 0.7rem);
+            }
+
+            .kit-banner-wrap.has-selection .kit-part.is-active {
+                width: min(var(--focus-w), 26%);
+                transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+            }
+
+            .kit-banner-wrap.has-pump-pair .kit-part[data-kit-part="1"].is-active {
+                left: 37%;
+                width: 24%;
+            }
+
+            .kit-banner-wrap.has-pump-pair .kit-part[data-kit-part="2"].is-active {
+                left: 64%;
+                width: 16%;
+            }
+
+            .kit-complement-image {
+                grid-area: complement;
+                width: min(100%, 76rem);
+                margin-top: clamp(0.5rem, 1vw, 0.9rem);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .hero {
+                min-height: auto;
+            }
+
+            .harvest-visual {
+                min-height: 560px;
+                margin: 0.9rem auto 0;
+            }
+
+            .harvest-bg-banner {
+                left: 36%;
+                top: 46%;
+                width: min(212%, 1020px);
+                opacity: 0.7;
+            }
+
+            .kit-stage {
+                margin-inline: 0;
+            }
+
+            .kit-panel {
+                width: 100%;
+            }
+
+            .kit-legend {
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 820px) {
+            .kit-panel {
+                grid-template-columns: 1fr;
+                row-gap: 0;
+            }
+
+            .kit-legend {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-column: 1;
+                grid-row: auto;
+                margin-top: 12px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            html {
+                scroll-padding-top: 5rem;
+            }
+
+            body,
+            main,
+            header,
+            section {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .nav-shell > div:first-child {
+                min-height: 4.75rem;
+                padding: 0.7rem 1rem;
+            }
+
+            .despesca-brand-logo {
+                width: 88px;
+            }
+
+            .mobile-menu {
+                max-height: calc(100dvh - 4.75rem);
+                overflow-y: auto;
+            }
+
+            #home.hero {
+                min-height: auto;
+                padding: 5.15rem 1rem 2.6rem;
+            }
+
+            #home > .relative {
+                width: 100%;
+                min-width: 0;
+                grid-template-columns: minmax(0, 1fr);
+                gap: 0;
+            }
+
+            .hero-copy,
+            .harvest-visual {
+                min-width: 0;
+            }
+
+            .hero-title {
+                width: 100%;
+                max-width: 100%;
+                margin: 0.75rem auto 0;
+                font-size: clamp(2.72rem, 11.8vw, 3.2rem);
+                line-height: 0.96;
+                letter-spacing: -0.055em;
+                overflow-wrap: anywhere;
+            }
+
+            .hero-title .text-gradient {
+                display: block;
+            }
+
+            .hero-copy p {
+                width: 100%;
+                max-width: 22.5rem;
+                margin-top: 1.2rem;
+                padding-inline: 0.1rem;
+                font-size: 0.78rem;
+                line-height: 1.75;
+                overflow-wrap: anywhere;
+            }
+
+            .harvest-visual {
+                width: 100%;
+                min-height: clamp(400px, 108vw, 455px);
+                margin: -0.4rem auto -1.35rem;
+            }
+
+            .harvest-model-stage {
+                inset: 1% -3% 5%;
+            }
+
+            .harvest-bg-banner {
+                left: 42%;
+                top: 47%;
+                width: 148%;
+                max-width: none;
+                opacity: 0.7;
+            }
+
+            .pump-machine {
+                transform: translate(-50%, -50%) scale(0.78);
+            }
+
+            #solucao {
+                padding: 3.6rem 1rem 4rem;
+            }
+
+            #solucao .max-w-3xl {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .section-label {
+                max-width: 100%;
+                gap: 7px;
+                font-size: 0.48rem;
+                letter-spacing: 0.18em;
+            }
+
+            .section-label::before {
+                width: 18px;
+            }
+
+            .section-title {
+                width: 100%;
+                max-width: 100%;
+                font-size: clamp(1.78rem, 8.15vw, 2.15rem);
+                line-height: 1.08;
+                letter-spacing: -0.035em;
+                overflow-wrap: anywhere;
+            }
+
+            #solucao .max-w-3xl > p {
+                margin-top: 1rem;
+                font-size: 0.72rem;
+                line-height: 1.68;
+            }
+
+            .kit-showcase {
+                width: 100%;
+                margin-top: 1.25rem;
+            }
+
+            .solution-overview {
+                width: calc(100% + 1rem);
+                margin: 1.35rem -0.5rem 0;
+            }
+
+            .solution-overview img {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .kit-stage {
+                width: 100%;
+                min-height: 0;
+                margin: 0;
+                padding: 4px;
+                border-radius: 18px 18px 0 0;
+                overflow: hidden;
+            }
+
+            .kit-banner-wrap {
+                width: 100%;
+                min-width: 0;
+                aspect-ratio: 2 / 1;
+            }
+
+            .kit-panel {
+                grid-template-columns: minmax(0, 1fr);
+                row-gap: 0;
+                margin: 0;
+                padding: 14px;
+                border-radius: 0 0 18px 18px;
+            }
+
+            .kit-description > span {
+                font-size: 0.45rem;
+                letter-spacing: 0.16em;
+            }
+
+            #kitActiveTitle {
+                margin-top: 0.45rem;
+                font-size: 1.2rem;
+            }
+
+            #kitActiveCopy {
+                max-width: none;
+                margin-top: 0.55rem;
+                font-size: 0.68rem;
+                line-height: 1.55;
+            }
+
+            .kit-legend {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                width: 100%;
+                margin-top: 0.8rem;
+                overflow: visible;
+                gap: 6px;
+            }
+
+            .kit-control {
+                display: grid;
+                grid-template-columns: 24px minmax(0, 1fr);
+                width: 100%;
+                min-width: 0;
+                min-height: 43px;
+                gap: 6px;
+                padding: 5px;
+            }
+
+            .kit-control-index {
+                width: 24px;
+                height: 24px;
+                font-size: 0.48rem;
+            }
+
+            .kit-control strong {
+                font-size: 0.55rem;
+                line-height: 1.18;
+                overflow-wrap: anywhere;
+            }
+
+            .kit-complement-image {
+                width: 100%;
+                margin-top: 1rem;
+            }
+
+            .kit-complement-image img {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .differentials-strip {
+                width: 100%;
+                margin-top: 1.3rem;
+            }
+
+            .differentials-grid {
+                width: 100%;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 0.6rem;
+            }
+
+            .differential-item {
+                min-width: 0;
+                gap: 0.42rem;
+            }
+
+            .differential-item i {
+                font-size: 1.3rem;
+            }
+
+            .differential-item h3 {
+                max-width: 100%;
+                font-size: 0.48rem;
+                line-height: 1.25;
+                overflow-wrap: anywhere;
+            }
+
+            .differentials-copy {
+                margin-top: 1.2rem;
+                font-size: 0.72rem;
+                line-height: 1.58;
+                overflow-wrap: anywhere;
+            }
+
+            .differentials-video {
+                width: 100%;
+                margin-top: 1.35rem;
+            }
+
+            .external-video-player {
+                border-radius: 16px;
+            }
+
+            .external-video-empty {
+                gap: 0.55rem;
+                padding: 1rem;
+            }
+
+            .external-video-empty i {
+                width: 2.8rem;
+                height: 2.8rem;
+            }
+
+            .external-video-empty strong {
+                font-size: 0.68rem;
+            }
+
+            .external-video-empty span {
+                max-width: 17rem;
+                font-size: 0.58rem;
+            }
+
+            #contato {
+                padding: 4rem 1rem;
+            }
+
+            .cta-shell {
+                width: 100%;
+                padding: 2rem 1.25rem;
+                border-radius: 22px;
+            }
+
+            .cta-shell .section-title {
+                font-size: clamp(1.72rem, 8vw, 2.1rem);
+            }
+
+            .cta-shell p {
+                font-size: 0.75rem;
+                line-height: 1.7;
+                overflow-wrap: anywhere;
+            }
+
+            .cta-shell .lux-button,
+            .cta-shell .ghost-button {
+                width: 100%;
+            }
+
+            footer {
+                width: 100%;
+                padding-inline: 0.25rem;
+                text-align: center;
+            }
+
+            .modal-backdrop {
+                padding: 0.75rem;
+            }
+
+            .modal-panel {
+                width: 100%;
+                max-height: calc(100dvh - 1.5rem);
+                border-radius: 20px;
+            }
+
+            .modal-detail {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 0.4rem;
+            }
+        }
+
+        @media (max-width: 370px) {
+            .hero-title {
+                font-size: 2.62rem;
+            }
+
+            .hero-copy p {
+                font-size: 0.73rem;
+            }
+
+            .kit-panel {
+                padding: 12px;
+            }
+
+            .kit-legend {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased">
+    <div class="site-noise" aria-hidden="true"></div>
+
+    <nav id="navbar" class="nav-shell fixed left-0 top-0 z-50 w-full">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
+            <a href="../crm.html" class="flex items-center" aria-label="Voltar ao Hub MHS">
+                <img src="../01.%20Flutuantes/logo_mhs.png" alt="Mais Hidro Soluções" class="despesca-brand-logo">
+            </a>
+
+            <div class="hidden items-center gap-6 text-[10px] font-semibold uppercase tracking-[0.13em] text-gray-400 lg:flex">
+                <a href="../crm.html" class="transition hover:text-brand-cyan">Hub MHS</a>
+                <a href="#home" class="transition hover:text-brand-cyan">Início</a>
+                <a href="#solucao" class="transition hover:text-brand-cyan">A bomba</a>
+                <a href="#diferenciais" class="transition hover:text-brand-cyan">Diferenciais</a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <a href="#contato" class="lux-button hidden px-5 sm:inline-flex">
+                    Solicitar Projeto
+                    <i class="fas fa-arrow-right text-[9px]"></i>
+                </a>
+                <button
+                    id="menuButton"
+                    type="button"
+                    class="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-white lg:hidden"
+                    aria-label="Abrir menu"
+                    aria-controls="mobileMenu"
+                    aria-expanded="false"
+                >
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="mobile-menu px-5 pb-5 lg:hidden">
+            <div class="grid gap-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.13em] text-gray-400">
+                <a href="../crm.html" class="rounded-xl px-3 py-3 transition hover:bg-white/[0.03] hover:text-brand-cyan">Hub MHS</a>
+                <a href="#home" class="rounded-xl px-3 py-3 transition hover:bg-white/[0.03] hover:text-brand-cyan">Início</a>
+                <a href="#solucao" class="rounded-xl px-3 py-3 transition hover:bg-white/[0.03] hover:text-brand-cyan">A bomba</a>
+                <a href="#diferenciais" class="rounded-xl px-3 py-3 transition hover:bg-white/[0.03] hover:text-brand-cyan">Diferenciais</a>
+                <a href="#contato" class="mt-2 rounded-xl border border-brand-teal/25 bg-brand-teal/10 px-3 py-3 text-brand-cyan">
+                    Solicitar Projeto
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero section-shell overflow-hidden px-5 pb-14 pt-32 md:px-8 md:pb-20 md:pt-36">
+        <div class="hero-glow" aria-hidden="true"></div>
+
+        <div class="relative z-10 mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[0.98fr_1.02fr]">
+            <div class="hero-copy text-center">
+                <h1 class="hero-title mt-7">
+                    Transferindo
+                    <span class="text-gradient">Eficiência</span>
+                </h1>
+
+                <p class="mx-auto mt-7 max-w-2xl text-center text-sm leading-7 text-gray-400 md:text-base md:leading-8">
+                    Equipamento especialmente desenvolvido pela MAIS HIDRO SOLUÇÕES para otimização do sistema de
+                    despesca de camarão. Seu desenho inovador permite melhor mobilidade e seu elevado desempenho
+                    garante agilidade no processo com consequente redução de custos operacionais.
+                </p>
+            </div>
+
+            <div id="harvest-visual" class="harvest-visual" role="img" aria-label="Modelo tridimensional interativo da Bomba de Despesca MHS">
+                <img
+                    src="./imagem_mao_camarao.png"
+                    alt=""
+                    class="harvest-bg-banner"
+                    aria-hidden="true"
+                    draggable="false"
+                    loading="eager"
+                    decoding="async"
+                >
+
+                <div id="harvest-model-stage" class="harvest-model-stage" aria-hidden="true">
+                    <canvas id="harvest-model-canvas" class="harvest-model-canvas"></canvas>
+                    <div id="harvest-model-loading" class="harvest-model-loading" role="status" aria-live="polite">
+                        <span class="harvest-model-loader" aria-hidden="true"></span>
+                        <span id="harvest-model-progress">Carregando modelo 3D</span>
+                    </div>
+                    <p id="harvest-model-error" class="harvest-model-error">Visualização 3D indisponível.</p>
+                </div>
+
+                <div class="pump-machine model-static-fallback" aria-hidden="true">
+                    <div class="pipe-in">
+                        <div class="pipe-flow"></div>
+                    </div>
+                    <div class="pipe-out">
+                        <div class="pipe-flow"></div>
+                    </div>
+                    <div class="pump-base"></div>
+                    <div class="pump-housing"></div>
+                    <div class="pump-motor"></div>
+                    <i class="fas fa-fish fish-token one"></i>
+                    <i class="fas fa-fish fish-token two"></i>
+                    <i class="fas fa-fish fish-token three"></i>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="solucao" class="section-shell overflow-hidden px-5 pb-20 pt-14 md:px-8 md:pb-28 md:pt-20">
+            <div class="mx-auto max-w-7xl">
+                <div class="solution-intro mx-auto text-center">
+                    <span class="section-label justify-center">Bomba de Despesca MHS</span>
+                    <h2 class="section-title mt-4 text-3xl md:text-5xl">
+                        Conjunto completo para
+                        <span class="text-gradient">despesca de camarão.</span>
+                    </h2>
+                    <p class="mt-5 text-xs leading-6 text-gray-500 md:text-sm">
+                        Componentes organizados para formar uma solução móvel, robusta e pronta para integrar
+                        captação, acionamento, escorva e transferência no campo.
+                    </p>
+                </div>
+
+                <figure class="solution-overview">
+                    <img
+                        src="./conjunto_bba_e_quadro%20(2).png"
+                        alt="Bomba de despesca MHS e módulo de controle elétrico vistos em conjunto"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                </figure>
+
+                <div id="despescaKit" class="kit-showcase">
+                    <div class="kit-stage" aria-label="Banner interativo com componentes do conjunto de despesca MHS">
+                        <div class="kit-banner-wrap">
+                            <img src="./bomba_fragmentada/inteiro_banner.png" alt="Conjunto de despesca MHS com componentes posicionados em banner técnico" class="kit-banner-base" loading="lazy" decoding="async">
+
+                            <button type="button" class="kit-part kit-part-01" data-kit-part="1" aria-label="1 - Conjunto completo">
+                                <img src="./bomba_fragmentada/01.%20conj_completo_despesca.png" alt="Conjunto completo da bomba de despesca" loading="lazy" decoding="async">
+                            </button>
+                            <button type="button" class="kit-part kit-hotspot kit-part-02" data-kit-part="2" aria-label="2 - Motor elétrico de 7,5 cv">
+                                <img src="./bomba_fragmentada/02.%20motor_eletrico.png" alt="Motor elétrico de 7,5 cv" loading="lazy" decoding="async">
+                            </button>
+                            <button type="button" class="kit-part kit-part-03" data-kit-part="3" aria-label="3 - Carrinho suporte">
+                                <img src="./bomba_fragmentada/03.%20carrinho_de_carga.png" alt="Carrinho suporte da bomba de despesca" loading="lazy" decoding="async">
+                            </button>
+                            <button type="button" class="kit-part kit-part-04" data-kit-part="4" aria-label="4 - Inversor">
+                                <img src="./bomba_fragmentada/04.%20inversor.png" alt="Inversor do conjunto de despesca" loading="lazy" decoding="async">
+                            </button>
+                            <button type="button" class="kit-part kit-part-05" data-kit-part="5" aria-label="5 - Bomba de vácuo">
+                                <img src="./bomba_fragmentada/5.%20bba_escorva.png" alt="Bomba de vácuo para escorva" loading="lazy" decoding="async">
+                            </button>
+                            <button type="button" class="kit-part kit-part-06" data-kit-part="6" aria-label="6 - Mangueira de ar comprimido com engate">
+                                <img src="./bomba_fragmentada/06.%20mangueira_ar_comprimido.png" alt="Mangueira de ar comprimido com engate" loading="lazy" decoding="async">
+                            </button>
+                            <button type="button" class="kit-part kit-part-07" data-kit-part="7" aria-label="7 - Mangote de sucção">
+                                <img src="./bomba_fragmentada/07.%20mangote_succao.png" alt="Mangote de sucção" loading="lazy" decoding="async">
+                            </button>
+                            <button type="button" class="kit-part kit-part-08" data-kit-part="8" aria-label="8 - Mangote de recalque">
+                                <img src="./bomba_fragmentada/08.%20mangote_recalque.png" alt="Mangote de recalque" loading="lazy" decoding="async">
+                            </button>
+                            <button type="button" class="kit-part kit-part-09" data-kit-part="9" aria-label="9 - Abraçadeira de união">
+                                <img src="./bomba_fragmentada/9.%20abracadeira.png" alt="Abraçadeira de união" loading="lazy" decoding="async">
+                            </button>
+                            <button type="button" class="kit-part kit-part-10" data-kit-part="10" aria-label="10 - Módulo de escorva">
+                                <img src="./bomba_fragmentada/modulo_de_escorva.png" alt="Módulo de escorva" loading="lazy" decoding="async">
+                            </button>
+                        </div>
+                    </div>
+
+                    <aside class="kit-panel" aria-live="polite">
+                        <div class="kit-description">
+                            <div id="kitActiveNumber" class="kit-active-number">01</div>
+                            <span class="text-[9px] font-bold uppercase tracking-[0.22em] text-brand-cyan">
+                                Engenharia aplicada ao manejo
+                            </span>
+                            <h3 id="kitActiveTitle" class="mt-4 text-2xl font-extrabold leading-tight tracking-[-0.035em] text-white md:text-3xl">
+                                Bomba de despesca
+                            </h3>
+                            <p id="kitActiveCopy" class="mt-4 text-xs leading-6 text-gray-500">
+                                Bomba de despesca com corpo em aço inoxidável, montada sobre estrutura tipo carrinho para facilitar o transporte. Equipada com motor trifásico WEG de 7,5 cv, 380 V, possui peso total de 130 kg. Indicada para operações em água doce e salgada, oferece robustez, eficiência e praticidade.
+                            </p>
+                        </div>
+
+                        <div class="kit-legend">
+                            <button type="button" class="kit-control" data-kit-part="1" data-kit-title="Bomba de despesca" data-kit-copy="Bomba de despesca com corpo em aço inoxidável, montada sobre estrutura tipo carrinho para facilitar o transporte. Equipada com motor trifásico WEG de 7,5 cv, 380 V, possui peso total de 130 kg. Indicada para operações em água doce e salgada, oferece robustez, eficiência e praticidade.">
+                                <span class="kit-control-index">01</span><span><strong>Conj. completo</strong><span>Bomba de despesca montada</span></span>
+                            </button>
+                            <button type="button" class="kit-control" data-kit-part="2" data-kit-title="Bomba de despesca" data-kit-copy="Bomba de despesca com corpo em aço inoxidável, montada sobre estrutura tipo carrinho para facilitar o transporte. Equipada com motor trifásico WEG de 7,5 cv, 380 V, possui peso total de 130 kg. Indicada para operações em água doce e salgada, oferece robustez, eficiência e praticidade.">
+                                <span class="kit-control-index">02</span><span><strong>Motor elétrico</strong><span>Potência para operação</span></span>
+                            </button>
+                            <button type="button" class="kit-control" data-kit-part="3" data-kit-title="Carrinho" data-kit-copy="Altura x largura: 140 cm x 59 cm. Peso: 14,1 kg. Material do carrinho: ferro.">
+                                <span class="kit-control-index">03</span><span><strong>Carrinho suporte</strong><span>Mobilidade em campo</span></span>
+                            </button>
+                            <button type="button" class="kit-control" data-kit-part="4" data-kit-title="Inversor" data-kit-copy="Texto a analisar.">
+                                <span class="kit-control-index">04</span><span><strong>Inversor</strong><span>Controle do acionamento</span></span>
+                            </button>
+                            <button type="button" class="kit-control" data-kit-part="5" data-kit-title="Bomba de vácuo" data-kit-copy="Voltagem: 127/220 V. Potência: 0,761 hp. Vazão da bomba: 169,901 l/min. Dimensões: 14 cm de largura, 24 cm de altura e 34 cm de profundidade.">
+                                <span class="kit-control-index">05</span><span><strong>Bomba de vácuo</strong><span>Auxílio na escorva</span></span>
+                            </button>
+                            <button type="button" class="kit-control" data-kit-part="6" data-kit-title="Mangueira + engate" data-kit-copy="Mangueira de ar comprimido de alta performance com engate rápido.">
+                                <span class="kit-control-index">06</span><span><strong>Mangueira + engate</strong><span>Conexão auxiliar</span></span>
+                            </button>
+                            <button type="button" class="kit-control" data-kit-part="7" data-kit-title="Mangote de sucção" data-kit-copy="Produzido em PVC flexível transparente, reforçado com espiral de PVC rígido na cor laranja, com 6 polegadas.">
+                                <span class="kit-control-index">07</span><span><strong>Mangote de sucção</strong><span>Entrada do fluxo</span></span>
+                            </button>
+                            <button type="button" class="kit-control" data-kit-part="8" data-kit-title="Mangote de recalque" data-kit-copy="PVC flexível, reforçado com uma camada de fios de poliéster e cobertura em PVC flexível e leve. Bocal de 6 polegadas.">
+                                <span class="kit-control-index">08</span><span><strong>Mangote de recalque</strong><span>Saída direcionada</span></span>
+                            </button>
+                            <button type="button" class="kit-control" data-kit-part="9" data-kit-title="Abraçadeira de união" data-kit-copy="A abraçadeira de união TC (Tri-Clamp) em aço inoxidável 304 de 6 polegadas é uma conexão essencial para linhas de transferência de fluidos.">
+                                <span class="kit-control-index">09</span><span><strong>Abraçadeira</strong><span>União e vedação</span></span>
+                            </button>
+                            <button type="button" class="kit-control" data-kit-part="10" data-kit-title="Módulo de escorva" data-kit-copy="Módulo de escorva.">
+                                <span class="kit-control-index">10</span><span><strong>Módulo de escorva</strong><span>Partida organizada</span></span>
+                            </button>
+                        </div>
+                    </aside>
+
+                    <figure class="kit-complement-image">
+                        <img src="./conjunto_da_bomba.png" alt="Segunda visão do conjunto da bomba de despesca MHS com quadro de comando" loading="lazy" decoding="async">
+                    </figure>
+                </div>
+
+                <div id="diferenciais" class="differentials-strip" role="region" aria-label="Diferenciais da bomba de despesca MHS">
+                    <div class="differentials-grid">
+                        <article class="differential-item">
+                            <i class="fas fa-table-cells-large" aria-hidden="true"></i>
+                            <h3>Modular</h3>
+                        </article>
+                        <article class="differential-item">
+                            <i class="fas fa-route" aria-hidden="true"></i>
+                            <h3>Mobilidade</h3>
+                        </article>
+                        <article class="differential-item">
+                            <i class="far fa-clock" aria-hidden="true"></i>
+                            <h3>Performance</h3>
+                        </article>
+                    </div>
+
+                    <p class="differentials-copy">
+                        Unidade de bombeamento modular para despesca de camarão, constituída por dois subsistemas: o conjunto motobomba e o módulo de controle elétrico com escorva a vácuo. Sua estrutura sobre rodas permite deslocamento manual entre viveiros sem necessidade de equipamentos auxiliares, enquanto o sistema de escorva automática assegura prontidão operacional em tempo médio de <strong>3 minutos</strong>, com mínima intervenção do operador.
+                    </p>
+
+                    <div class="differentials-video">
+                        <div
+                            id="differentials-video-player"
+                            class="external-video-player"
+                            data-video-url="https://drive.google.com/file/d/1mohfVxCV1cfTwCZaCgWHM-qhFiafZU4_/view?usp=sharing"
+                            aria-label="Vídeo de demonstração da bomba de despesca MHS"
+                        >
+                            <img
+                                class="external-video-poster"
+                                src="./conjunto_da_bomba.png"
+                                alt=""
+                                aria-hidden="true"
+                                loading="lazy"
+                                decoding="async"
+                            >
+                            <div class="external-video-empty">
+                                <i class="fas fa-play" aria-hidden="true"></i>
+                                <strong>Vídeo demonstrativo</strong>
+                                <span>O conteúdo será reproduzido diretamente pela fonte externa configurada.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato" class="overflow-hidden px-5 py-20 md:px-8 md:py-28">
+            <div class="cta-shell mx-auto max-w-7xl px-7 py-14 md:px-12 md:py-20 lg:px-16">
+                <i class="fas fa-fish cta-fish" aria-hidden="true"></i>
+
+                <div class="relative z-10 max-w-3xl">
+                    <span class="section-label">Projeto MHS</span>
+
+                    <h2 class="section-title mt-4 text-3xl md:text-5xl lg:text-6xl">
+                        Sua despesca merece uma solução
+                        <span class="text-gradient">projetada para a operação.</span>
+                    </h2>
+
+                    <p class="mt-6 max-w-2xl text-sm leading-7 text-gray-400">
+                        Compartilhe as condições da unidade, o tipo de cultivo e a rota desejada. A equipe MHS
+                        avalia a configuração adequada para integrar a bomba ao processo.
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap gap-3">
+                        <button id="contactButton" type="button" class="lux-button">
+                            Solicitar avaliação técnica
+                            <i class="fas fa-arrow-right text-[9px]"></i>
+                        </button>
+
+                        <a href="#home" class="ghost-button">
+                            Voltar ao início
+                            <i class="fas fa-arrow-up text-[9px]"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 pb-2 pt-14 text-[9px] uppercase tracking-[0.14em] text-gray-600 sm:flex-row">
+                <p>© MHS — Mais Hidro Soluções</p>
+                <p>Bomba de Despesca • Aquicultura • Transferência de peixes</p>
+            </footer>
+        </section>
+    </main>
+
+    <div
+        id="technicalModal"
+        class="modal-backdrop"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="technicalModalTitle"
+        aria-hidden="true"
+    >
+        <div class="modal-panel" role="document">
+            <div class="flex items-start justify-between gap-5 border-b border-white/[0.08] p-6 md:p-8">
+                <div class="flex items-start gap-4">
+                    <div class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-brand-teal/25 bg-brand-teal/10 text-brand-cyan">
+                        <i class="fas fa-gear"></i>
+                    </div>
+                    <div>
+                        <span class="text-[8px] font-bold uppercase tracking-[0.2em] text-brand-cyan">
+                            Visão técnica
+                        </span>
+                        <h2 id="technicalModalTitle" class="mt-2 text-xl font-extrabold text-white md:text-2xl">
+                            Bomba de Despesca MHS
+                        </h2>
+                    </div>
+                </div>
+
+                <button
+                    id="closeTechnicalModal"
+                    type="button"
+                    class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-gray-400 transition hover:border-brand-teal/40 hover:text-white"
+                    aria-label="Fechar visão técnica"
+                >
+                    <i class="fas fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6 md:p-8">
+                <p class="text-sm leading-7 text-gray-400">
+                    A configuração final é definida após análise da aplicação. A solução pode ser ajustada à
+                    espécie, ao lote, ao ponto de captação, à distância de transferência, ao desnível e à etapa de destino.
+                </p>
+
+                <div class="mt-7">
+                    <div class="modal-detail">
+                        <span class="text-[9px] font-bold uppercase tracking-[0.16em] text-gray-500">Função principal</span>
+                        <strong class="text-xs font-semibold leading-6 text-white">
+                            Transferência hidráulica de peixes e água durante a despesca.
+                        </strong>
+                    </div>
+
+                    <div class="modal-detail">
+                        <span class="text-[9px] font-bold uppercase tracking-[0.16em] text-gray-500">Dimensionamento</span>
+                        <strong class="text-xs font-semibold leading-6 text-white">
+                            Definido conforme lote, espécie, percurso e condições da unidade.
+                        </strong>
+                    </div>
+
+                    <div class="modal-detail">
+                        <span class="text-[9px] font-bold uppercase tracking-[0.16em] text-gray-500">Integração</span>
+                        <strong class="text-xs font-semibold leading-6 text-white">
+                            Captador, separação, contagem, pesagem, classificação e expedição.
+                        </strong>
+                    </div>
+
+                    <div class="modal-detail">
+                        <span class="text-[9px] font-bold uppercase tracking-[0.16em] text-gray-500">Aplicações</span>
+                        <strong class="text-xs font-semibold leading-6 text-white">
+                            Despesca, manejo interno, transferência entre etapas e alimentação de linhas.
+                        </strong>
+                    </div>
+
+                    <div class="modal-detail">
+                        <span class="text-[9px] font-bold uppercase tracking-[0.16em] text-gray-500">Engenharia</span>
+                        <strong class="text-xs font-semibold leading-6 text-white">
+                            Avaliação técnica MHS para compatibilização com o processo existente.
+                        </strong>
+                    </div>
+                </div>
+
+                <div class="mt-8 rounded-2xl border border-brand-teal/20 bg-brand-teal/[0.07] p-5">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-circle-info mt-1 text-brand-cyan"></i>
+                        <p class="text-[10px] leading-6 text-gray-400">
+                            As especificações de capacidade, acionamento, tubulação e instalação devem ser
+                            confirmadas no projeto técnico de cada aplicação.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div
+        id="contactModal"
+        class="modal-backdrop"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contactModalTitle"
+        aria-hidden="true"
+    >
+        <div class="modal-panel" role="document">
+            <div class="flex items-start justify-between gap-5 border-b border-white/[0.08] p-6 md:p-8">
+                <div class="flex items-start gap-4">
+                    <div class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-brand-teal/25 bg-brand-teal/10 text-brand-cyan">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <div>
+                        <span class="text-[8px] font-bold uppercase tracking-[0.2em] text-brand-cyan">
+                            Avaliação da aplicação
+                        </span>
+                        <h2 id="contactModalTitle" class="mt-2 text-xl font-extrabold text-white md:text-2xl">
+                            Informações para o projeto
+                        </h2>
+                    </div>
+                </div>
+
+                <button
+                    id="closeContactModal"
+                    type="button"
+                    class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-gray-400 transition hover:border-brand-teal/40 hover:text-white"
+                    aria-label="Fechar informações do projeto"
+                >
+                    <i class="fas fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6 md:p-8">
+                <p class="text-sm leading-7 text-gray-400">
+                    Para avaliar a solução, reúna as informações abaixo e encaminhe ao canal comercial já utilizado
+                    com a Mais Hidro Soluções.
+                </p>
+
+                <div class="mt-7 grid gap-3 sm:grid-cols-2">
+                    <div class="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5">
+                        <span class="text-[9px] font-bold uppercase tracking-[0.16em] text-brand-cyan">01</span>
+                        <h3 class="mt-3 text-sm font-bold text-white">Cultivo e lote</h3>
+                        <p class="mt-2 text-[10px] leading-5 text-gray-500">
+                            Espécie, porte médio e volume estimado da operação.
+                        </p>
+                    </div>
+
+                    <div class="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5">
+                        <span class="text-[9px] font-bold uppercase tracking-[0.16em] text-brand-cyan">02</span>
+                        <h3 class="mt-3 text-sm font-bold text-white">Origem e destino</h3>
+                        <p class="mt-2 text-[10px] leading-5 text-gray-500">
+                            Tipo de viveiro, ponto de captação e etapa final.
+                        </p>
+                    </div>
+
+                    <div class="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5">
+                        <span class="text-[9px] font-bold uppercase tracking-[0.16em] text-brand-cyan">03</span>
+                        <h3 class="mt-3 text-sm font-bold text-white">Percurso</h3>
+                        <p class="mt-2 text-[10px] leading-5 text-gray-500">
+                            Distância aproximada, desnível e condições de instalação.
+                        </p>
+                    </div>
+
+                    <div class="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5">
+                        <span class="text-[9px] font-bold uppercase tracking-[0.16em] text-brand-cyan">04</span>
+                        <h3 class="mt-3 text-sm font-bold text-white">Integrações</h3>
+                        <p class="mt-2 text-[10px] leading-5 text-gray-500">
+                            Necessidade de captação, contagem, pesagem ou classificação.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-7 rounded-2xl border border-brand-teal/20 bg-brand-teal/[0.07] p-5">
+                    <p class="text-[10px] leading-6 text-gray-400">
+                        Nenhum telefone, e-mail ou endereço foi inserido automaticamente para evitar divulgar
+                        informações comerciais não confirmadas no projeto.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (() => {
+            const kit = document.getElementById("despescaKit");
+            if (!kit) return;
+
+            const stage = kit.querySelector(".kit-stage");
+            const banner = kit.querySelector(".kit-banner-wrap");
+            const visualParts = Array.from(kit.querySelectorAll(".kit-part"));
+            const controls = Array.from(kit.querySelectorAll(".kit-control"));
+            const interactiveItems = [...visualParts, ...controls];
+            const activeNumber = document.getElementById("kitActiveNumber");
+            const activeTitle = document.getElementById("kitActiveTitle");
+            const activeCopy = document.getElementById("kitActiveCopy");
+
+            const controlByPart = new Map(controls.map((control) => [control.dataset.kitPart, control]));
+            const pumpPairParts = new Set(["1", "2"]);
+            let activePartId = null;
+            let previousScrollLeft = 0;
+
+            const scrollStageTo = (left) => {
+                if (!stage || stage.scrollWidth <= stage.clientWidth) return;
+
+                if (typeof stage.scrollTo === "function") {
+                    stage.scrollTo({
+                        left,
+                        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+                    });
+                } else {
+                    stage.scrollLeft = left;
+                }
+            };
+
+            const centerSelectedPart = () => {
+                if (!stage || stage.scrollWidth <= stage.clientWidth) return;
+                scrollStageTo(Math.max(0, (stage.scrollWidth - stage.clientWidth) / 2));
+            };
+
+            const clearActivePart = () => {
+                banner?.classList.remove("has-selection");
+                banner?.classList.remove("has-pump-pair");
+                stage?.classList.remove("has-selection");
+                kit.classList.remove("has-selection");
+
+                [...visualParts, ...controls].forEach((item) => {
+                    item.classList.remove("is-active");
+                    item.setAttribute("aria-pressed", "false");
+                });
+
+                activePartId = null;
+                window.requestAnimationFrame(() => scrollStageTo(previousScrollLeft));
+            };
+
+            const setActivePart = (partId) => {
+                const control = controlByPart.get(partId);
+                if (!control) return;
+                const visualPartIds = pumpPairParts.has(partId)
+                    ? pumpPairParts
+                    : new Set([partId]);
+
+                if (!banner?.classList.contains("has-selection")) {
+                    previousScrollLeft = stage?.scrollLeft || 0;
+                }
+
+                banner?.classList.add("has-selection");
+                banner?.classList.toggle("has-pump-pair", pumpPairParts.has(partId));
+                stage?.classList.add("has-selection");
+                kit.classList.add("has-selection");
+
+                visualParts.forEach((item) => {
+                    const isActive = visualPartIds.has(item.dataset.kitPart);
+                    item.classList.toggle("is-active", isActive);
+                    item.setAttribute("aria-pressed", String(isActive));
+                });
+
+                controls.forEach((item) => {
+                    const isActive = item.dataset.kitPart === partId;
+                    item.classList.toggle("is-active", isActive);
+                    item.setAttribute("aria-pressed", String(isActive));
+                });
+
+                if (activeNumber) activeNumber.textContent = partId.padStart(2, "0");
+                if (activeTitle) activeTitle.textContent = control.dataset.kitTitle || "";
+                if (activeCopy) activeCopy.textContent = control.dataset.kitCopy || "";
+                activePartId = partId;
+                window.requestAnimationFrame(centerSelectedPart);
+            };
+
+            interactiveItems.forEach((item) => {
+                item.addEventListener("click", () => {
+                    activePartId === item.dataset.kitPart
+                        ? clearActivePart()
+                        : setActivePart(item.dataset.kitPart);
+                });
+            });
+
+            banner?.addEventListener("click", (event) => {
+                if (event.target === banner) clearActivePart();
+            });
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape" && banner?.classList.contains("has-selection")) {
+                    clearActivePart();
+                }
+            });
+        })();
+    </script>
+    <script>
+        (() => {
+            const mount = document.getElementById("differentials-video-player");
+            if (!mount) return;
+
+            let userPaused = false;
+            let autoPaused = false;
+            let video = null;
+
+            const isVisible = () => {
+                if (!video || document.hidden) return false;
+
+                const rect = mount.getBoundingClientRect();
+                const visibleHeight = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
+                return rect.height > 0 && visibleHeight / rect.height >= 0.38;
+            };
+
+            const pause = () => {
+                if (video.paused) return;
+                autoPaused = true;
+                video.pause();
+            };
+
+            const play = () => {
+                if (userPaused || !isVisible()) return;
+                autoPaused = false;
+                video.play().catch(() => {});
+            };
+
+            const sync = () => isVisible() ? play() : pause();
+
+            const configureDirectVideo = (url) => {
+                video = document.createElement("video");
+                video.src = url;
+                video.controls = true;
+                video.muted = true;
+                video.playsInline = true;
+                video.preload = "metadata";
+                video.setAttribute("aria-label", mount.getAttribute("aria-label") || "Vídeo demonstrativo");
+                mount.appendChild(video);
+                mount.classList.add("has-video");
+
+                video.addEventListener("play", () => {
+                    if (!isVisible()) {
+                        pause();
+                        return;
+                    }
+
+                    autoPaused = false;
+                    userPaused = false;
+                });
+
+                video.addEventListener("pause", () => {
+                    if (!autoPaused && !video.ended) userPaused = true;
+                });
+
+                video.addEventListener("ended", () => {
+                    userPaused = true;
+                });
+
+                if ("IntersectionObserver" in window) {
+                    const observer = new IntersectionObserver(sync, {
+                        threshold: [0, 0.38, 0.75],
+                        rootMargin: "0px 0px -6% 0px"
+                    });
+                    observer.observe(mount);
+                } else {
+                    window.addEventListener("scroll", sync, { passive: true });
+                    window.addEventListener("resize", sync);
+                    window.addEventListener("orientationchange", sync);
+                }
+
+                document.addEventListener("visibilitychange", sync);
+                video.addEventListener("canplay", sync, { once: true });
+                window.requestAnimationFrame(sync);
+            };
+
+            const configureEmbeddedVideo = (url) => {
+                const youtubeMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^?&/]+)/i);
+                const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+                const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/?]+)/i);
+                let embedUrl = "";
+
+                if (youtubeMatch) {
+                    embedUrl = `https://www.youtube-nocookie.com/embed/${youtubeMatch[1]}?rel=0`;
+                } else if (vimeoMatch) {
+                    embedUrl = `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+                } else if (driveMatch) {
+                    embedUrl = `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
+                }
+
+                if (!embedUrl) {
+                    configureDirectVideo(url);
+                    return;
+                }
+
+                const iframe = document.createElement("iframe");
+                iframe.src = embedUrl;
+                iframe.title = mount.getAttribute("aria-label") || "Vídeo demonstrativo";
+                iframe.loading = "lazy";
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+                iframe.allowFullscreen = true;
+                mount.appendChild(iframe);
+                mount.classList.add("has-video");
+            };
+
+            const externalUrl = mount.dataset.videoUrl.trim();
+            if (externalUrl) configureEmbeddedVideo(externalUrl);
+        })();
+    </script>
+    <script src="../01. Flutuantes/vendor/three.r128.min.js"></script>
+    <script src="./vendor/OBJLoader.r128.js"></script>
+    <script>
+        (() => {
+            const visual = document.getElementById("harvest-visual");
+            const stage = document.getElementById("harvest-model-stage");
+            const canvas = document.getElementById("harvest-model-canvas");
+            const loading = document.getElementById("harvest-model-loading");
+            const progress = document.getElementById("harvest-model-progress");
+
+            if (!visual || !stage || !canvas) return;
+
+            const showFallback = (error) => {
+                visual.classList.remove("model-ready");
+                visual.classList.add("model-failed");
+                if (error) console.error("Falha ao carregar o modelo 3D da bomba de despesca:", error);
+            };
+
+            if (!window.THREE || !THREE.OBJLoader) {
+                showFallback(new Error("Three.js ou OBJLoader indisponivel."));
+                return;
+            }
+
+            let renderer;
+            try {
+                renderer = new THREE.WebGLRenderer({
+                    canvas,
+                    alpha: true,
+                    antialias: true,
+                    powerPreference: "high-performance"
+                });
+            } catch (error) {
+                showFallback(error);
+                return;
+            }
+
+            renderer.setClearColor(0x000000, 0);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 1.35 : 1.7));
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.12;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+            camera.position.set(0.35, 0.28, 8.5);
+            camera.lookAt(0, 0.1, 0);
+
+            const modelRoot = new THREE.Group();
+            let currentYaw = -0.72;
+            let currentPitch = -0.08;
+            modelRoot.rotation.set(currentPitch, currentYaw, 0.025);
+            scene.add(modelRoot);
+
+            scene.add(new THREE.HemisphereLight(0xd9f7ff, 0x06101a, 1.18));
+
+            const keyLight = new THREE.DirectionalLight(0xffffff, 2.1);
+            keyLight.position.set(4.5, 6.5, 6);
+            scene.add(keyLight);
+
+            const rimLight = new THREE.DirectionalLight(0x35d9ff, 1.28);
+            rimLight.position.set(-5, 2.5, -4);
+            scene.add(rimLight);
+
+            const fillLight = new THREE.PointLight(0x167fa3, 1.05, 16);
+            fillLight.position.set(0, -1.8, 4.5);
+            scene.add(fillLight);
+
+            const modelAssetPath = "./Bomba_despesca_OBJ_profissional/";
+            const texturePath = `${modelAssetPath}textures/`;
+            const maxAnisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy?.() || 1);
+            const textureLoader = new THREE.TextureLoader();
+
+            const loadTexture = (fileName, colorTexture = false) => {
+                const texture = textureLoader.load(`${texturePath}${fileName}`);
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.anisotropy = maxAnisotropy;
+                if (colorTexture) texture.encoding = THREE.sRGBEncoding;
+                return texture;
+            };
+
+            const makeMaterial = (options) => {
+                const material = new THREE.MeshStandardMaterial({
+                    color: options.color,
+                    metalness: options.metalness,
+                    roughness: options.roughness,
+                    map: loadTexture(options.baseColor, true),
+                    roughnessMap: loadTexture(options.roughnessMap),
+                    metalnessMap: loadTexture(options.metalnessMap),
+                    normalMap: loadTexture(options.normalMap),
+                    bumpMap: loadTexture(options.heightMap),
+                    bumpScale: options.bumpScale || 0.018,
+                    emissive: options.emissive || 0x000000,
+                    emissiveIntensity: options.emissive ? 0.045 : 0
+                });
+
+                if (options.normalScale) {
+                    material.normalScale.set(options.normalScale, options.normalScale);
+                }
+
+                return material;
+            };
+
+            const makeChromeMaterial = () => {
+                const material = new THREE.MeshPhysicalMaterial({
+                    color: 0xa5a9ab,
+                    metalness: 0.82,
+                    roughness: 0.34,
+                    clearcoat: 0.12,
+                    clearcoatRoughness: 0.28,
+                    reflectivity: 0.5,
+                    map: loadTexture("brushed_steel_basecolor.png", true),
+                    roughnessMap: loadTexture("brushed_steel_roughness.png"),
+                    metalnessMap: loadTexture("brushed_steel_metallic.png"),
+                    normalMap: loadTexture("brushed_steel_normal.png"),
+                    bumpMap: loadTexture("brushed_steel_height.png"),
+                    bumpScale: 0.01
+                });
+                material.normalScale.set(0.2, 0.2);
+                return material;
+            };
+
+            const materials = {
+                Pintura_Azul_Estrutura: makeMaterial({
+                    color: 0x149fc7,
+                    metalness: 0.08,
+                    roughness: 0.34,
+                    baseColor: "blue_frame_basecolor.png",
+                    roughnessMap: "blue_frame_roughness.png",
+                    metalnessMap: "blue_frame_metallic.png",
+                    normalMap: "blue_frame_normal.png",
+                    heightMap: "blue_frame_height.png",
+                    normalScale: 0.42,
+                    bumpScale: 0.012,
+                    emissive: 0x031f28
+                }),
+                Pintura_Azul_Motor: makeMaterial({
+                    color: 0x158fbe,
+                    metalness: 0.08,
+                    roughness: 0.36,
+                    baseColor: "blue_motor_basecolor.png",
+                    roughnessMap: "blue_motor_roughness.png",
+                    metalnessMap: "blue_motor_metallic.png",
+                    normalMap: "blue_motor_normal.png",
+                    heightMap: "blue_motor_height.png",
+                    normalScale: 0.38,
+                    bumpScale: 0.01,
+                    emissive: 0x031a24
+                }),
+                Inox_Escovado: makeChromeMaterial(),
+                Aluminio_Rodas: makeMaterial({
+                    color: 0xe8f1f5,
+                    metalness: 0.96,
+                    roughness: 0.18,
+                    baseColor: "aluminum_basecolor.png",
+                    roughnessMap: "aluminum_roughness.png",
+                    metalnessMap: "aluminum_metallic.png",
+                    normalMap: "aluminum_normal.png",
+                    heightMap: "aluminum_height.png",
+                    normalScale: 0.2,
+                    bumpScale: 0.008
+                }),
+                Borracha_Manoplas: makeMaterial({
+                    color: 0x161f27,
+                    metalness: 0.02,
+                    roughness: 0.78,
+                    baseColor: "handle_rubber_basecolor.png",
+                    roughnessMap: "handle_rubber_roughness.png",
+                    metalnessMap: "handle_rubber_metallic.png",
+                    normalMap: "handle_rubber_normal.png",
+                    heightMap: "handle_rubber_height.png",
+                    normalScale: 0.34,
+                    bumpScale: 0.015
+                }),
+                Borracha_Pneus: makeMaterial({
+                    color: 0x12181e,
+                    metalness: 0.02,
+                    roughness: 0.9,
+                    baseColor: "rubber_basecolor.png",
+                    roughnessMap: "rubber_roughness.png",
+                    metalnessMap: "rubber_metallic.png",
+                    normalMap: "rubber_normal.png",
+                    heightMap: "rubber_height.png",
+                    normalScale: 0.48,
+                    bumpScale: 0.018
+                })
+            };
+
+            const materialByGroup = {
+                frame: materials.Pintura_Azul_Estrutura,
+                handle: materials.Borracha_Manoplas,
+                motor: materials.Pintura_Azul_Motor,
+                rim: materials.Aluminio_Rodas,
+                steel: materials.Inox_Escovado,
+                tire: materials.Borracha_Pneus
+            };
+
+            const fallbackMaterial = new THREE.MeshStandardMaterial({
+                color: 0x1889a8,
+                metalness: 0.42,
+                roughness: 0.38
+            });
+            const resolveMaterial = (source, meshName) => materials[source && source.name] || materialByGroup[meshName] || fallbackMaterial;
+
+            let modelLoaded = false;
+            let modelVisible = true;
+            let running = false;
+            let animationFrame = 0;
+            let previousFrameTime = 0;
+            let dragging = false;
+            let dragPointerId = null;
+            let previousPointerX = 0;
+            let previousPointerY = 0;
+            let loadedObject = null;
+            let modelLargestDimension = 1;
+            const modelCenter = new THREE.Vector3();
+            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+            const updateModelScale = () => {
+                if (!loadedObject) return;
+
+                const targetDimension = window.innerWidth <= 640 ? 3.48 : 3.78;
+                const normalizedScale = targetDimension / modelLargestDimension;
+                loadedObject.scale.setScalar(normalizedScale);
+                loadedObject.position.set(
+                    -modelCenter.x * normalizedScale,
+                    -modelCenter.y * normalizedScale,
+                    -modelCenter.z * normalizedScale
+                );
+            };
+
+            const resizeRenderer = () => {
+                const width = Math.max(1, stage.clientWidth);
+                const height = Math.max(1, stage.clientHeight);
+                updateModelScale();
+                renderer.setSize(width, height, false);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                if (!running) renderer.render(scene, camera);
+            };
+
+            const renderFrame = (time) => {
+                if (!running) return;
+
+                const elapsed = previousFrameTime ? Math.min(48, time - previousFrameTime) : 16;
+                previousFrameTime = time;
+
+                if (!reduceMotion && !dragging) {
+                    currentYaw += elapsed * 0.00017;
+                }
+
+                modelRoot.rotation.x = currentPitch;
+                modelRoot.rotation.y = currentYaw;
+
+                if (!reduceMotion) {
+                    modelRoot.position.y = Math.sin(time * 0.00115) * 0.085;
+                }
+
+                renderer.render(scene, camera);
+                animationFrame = window.requestAnimationFrame(renderFrame);
+            };
+
+            const setRunning = (nextRunning) => {
+                if (!modelLoaded) return;
+                const shouldRun = Boolean(nextRunning);
+                if (shouldRun === running) return;
+
+                running = shouldRun;
+                window.cancelAnimationFrame(animationFrame);
+                if (running) {
+                    previousFrameTime = 0;
+                    animationFrame = window.requestAnimationFrame(renderFrame);
+                } else {
+                    renderer.render(scene, camera);
+                }
+            };
+
+            const beginModelDrag = (event) => {
+                if (!modelLoaded || dragging || (event.pointerType === "mouse" && event.button !== 0)) return;
+
+                dragging = true;
+                dragPointerId = event.pointerId;
+                previousPointerX = event.clientX;
+                previousPointerY = event.clientY;
+                canvas.classList.add("is-dragging");
+                canvas.setPointerCapture?.(event.pointerId);
+                event.preventDefault();
+            };
+
+            const moveModelDrag = (event) => {
+                if (!dragging || event.pointerId !== dragPointerId) return;
+
+                const deltaX = event.clientX - previousPointerX;
+                const deltaY = event.clientY - previousPointerY;
+                previousPointerX = event.clientX;
+                previousPointerY = event.clientY;
+
+                currentYaw += deltaX * 0.0082;
+                currentPitch = THREE.MathUtils.clamp(currentPitch + deltaY * 0.0055, -0.58, 0.38);
+                modelRoot.rotation.x = currentPitch;
+                modelRoot.rotation.y = currentYaw;
+                if (!running) renderer.render(scene, camera);
+                event.preventDefault();
+            };
+
+            const endModelDrag = (event) => {
+                if (!dragging || (event.pointerId !== undefined && event.pointerId !== dragPointerId)) return;
+
+                if (dragPointerId !== null && canvas.hasPointerCapture?.(dragPointerId)) {
+                    canvas.releasePointerCapture(dragPointerId);
+                }
+                dragging = false;
+                dragPointerId = null;
+                previousFrameTime = 0;
+                canvas.classList.remove("is-dragging");
+            };
+
+            canvas.addEventListener("pointerdown", beginModelDrag);
+            canvas.addEventListener("pointermove", moveModelDrag);
+            canvas.addEventListener("pointerup", endModelDrag);
+            canvas.addEventListener("pointercancel", endModelDrag);
+            canvas.addEventListener("lostpointercapture", endModelDrag);
+
+            const loader = new THREE.OBJLoader();
+            loader.load(
+                `${modelAssetPath}despesca_texturizada.obj`,
+                (object) => {
+                    object.traverse((child) => {
+                        if (!child.isMesh) return;
+
+                        if (!child.geometry.attributes.normal) child.geometry.computeVertexNormals();
+                        child.material = Array.isArray(child.material)
+                            ? child.material.map((source) => resolveMaterial(source, child.name))
+                            : resolveMaterial(child.material, child.name);
+                    });
+
+                    const bounds = new THREE.Box3().setFromObject(object);
+                    const size = bounds.getSize(new THREE.Vector3());
+                    const center = bounds.getCenter(new THREE.Vector3());
+                    const largestDimension = Math.max(size.x, size.y, size.z) || 1;
+
+                    loadedObject = object;
+                    modelLargestDimension = largestDimension;
+                    modelCenter.copy(center);
+                    updateModelScale();
+                    modelRoot.add(object);
+
+                    modelLoaded = true;
+                    visual.classList.add("model-ready");
+                    if (loading) loading.setAttribute("aria-hidden", "true");
+                    resizeRenderer();
+                    setRunning(modelVisible && !document.hidden);
+                },
+                (event) => {
+                    if (!progress || !event.lengthComputable || !event.total) return;
+                    const percentage = Math.min(99, Math.round((event.loaded / event.total) * 100));
+                    progress.textContent = `Carregando modelo 3D ${percentage}%`;
+                },
+                showFallback
+            );
+
+            const visibilityObserver = new IntersectionObserver((entries) => {
+                modelVisible = Boolean(entries[0] && entries[0].isIntersecting && entries[0].intersectionRatio > 0.04);
+                setRunning(modelVisible && !document.hidden);
+            }, { threshold: [0, 0.04, 0.25, 0.6] });
+            visibilityObserver.observe(visual);
+
+            if ("ResizeObserver" in window) {
+                new ResizeObserver(resizeRenderer).observe(stage);
+            } else {
+                window.addEventListener("resize", resizeRenderer, { passive: true });
+            }
+
+            document.addEventListener("visibilitychange", () => {
+                setRunning(modelVisible && !document.hidden);
+            });
+
+            canvas.addEventListener("webglcontextlost", (event) => {
+                event.preventDefault();
+                setRunning(false);
+                showFallback(new Error("Contexto WebGL perdido."));
+            });
+
+            resizeRenderer();
+        })();
+    </script>
+    <script>
+        (() => {
+            const navbar = document.getElementById("navbar");
+            const menuButton = document.getElementById("menuButton");
+            const mobileMenu = document.getElementById("mobileMenu");
+            const technicalButton = document.getElementById("technicalButton");
+            const technicalModal = document.getElementById("technicalModal");
+            const closeTechnicalModal = document.getElementById("closeTechnicalModal");
+            const contactButton = document.getElementById("contactButton");
+            const contactModal = document.getElementById("contactModal");
+            const closeContactModal = document.getElementById("closeContactModal");
+
+            let previousBodyOverflow = "";
+            let lastFocusedElement = null;
+
+            const updateNavbar = () => {
+                navbar.classList.toggle("scrolled", window.scrollY > 20);
+            };
+
+            const setMenuState = (open) => {
+                mobileMenu.classList.toggle("active", open);
+                menuButton.setAttribute("aria-expanded", String(open));
+                menuButton.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+
+                const icon = menuButton.querySelector("i");
+                icon.className = open ? "fas fa-xmark" : "fas fa-bars";
+            };
+
+            const openModal = (modal) => {
+                if (!modal) return;
+
+                lastFocusedElement = document.activeElement;
+                previousBodyOverflow = document.body.style.overflow;
+                document.body.style.overflow = "hidden";
+
+                modal.classList.add("active");
+                modal.setAttribute("aria-hidden", "false");
+
+                const closeButton = modal.querySelector('button[aria-label^="Fechar"]');
+                if (closeButton) {
+                    window.setTimeout(() => closeButton.focus(), 40);
+                }
+            };
+
+            const closeModal = (modal) => {
+                if (!modal || !modal.classList.contains("active")) return;
+
+                modal.classList.remove("active");
+                modal.setAttribute("aria-hidden", "true");
+                document.body.style.overflow = previousBodyOverflow;
+
+                if (lastFocusedElement instanceof HTMLElement) {
+                    lastFocusedElement.focus();
+                }
+            };
+
+            updateNavbar();
+            window.addEventListener("scroll", updateNavbar, { passive: true });
+
+            menuButton.addEventListener("click", () => {
+                const isOpen = mobileMenu.classList.contains("active");
+                setMenuState(!isOpen);
+            });
+
+            mobileMenu.querySelectorAll("a").forEach((link) => {
+                link.addEventListener("click", () => setMenuState(false));
+            });
+
+            if (technicalButton && technicalModal) {
+                technicalButton.addEventListener("click", () => openModal(technicalModal));
+            }
+            if (closeTechnicalModal && technicalModal) {
+                closeTechnicalModal.addEventListener("click", () => closeModal(technicalModal));
+            }
+
+            contactButton.addEventListener("click", () => openModal(contactModal));
+            closeContactModal.addEventListener("click", () => closeModal(contactModal));
+
+            [technicalModal, contactModal].forEach((modal) => {
+                modal.addEventListener("click", (event) => {
+                    if (event.target === modal) {
+                        closeModal(modal);
+                    }
+                });
+            });
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key !== "Escape") return;
+
+                if (technicalModal.classList.contains("active")) {
+                    closeModal(technicalModal);
+                }
+
+                if (contactModal.classList.contains("active")) {
+                    closeModal(contactModal);
+                }
+
+                if (mobileMenu.classList.contains("active")) {
+                    setMenuState(false);
+                    menuButton.focus();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -13,6 +13,182 @@
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const carousel = document.getElementById("app-screen-carousel");
+            const orbit = document.getElementById("app-screen-orbit");
+            if (!carousel || !orbit) return;
+
+            const items = Array.from(orbit.querySelectorAll(".app-screen-item"));
+            const dots = Array.from(carousel.querySelectorAll(".app-screen-dot"));
+            const title = document.getElementById("app-screen-title");
+            const copy = document.getElementById("app-screen-copy");
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+            const labels = [
+                {
+                    title: "Gestão Inteligente de Ativos",
+                    copy: "Organize seus ativos conforme a necessidade da operação, com classificação automática por criticidade e prioridade de atendimento."
+                },
+                {
+                    title: "Monitoramento em Tempo Real",
+                    copy: "Visualize as principais grandezas operacionais dos seus ativos com atualizações periódicas, indicadores de status e informações organizadas para uma tomada de decisão rápida, segura e baseada em dados."
+                },
+                {
+                    title: "Gestão Inteligente da Operação",
+                    copy: "Personalize limites operacionais, acompanhe o histórico de eventos, consulte registros de operação e gerencie manutenções em uma plataforma única, desenvolvida para garantir mais controle, rastreabilidade e confiabilidade aos seus ativos."
+                }
+            ];
+
+            let activeIndex = 0;
+            let timer = 0;
+            let isVisible = true;
+            let isInteracting = false;
+            let pointerStartX = null;
+            let pointerId = null;
+
+            const normalizeIndex = (index) => (index + items.length) % items.length;
+
+            const relativePosition = (index) => {
+                let distance = index - activeIndex;
+                if (distance > items.length / 2) distance -= items.length;
+                if (distance < -items.length / 2) distance += items.length;
+                return distance;
+            };
+
+            const render = () => {
+                const width = Math.max(carousel.clientWidth, 280);
+                const height = Math.max(carousel.clientHeight, 420);
+                const compact = width < 620;
+                const radiusX = width * (compact ? 0.285 : 0.275);
+                const radiusY = height * (compact ? 0.025 : 0.04);
+
+                items.forEach((item, index) => {
+                    const position = relativePosition(index);
+                    const absPosition = Math.abs(position);
+                    const isFront = position === 0;
+                    const x = position * radiusX;
+                    const y = absPosition * radiusY;
+                    const scale = isFront ? 1 : (compact ? 0.61 : 0.65);
+                    const opacity = isFront ? 1 : 0.28;
+
+                    item.style.zIndex = isFront ? "4" : "2";
+                    item.style.opacity = String(opacity);
+                    item.style.filter = isFront ? "none" : "saturate(0.58) brightness(0.7)";
+                    item.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+                    item.classList.toggle("is-front", isFront);
+                    item.setAttribute("aria-current", isFront ? "true" : "false");
+                });
+
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle("is-active", index === activeIndex);
+                });
+
+                if (title) title.textContent = labels[activeIndex].title;
+                if (copy) copy.textContent = labels[activeIndex].copy;
+            };
+
+            const stopTimer = () => {
+                window.clearTimeout(timer);
+                timer = 0;
+            };
+
+            const schedule = () => {
+                stopTimer();
+                if (!isVisible || document.hidden || isInteracting || reducedMotion.matches) return;
+                timer = window.setTimeout(() => {
+                    setActive(activeIndex + 1);
+                }, 11000);
+            };
+
+            const setActive = (index) => {
+                activeIndex = normalizeIndex(index);
+                render();
+                schedule();
+            };
+
+            items.forEach((item, index) => {
+                item.addEventListener("click", () => setActive(index));
+            });
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener("click", () => setActive(index));
+            });
+
+            carousel.addEventListener("mouseenter", () => {
+                isInteracting = true;
+                stopTimer();
+            });
+
+            carousel.addEventListener("mouseleave", () => {
+                isInteracting = false;
+                schedule();
+            });
+
+            carousel.addEventListener("focusin", () => {
+                isInteracting = true;
+                stopTimer();
+            });
+
+            carousel.addEventListener("focusout", (event) => {
+                if (!carousel.contains(event.relatedTarget)) {
+                    isInteracting = false;
+                    schedule();
+                }
+            });
+
+            carousel.addEventListener("keydown", (event) => {
+                if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+                event.preventDefault();
+                setActive(activeIndex + (event.key === "ArrowRight" ? 1 : -1));
+            });
+
+            carousel.addEventListener("pointerdown", (event) => {
+                if (event.pointerType === "mouse" && event.button !== 0) return;
+                pointerStartX = event.clientX;
+                pointerId = event.pointerId;
+                isInteracting = true;
+                stopTimer();
+                carousel.setPointerCapture?.(event.pointerId);
+            });
+
+            carousel.addEventListener("pointerup", (event) => {
+                if (pointerStartX === null || event.pointerId !== pointerId) return;
+                const distance = event.clientX - pointerStartX;
+                if (Math.abs(distance) > 42) {
+                    setActive(activeIndex + (distance < 0 ? 1 : -1));
+                }
+                pointerStartX = null;
+                pointerId = null;
+                isInteracting = false;
+                schedule();
+            });
+
+            carousel.addEventListener("pointercancel", () => {
+                pointerStartX = null;
+                pointerId = null;
+                isInteracting = false;
+                schedule();
+            });
+
+            document.addEventListener("visibilitychange", schedule);
+            window.addEventListener("resize", () => window.requestAnimationFrame(render), { passive: true });
+
+            if ("IntersectionObserver" in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    isVisible = Boolean(entries[0]?.isIntersecting);
+                    schedule();
+                }, { threshold: 0.1 });
+                observer.observe(carousel);
+            }
+
+            if (typeof reducedMotion.addEventListener === "function") {
+                reducedMotion.addEventListener("change", schedule);
+            }
+
+            render();
+            schedule();
+        });
+    </script>
+<script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -208,6 +384,25 @@
             min-height: 720px;
         }
 
+        .hero-copy {
+            position: relative;
+            z-index: 3;
+            margin-right: auto;
+            margin-left: auto;
+            text-align: center;
+        }
+
+        .hero-copy > h1,
+        .hero-copy > p {
+            position: relative;
+            z-index: 3;
+        }
+
+        .hero-copy > p {
+            margin-right: auto;
+            margin-left: auto;
+        }
+
         .hero-glow {
             position: absolute;
             width: 560px;
@@ -238,9 +433,35 @@
 
         .hero-visual {
             position: relative;
-            width: min(100%, 560px);
-            aspect-ratio: 1.08;
+            width: min(100%, 640px);
             perspective: 1200px;
+        }
+
+        .hero-visual .app-screen-carousel {
+            width: 100%;
+            height: clamp(31rem, 43vw, 38rem);
+            margin: 0;
+            overflow: visible;
+        }
+
+        .hero-visual .app-screen-carousel::before {
+            top: 47%;
+            width: 108%;
+            aspect-ratio: 1.72;
+        }
+
+        .hero-visual .app-screen-item {
+            top: 46%;
+            width: clamp(12rem, 19vw, 16.5rem);
+        }
+
+        .hero-visual .app-screen-dots {
+            bottom: 7.25rem;
+        }
+
+        .hero-visual .app-screen-caption {
+            bottom: 0.35rem;
+            width: min(94%, 39rem);
         }
 
         .control-console {
@@ -491,7 +712,7 @@
             position: relative;
             z-index: 1;
             display: grid;
-            grid-template-columns: minmax(0, 1.65fr) minmax(280px, .75fr);
+            grid-template-columns: minmax(0, 1fr);
             gap: 14px;
             padding: 14px;
         }
@@ -623,6 +844,157 @@
             inset: 18px 15px 20px;
             border: 1px solid rgba(34,199,238,0.2);
             clip-path: polygon(0 0, 31% 0, 31% 2px, 2px 2px, 2px 31%, 0 31%, 0 0, 100% 0, 100% 31%, calc(100% - 2px) 31%, calc(100% - 2px) 2px, 69% 2px, 69% 0, 100% 0, 100% 100%, 69% 100%, 69% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 69%, 100% 69%, 100% 100%, 0 100%, 0 69%, 2px 69%, 2px calc(100% - 2px), 31% calc(100% - 2px), 31% 100%, 0 100%);
+        }
+
+        .integration-band {
+            position: relative;
+            padding-top: clamp(1.5rem, 3vw, 2.75rem);
+            padding-bottom: clamp(4rem, 7vw, 6.5rem);
+        }
+
+        .integration-band::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: min(calc(100% - 2.5rem), 80rem);
+            height: 1px;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, transparent, rgba(34,199,238,0.28), transparent);
+        }
+
+        .integration-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 0.88fr) minmax(28rem, 1.12fr);
+            align-items: center;
+            gap: clamp(2rem, 5vw, 5.5rem);
+        }
+
+        .integration-copy {
+            max-width: 34rem;
+        }
+
+        .integration-points {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.65rem;
+            margin-top: 2rem;
+        }
+
+        .integration-point {
+            position: relative;
+            min-width: 0;
+            min-height: 10.5rem;
+            padding: 1rem;
+            border: 1px solid rgba(143,168,192,0.13);
+            border-radius: 12px;
+            background:
+                linear-gradient(145deg, rgba(18,36,51,0.58), rgba(7,17,28,0.52));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.025);
+        }
+
+        .integration-point:first-child {
+            padding-left: 1rem;
+            border-left: 1px solid rgba(143,168,192,0.13);
+        }
+
+        .integration-point:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            top: 2.05rem;
+            right: -0.7rem;
+            width: 0.75rem;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(34,199,238,0.65), rgba(34,199,238,0.08));
+        }
+
+        .integration-point-icon {
+            width: 2.6rem;
+            height: 2.6rem;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(34,199,238,0.25);
+            border-radius: 10px;
+            color: #63dcf5;
+            background: rgba(0,136,172,0.09);
+            box-shadow:
+                inset 0 0 18px rgba(34,199,238,0.05),
+                0 0 20px rgba(34,199,238,0.04);
+        }
+
+        .integration-point-step {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: rgba(143,168,192,0.55);
+            font-size: 0.58rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+        }
+
+        .integration-camera-panel {
+            position: relative;
+            padding: clamp(1rem, 2vw, 1.4rem);
+            overflow: hidden;
+            border: 1px solid rgba(143,168,192,0.14);
+            border-radius: 16px;
+            background:
+                radial-gradient(circle at 82% 15%, rgba(34,199,238,0.1), transparent 34%),
+                rgba(7,17,28,0.72);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+        }
+
+        .integration-camera-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(34,199,238,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34,199,238,0.025) 1px, transparent 1px);
+            background-size: 34px 34px;
+            mask-image: linear-gradient(to bottom, black, transparent 85%);
+        }
+
+        .integration-camera-panel > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .integration-camera-wall {
+            margin-top: 1rem;
+            gap: 0.65rem;
+        }
+
+        .integration-camera-wall .camera-tile {
+            min-height: 8rem;
+        }
+
+        .integration-camera-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 0.85rem;
+            padding-top: 0.85rem;
+            border-top: 1px solid rgba(143,168,192,0.1);
+        }
+
+        .integration-signal {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 0;
+            color: #8fa8c0;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .integration-signal i {
+            color: #22c7ee;
         }
 
         .device-list {
@@ -1123,15 +1495,42 @@
             background: rgba(34,199,238,.04);
         }
 
+        .fluid-data-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            margin-top: 12px;
+            padding: 10px 12px;
+            border: 1px solid rgba(34,199,238,.1);
+            border-radius: 11px;
+            color: #718096;
+            background: rgba(0,136,172,.035);
+            font-size: 8px;
+            line-height: 1.6;
+        }
+
+        .fluid-data-note i {
+            margin-top: 2px;
+            color: #22c7ee;
+        }
+
         .fluid-side {
             display: grid;
             gap: 14px;
-            align-content: start;
+            height: 100%;
+            align-content: stretch;
         }
 
         .pump-health-panel,
         .pump-sequence-panel {
             padding: 17px;
+        }
+
+        .pump-health-panel {
+            height: 100%;
+            display: grid;
+            grid-template-rows: auto auto minmax(120px, 1fr) auto;
+            align-content: stretch;
         }
 
         .pump-health-ring {
@@ -1158,7 +1557,8 @@
         }
 
         .vibration-spectrum {
-            height: 78px;
+            height: auto;
+            min-height: 78px;
             display: flex;
             align-items: flex-end;
             gap: 4px;
@@ -1287,6 +1687,167 @@
             border-color: rgba(34,199,238,.22);
         }
 
+        .app-screen-carousel {
+            position: relative;
+            width: min(100%, 76rem);
+            height: clamp(31rem, 52vw, 46rem);
+            margin: clamp(2.5rem, 5vw, 4.5rem) auto 0;
+            isolation: isolate;
+            overflow: hidden;
+            touch-action: pan-y;
+            user-select: none;
+        }
+
+        .app-screen-carousel::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 48%;
+            width: min(92%, 68rem);
+            aspect-ratio: 2.05;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(34,199,238,0.16);
+            border-radius: 50%;
+            background:
+                radial-gradient(ellipse at center, rgba(0,136,172,0.1), transparent 65%);
+            box-shadow:
+                0 0 80px rgba(0,136,172,0.06),
+                inset 0 0 60px rgba(0,136,172,0.035);
+            pointer-events: none;
+        }
+
+        .app-screen-carousel::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 8%;
+            z-index: -1;
+            width: min(50%, 30rem);
+            height: 6%;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background: rgba(0,0,0,0.55);
+            filter: blur(18px);
+            pointer-events: none;
+        }
+
+        .app-screen-orbit {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+        }
+
+        .app-screen-item {
+            position: absolute;
+            left: 50%;
+            top: 48%;
+            width: clamp(12rem, 24vw, 20rem);
+            aspect-ratio: 9 / 16;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            opacity: 0;
+            cursor: pointer;
+            transform-origin: center;
+            will-change: transform, opacity, filter;
+            transition:
+                transform 1.15s cubic-bezier(0.22, 0.76, 0.2, 1),
+                opacity 0.8s ease,
+                filter 0.8s ease;
+        }
+
+        .app-screen-item:focus-visible {
+            outline: 2px solid #8be7f8;
+            outline-offset: 7px;
+            border-radius: 28px;
+        }
+
+        .app-screen-item img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            filter: drop-shadow(0 26px 34px rgba(0,0,0,0.44));
+            transition: opacity 0.8s ease, filter 0.8s ease;
+        }
+
+        .app-screen-item.is-front img {
+            animation: appScreenPulse 3.4s ease-in-out infinite;
+        }
+
+        .app-screen-item:not(.is-front) img {
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 62%, rgba(0,0,0,0.72) 78%, transparent 100%);
+            mask-image: radial-gradient(ellipse at center, #000 62%, rgba(0,0,0,0.72) 78%, transparent 100%);
+        }
+
+        .app-screen-caption {
+            position: absolute;
+            left: 50%;
+            bottom: 1.2rem;
+            z-index: 4;
+            width: min(90%, 34rem);
+            transform: translateX(-50%);
+            color: #eef8fb;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .app-screen-caption strong {
+            display: block;
+            font-size: clamp(0.92rem, 1.4vw, 1.16rem);
+        }
+
+        .app-screen-caption span {
+            display: block;
+            margin-top: 0.35rem;
+            color: #738399;
+            font-size: clamp(0.64rem, 0.85vw, 0.75rem);
+            line-height: 1.5;
+        }
+
+        .app-screen-dots {
+            position: absolute;
+            left: 50%;
+            bottom: 5.2rem;
+            z-index: 5;
+            display: flex;
+            gap: 0.45rem;
+            transform: translateX(-50%);
+        }
+
+        .app-screen-dot {
+            width: 0.42rem;
+            height: 0.42rem;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: width 0.28s ease, border-radius 0.28s ease, background 0.28s ease;
+        }
+
+        .app-screen-dot.is-active {
+            width: 1.5rem;
+            border-radius: 999px;
+            background: var(--brand-teal-light);
+            box-shadow: 0 0 14px rgba(34,199,238,0.44);
+        }
+
+        @keyframes appScreenPulse {
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 30px 40px rgba(0,0,0,0.48));
+            }
+            50% {
+                transform: scale(1.035);
+                filter:
+                    drop-shadow(0 34px 46px rgba(0,0,0,0.52))
+                    drop-shadow(0 0 18px rgba(34,199,238,0.18));
+            }
+        }
+
         @keyframes fluidTravel {
             to { stroke-dashoffset: -27; }
         }
@@ -1310,7 +1871,13 @@
             }
 
             .fluid-side {
-                grid-template-columns: repeat(2,minmax(0,1fr));
+                height: auto;
+                grid-template-columns: minmax(0,1fr);
+            }
+
+            .pump-health-panel {
+                height: auto;
+                grid-template-rows: auto auto 110px auto;
             }
         }
 
@@ -1342,11 +1909,62 @@
             .fluid-focus-grid {
                 grid-template-columns: 1fr;
             }
+
+            .pump-health-panel {
+                grid-template-rows: auto auto 88px auto;
+            }
+
+            .app-screen-carousel {
+                width: calc(100% + 1rem);
+                height: 34rem;
+                margin: 2rem -0.5rem 0;
+            }
+
+            .app-screen-carousel::before {
+                top: 46%;
+                width: 120%;
+                aspect-ratio: 1.65;
+            }
+
+            .app-screen-item {
+                top: 46%;
+                width: clamp(10.5rem, 52vw, 13.5rem);
+            }
+
+            .app-screen-dots {
+                bottom: 4.7rem;
+            }
+
+            .app-screen-caption {
+                bottom: 0.6rem;
+            }
         }
 
         @media (max-width: 1023px) {
             .hero-stage {
                 min-height: auto;
+            }
+
+            .integration-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .integration-copy {
+                max-width: 42rem;
+                margin-inline: auto;
+                text-align: center;
+            }
+
+            .integration-points {
+                max-width: 34rem;
+                margin-inline: auto;
+                margin-top: 1.75rem;
+                text-align: left;
+            }
+
+            .integration-camera-panel {
+                width: min(100%, 43rem);
+                margin-inline: auto;
             }
 
             .hero-visual {
@@ -1392,9 +2010,96 @@
                 top: 260px;
             }
 
+            .hero-copy {
+                text-align: center;
+            }
+
             .hero-visual {
-                aspect-ratio: .9;
                 margin-top: 16px;
+            }
+
+            .hero-visual .app-screen-carousel {
+                width: calc(100% + 1rem);
+                height: 36rem;
+                margin: 0 -0.5rem;
+            }
+
+            .hero-visual .app-screen-carousel::before {
+                top: 45%;
+                width: 112%;
+                aspect-ratio: 1.62;
+            }
+
+            .hero-visual .app-screen-item {
+                top: 44%;
+                width: clamp(10.75rem, 51vw, 13.25rem);
+            }
+
+            .hero-visual .app-screen-dots {
+                bottom: 9rem;
+            }
+
+            .hero-visual .app-screen-caption {
+                bottom: 0.35rem;
+                width: 94%;
+            }
+
+            .hero-visual .app-screen-caption span {
+                font-size: 0.62rem;
+                line-height: 1.45;
+            }
+
+            .integration-band {
+                padding-top: 0.75rem;
+                padding-bottom: 4.5rem;
+            }
+
+            .integration-layout {
+                gap: 2.25rem;
+            }
+
+            .integration-points {
+                grid-template-columns: 1fr;
+                gap: 0.85rem;
+            }
+
+            .integration-point,
+            .integration-point:first-child {
+                display: grid;
+                grid-template-columns: 2.6rem minmax(0, 1fr);
+                column-gap: 0.9rem;
+                align-items: center;
+                min-height: 0;
+                padding: 0.9rem;
+                border: 1px solid rgba(143,168,192,0.13);
+            }
+
+            .integration-point-icon {
+                grid-row: 1 / span 2;
+            }
+
+            .integration-point:not(:last-child)::after {
+                display: none;
+            }
+
+            .integration-point-step {
+                top: 0.85rem;
+                right: 0.9rem;
+            }
+
+            .integration-camera-panel {
+                padding: 0.85rem;
+                border-radius: 14px;
+            }
+
+            .integration-camera-wall .camera-tile {
+                min-height: 6.75rem;
+            }
+
+            .integration-camera-status {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 0.55rem;
             }
 
             .control-console {
@@ -1707,150 +2412,118 @@
 <header class="section-shell hero-stage pt-28 md:pt-32 pb-20 md:pb-28 px-5 md:px-8 overflow-hidden" id="home">
 <div aria-hidden="true" class="hero-glow"></div>
 <div class="max-w-7xl mx-auto grid lg:grid-cols-[0.92fr_1.08fr] items-center gap-12 lg:gap-8 relative z-10">
-<div class="max-w-xl">
-<span class="section-label">Bombas de água • Vazão • Vibração • Fluidos</span>
+<div class="hero-copy max-w-xl">
 <h1 class="section-title text-4xl sm:text-5xl lg:text-[64px] mt-5">
-                    Bombas sob controle.<br/>
-<span class="text-gradient">Fluidos em movimento.</span>
+<span class="text-gradient">Controle Total</span>
 </h1>
 <p class="text-gray-400 text-sm md:text-[15px] leading-7 mt-6 max-w-[580px]">
-                    Monitoramento dedicado a bombas de água e sistemas de transferência de fluidos. Vazão, vibração, pressão, volume transferido, tempo de operação e automação reunidos para proteger ativos e manter o processo sob controle.
+                    Mais do que monitorar equipamentos, entregamos visibilidade,
+                    inteligência e controle sobre toda a operação. Unimos engenharia,
+                    automação e conhecimento aplicado em sistemas de bombeamento para transformar dados em decisões mais rápidas,
+                    operações mais seguras e ativos mais confiáveis.
                 </p>
 </div>
-<div aria-label="Painel conceitual do sistema de monitoramento MHS" class="hero-visual mx-auto lg:mr-0">
-<div aria-hidden="true" class="hero-orbit"></div>
-<div aria-hidden="true" class="hero-orbit orbit-two"></div>
-<div aria-hidden="true" class="hero-core">
-<i class="fas fa-fan text-3xl text-white relative z-10"></i>
+<div aria-label="Telas do aplicativo de monitoramento MHS" class="hero-visual mx-auto lg:mr-0">
+<div aria-label="Carrossel de telas do aplicativo de monitoramento MHS" class="app-screen-carousel" id="app-screen-carousel" role="region">
+<div class="app-screen-orbit" id="app-screen-orbit">
+<button aria-label="Exibir vis&atilde;o geral do aplicativo" class="app-screen-item" data-app-screen="0" type="button">
+<img alt="Tela inicial do aplicativo MHS com listagem dos grupos monitorados" decoding="async" draggable="false" loading="eager" src="./capturas_tela/captura_inicial.png"/>
+</button>
+<button aria-label="Exibir casa de bombas" class="app-screen-item" data-app-screen="1" type="button">
+<img alt="Tela do aplicativo MHS com equipamentos da casa de bombas" decoding="async" draggable="false" loading="eager" src="./capturas_tela/casa_de_bombas.png"/>
+</button>
+<button aria-label="Exibir monitoramento do flutuante" class="app-screen-item" data-app-screen="2" type="button">
+<img alt="Tela do aplicativo MHS com indicadores operacionais do flutuante" decoding="async" draggable="false" loading="eager" src="./capturas_tela/flutuante.png"/>
+</button>
 </div>
-<div aria-hidden="true" class="data-stream"></div>
-<div class="control-console">
-<div class="console-topline"></div>
-<div class="relative z-10 p-5 md:p-6">
-<div class="flex items-center justify-between pb-4 border-b border-white/10">
-<div>
-<p class="text-[8px] uppercase tracking-[0.22em] text-gray-500">Estação de bombeamento</p>
-<p class="text-sm font-bold text-white mt-1">Transferência Integrada</p>
+<div aria-label="Selecionar tela" class="app-screen-dots">
+<button aria-label="Selecionar vis&atilde;o geral" class="app-screen-dot is-active" data-app-dot="0" type="button"></button>
+<button aria-label="Selecionar casa de bombas" class="app-screen-dot" data-app-dot="1" type="button"></button>
+<button aria-label="Selecionar flutuante" class="app-screen-dot" data-app-dot="2" type="button"></button>
 </div>
-<div class="flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/5 px-3 py-1.5">
-<span class="status-dot"></span>
-<span class="text-[8px] font-bold tracking-[0.15em] text-green-400">ONLINE</span>
-</div>
-</div>
-<div class="grid grid-cols-2 gap-3 mt-4">
-<div class="metric-chip rounded-xl p-3">
-<div class="flex items-center justify-between">
-<i class="fas fa-water text-brand-teal"></i>
-<span class="text-[7px] text-green-400">ESTÁVEL</span>
-</div>
-<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-4">Vazão instantânea</p>
-<p class="text-lg font-bold text-white mt-1">Monitorada</p>
-</div>
-<div class="metric-chip rounded-xl p-3">
-<div class="flex items-center justify-between">
-<i class="fas fa-gauge-high text-brand-teal"></i>
-<span class="text-[7px] text-brand-teal">TEMPO REAL</span>
-</div>
-<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-4">Vibração da bomba</p>
-<p class="text-lg font-bold text-white mt-1">Analisada</p>
-</div>
-<div class="metric-chip rounded-xl p-3">
-<div class="flex items-center justify-between">
-<i class="fas fa-wave-square text-brand-teal"></i>
-<span class="text-[7px] text-gray-400">TENDÊNCIA</span>
-</div>
-<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-4">Pressão diferencial</p>
-<p class="text-lg font-bold text-white mt-1">Supervisionada</p>
-</div>
-<div class="metric-chip rounded-xl p-3">
-<div class="flex items-center justify-between">
-<i class="fas fa-clock text-brand-teal"></i>
-<span class="text-[7px] text-gray-400">HISTÓRICO</span>
-</div>
-<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-4">Volume transferido</p>
-<p class="text-lg font-bold text-white mt-1">Totalizado</p>
-</div>
-</div>
-<div class="metric-chip rounded-xl p-4 mt-3">
-<div class="flex justify-between items-center mb-2">
-<div>
-<p class="text-[8px] uppercase tracking-wider text-gray-500">Curva de bombeamento</p>
-<p class="text-[10px] font-semibold text-white mt-1">Vazão e vibração correlacionadas</p>
-</div>
-<span class="text-[8px] text-brand-teal">VISÃO HISTÓRICA</span>
-</div>
-<svg aria-label="Gráfico conceitual de desempenho operacional" class="w-full h-16" role="img" viewbox="0 0 360 74">
-<defs>
-<lineargradient id="heroChartFill" x1="0" x2="0" y1="0" y2="1">
-<stop offset="0%" stop-color="#22c7ee" stop-opacity="0.4"></stop>
-<stop offset="100%" stop-color="#22c7ee" stop-opacity="0"></stop>
-</lineargradient>
-</defs>
-<path d="M0 58 C25 48, 42 19, 72 30 S122 62, 155 38 S210 10, 236 27 S286 61, 316 35 S344 19, 360 20 L360 74 L0 74 Z" fill="url(#heroChartFill)"></path>
-<path d="M0 58 C25 48, 42 19, 72 30 S122 62, 155 38 S210 10, 236 27 S286 61, 316 35 S344 19, 360 20" fill="none" stroke="#22c7ee" stroke-linecap="round" stroke-width="2.5"></path>
-</svg>
-</div>
-<div aria-label="Status dos componentes integrados" class="console-status-rail">
-<div class="console-status-item">
-<span class="console-status-icon"><i class="fas fa-tower-broadcast text-[9px]"></i></span>
-<div class="min-w-0">
-<p class="text-[7px] uppercase tracking-wider text-gray-500">Gateway</p>
-<p class="text-[8px] font-semibold text-green-400 mt-0.5">Conectado</p>
-</div>
-</div>
-<div class="console-status-item">
-<span class="console-status-icon"><i class="fas fa-microchip text-[9px]"></i></span>
-<div class="min-w-0">
-<p class="text-[7px] uppercase tracking-wider text-gray-500">Automação</p>
-<p class="text-[8px] font-semibold text-brand-teal mt-0.5">Sincronizada</p>
-</div>
-</div>
-<div class="console-status-item">
-<span class="console-status-icon"><i class="fas fa-shield-halved text-[9px]"></i></span>
-<div class="min-w-0">
-<p class="text-[7px] uppercase tracking-wider text-gray-500">Registro</p>
-<p class="text-[8px] font-semibold text-white mt-0.5">Rastreável</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="floating-node node-camera p-3">
-<div class="flex items-center gap-3">
-<div class="w-9 h-9 rounded-xl bg-brand-teal/10 border border-brand-teal/20 grid place-items-center text-brand-teal">
-<i class="fas fa-video text-sm"></i>
-</div>
-<div>
-<p class="text-[7px] uppercase tracking-[0.18em] text-gray-500">Câmeras</p>
-<p class="text-[10px] font-semibold text-white mt-1">Visualização integrada</p>
-</div>
-</div>
-</div>
-<div class="floating-node node-alert p-3">
-<div class="flex items-center gap-3">
-<div class="w-9 h-9 rounded-xl bg-brand-red/10 border border-brand-red/20 grid place-items-center text-brand-red">
-<i class="fas fa-bell text-sm"></i>
-</div>
-<div>
-<p class="text-[7px] uppercase tracking-[0.18em] text-gray-500">Eventos</p>
-<p class="text-[10px] font-semibold text-white mt-1">Alertas inteligentes</p>
-</div>
-</div>
-</div>
-<div class="floating-node node-automation p-3 hidden md:block">
-<div class="flex items-center gap-3">
-<div class="w-9 h-9 rounded-xl bg-brand-teal/10 border border-brand-teal/20 grid place-items-center text-brand-teal">
-<i class="fas fa-gears text-sm"></i>
-</div>
-<div>
-<p class="text-[7px] uppercase tracking-[0.18em] text-gray-500">Automação</p>
-<p class="text-[10px] font-semibold text-white mt-1">Rotinas rastreadas</p>
-</div>
-</div>
+<p aria-live="polite" class="app-screen-caption">
+<strong id="app-screen-title">Gest&atilde;o Inteligente de Ativos</strong>
+<span id="app-screen-copy">Organize seus ativos conforme a necessidade da opera&ccedil;&atilde;o, com classifica&ccedil;&atilde;o autom&aacute;tica por criticidade e prioridade de atendimento.</span>
+</p>
 </div>
 </div>
 </div>
 </header>
+<!-- Integrações complementares -->
+<section aria-labelledby="integration-title" class="section-shell integration-band px-5 md:px-8">
+<div class="integration-layout max-w-7xl mx-auto relative z-10">
+<div class="integration-copy">
+<span class="section-label">Automa&ccedil;&atilde;o e monitoramento</span>
+<h2 class="section-title text-3xl md:text-[42px] mt-4" id="integration-title">
+                    Opera&ccedil;&atilde;o conectada.<br class="hidden sm:block"/>
+<span class="text-gradient">Decis&otilde;es mais seguras.</span>
+</h2>
+<p class="text-gray-400 text-sm leading-7 mt-5">
+                    Integramos automa&ccedil;&atilde;o e monitoramento para acompanhar a opera&ccedil;&atilde;o,
+                    registrar eventos e transformar informa&ccedil;&otilde;es de campo em respostas mais r&aacute;pidas.
+                    A solu&ccedil;&atilde;o pode incorporar c&acirc;meras, geolocaliza&ccedil;&atilde;o e notifica&ccedil;&otilde;es inteligentes.
+                </p>
+<div class="integration-points">
+<div class="integration-point">
+<span class="integration-point-step">01</span>
+<span class="integration-point-icon"><i class="fas fa-gears"></i></span>
+<p class="text-[13px] font-bold text-white mt-3">Automa&ccedil;&atilde;o operacional</p>
+<p class="text-[11px] leading-[1.55] text-gray-400 mt-1">Comandos, sequ&ecirc;ncias e estados integrados ao processo.</p>
+</div>
+<div class="integration-point">
+<span class="integration-point-step">02</span>
+<span class="integration-point-icon"><i class="fas fa-display"></i></span>
+<p class="text-[13px] font-bold text-white mt-3">Monitoramento cont&iacute;nuo</p>
+<p class="text-[11px] leading-[1.55] text-gray-400 mt-1">Dados, imagens e localiza&ccedil;&atilde;o reunidos em uma &uacute;nica vis&atilde;o.</p>
+</div>
+<div class="integration-point">
+<span class="integration-point-step">03</span>
+<span class="integration-point-icon"><i class="fas fa-bell"></i></span>
+<p class="text-[13px] font-bold text-white mt-3">Resposta inteligente</p>
+<p class="text-[11px] leading-[1.55] text-gray-400 mt-1">Alertas e eventos direcionados para agilizar a atua&ccedil;&atilde;o da equipe.</p>
+</div>
+</div>
+</div>
+<div aria-label="Representa&ccedil;&atilde;o de automa&ccedil;&atilde;o e c&acirc;meras integradas ao monitoramento" class="integration-camera-panel">
+<div class="flex items-center justify-between gap-4">
+<div>
+<p class="text-[8px] uppercase tracking-[0.18em] text-gray-500">Supervis&atilde;o integrada</p>
+<p class="text-sm font-bold text-white mt-1">Automa&ccedil;&atilde;o conectada &agrave; vis&atilde;o de campo</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="status-dot"></span>
+<span class="text-[7px] font-bold uppercase tracking-wider text-green-400">Sistema ativo</span>
+</div>
+</div>
+<div class="camera-wall integration-camera-wall">
+<div class="camera-tile">
+<div class="camera-frame"></div>
+<span class="absolute left-3 bottom-2.5 z-10 text-[7px] text-gray-300 uppercase">Capta&ccedil;&atilde;o</span>
+<i class="fas fa-video absolute right-3 top-3 z-10 text-[9px] text-brand-teal"></i>
+</div>
+<div class="camera-tile">
+<div class="camera-frame"></div>
+<span class="absolute left-3 bottom-2.5 z-10 text-[7px] text-gray-300 uppercase">Reservat&oacute;rio</span>
+<i class="fas fa-video absolute right-3 top-3 z-10 text-[9px] text-brand-teal"></i>
+</div>
+<div class="camera-tile">
+<div class="camera-frame"></div>
+<span class="absolute left-3 bottom-2.5 z-10 text-[7px] text-gray-300 uppercase">Conjunto de bombas</span>
+<i class="fas fa-video absolute right-3 top-3 z-10 text-[9px] text-brand-teal"></i>
+</div>
+<div class="camera-tile">
+<div class="camera-frame"></div>
+<span class="absolute left-3 bottom-2.5 z-10 text-[7px] text-gray-300 uppercase">Painel el&eacute;trico</span>
+<i class="fas fa-video absolute right-3 top-3 z-10 text-[9px] text-brand-teal"></i>
+</div>
+</div>
+<div class="integration-camera-status">
+<span class="integration-signal"><i class="fas fa-gears"></i> Automa&ccedil;&atilde;o sincronizada</span>
+<span class="integration-signal"><i class="fas fa-bell"></i> Eventos e alertas registrados</span>
+</div>
+</div>
+</div>
+</section>
 <!-- Transferência de fluidos -->
 <section class="section-shell py-24 md:py-32 px-5 md:px-8 overflow-hidden" id="transferencia">
 <div aria-hidden="true" class="fluid-transfer-glow"></div>
@@ -1865,15 +2538,12 @@
 </div>
 <div class="lg:pb-1">
 <p class="text-gray-400 text-sm leading-7 max-w-2xl">
-                        A plataforma acompanha o caminho do fluido através das bombas, tubulações e reservatórios. Vazão, pressão, vibração, nível, volume transferido e estados de automação permanecem correlacionados para revelar o desempenho real de cada ciclo.
+                        Acompanhe cada etapa da movimentação de fluidos com uma solução que integra engenharia,
+                        automação e monitoramento em tempo real. Obtenha visibilidade completa da operação, receba
+                        alertas inteligentes, acompanhe indicadores críticos e tome decisões com mais segurança.
+                        Tudo desenvolvido por especialistas em sistemas de bombeamento para maximizar desempenho,
+                        confiabilidade e disponibilidade operacional.
                     </p>
-<div class="automation-tags">
-<span class="automation-tag"><i class="fas fa-fan text-brand-teal"></i>Bombas de água</span>
-<span class="automation-tag"><i class="fas fa-gauge-high text-brand-teal"></i>Vazão e pressão</span>
-<span class="automation-tag"><i class="fas fa-wave-square text-brand-teal"></i>Vibração</span>
-<span class="automation-tag"><i class="fas fa-droplet text-brand-teal"></i>Volume transferido</span>
-<span class="automation-tag"><i class="fas fa-gears text-brand-teal"></i>Sequências automáticas</span>
-</div>
 </div>
 </div>
 <div class="fluid-console mt-14">
@@ -1884,15 +2554,15 @@
 <span></span><span></span><span></span>
 </div>
 <div class="min-w-0">
-<p class="text-[8px] uppercase tracking-[0.2em] text-gray-500">MHS Fluid Transfer</p>
-<p class="text-[11px] md:text-sm font-bold text-white mt-1 truncate">Linha de bombeamento e transferência</p>
+<p class="text-[8px] uppercase tracking-[0.2em] text-gray-500">Visão integrada da operação</p>
+<p class="text-[11px] md:text-sm font-bold text-white mt-1 truncate">Captação, bombeamento e transferência</p>
 </div>
 </div>
 <div class="flex items-center gap-3 shrink-0">
-<span class="hidden sm:inline text-[7px] uppercase tracking-[0.16em] text-gray-500">Interface conceitual</span>
+<span class="hidden sm:inline text-[7px] uppercase tracking-[0.16em] text-gray-500">Visualização ilustrativa</span>
 <div class="flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/5 px-3 py-1.5">
 <span class="status-dot"></span>
-<span class="text-[8px] font-bold tracking-[0.14em] text-green-400">TRANSFERÊNCIA ATIVA</span>
+<span class="text-[8px] font-bold tracking-[0.14em] text-green-400">OPERAÇÃO SUPERVISIONADA</span>
 </div>
 </div>
 </div>
@@ -1900,12 +2570,12 @@
 <div class="fluid-panel">
 <div class="ops-panel-title">
 <div>
-<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Diagrama hidráulico</p>
-<p class="text-[11px] font-semibold text-white mt-1">Origem, bombeamento, linha e destino</p>
+<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Arquitetura monitorada</p>
+<p class="text-[11px] font-semibold text-white mt-1">Origem, conjunto motobomba e destino</p>
 </div>
 <div class="flex items-center gap-2">
 <span class="w-1.5 h-1.5 rounded-full bg-brand-teal shadow-[0_0_8px_rgba(34,199,238,0.8)]"></span>
-<span class="text-[7px] uppercase tracking-wider text-brand-teal">Fluxo supervisionado</span>
+<span class="text-[7px] uppercase tracking-wider text-brand-teal">Variáveis correlacionadas</span>
 </div>
 </div>
 <div aria-label="Esquema conceitual de transferência de fluido entre reservatórios por uma bomba monitorada" class="fluid-schematic" role="img">
@@ -1938,7 +2608,7 @@
 <path d="M83 160C111 148 136 171 163 158S195 149 213 160" fill="none" opacity=".8" stroke="#55d7f2" stroke-width="3"></path>
 <path d="M95 72H201" stroke="rgba(143,168,192,.3)" stroke-linecap="round" stroke-width="5"></path>
 <text fill="#f4f8fb" font-size="13" font-weight="700" text-anchor="middle" x="148" y="50">ORIGEM</text>
-<text fill="#6f8095" font-size="9" text-anchor="middle" x="148" y="67">NÍVEL E VOLUME</text>
+<text fill="#6f8095" font-size="9" text-anchor="middle" x="148" y="67">NÍVEL DISPONÍVEL</text>
 </g>
 <g>
 <path d="M790 86H942V270C942 287 928 301 911 301H821C804 301 790 287 790 270Z" fill="rgba(8,17,27,.92)" stroke="rgba(143,168,192,.28)" stroke-width="3"></path>
@@ -1946,7 +2616,7 @@
 <path d="M801 203C829 191 854 214 881 201S913 192 931 203" fill="none" opacity=".8" stroke="#55d7f2" stroke-width="3"></path>
 <path d="M813 72H919" stroke="rgba(143,168,192,.3)" stroke-linecap="round" stroke-width="5"></path>
 <text fill="#f4f8fb" font-size="13" font-weight="700" text-anchor="middle" x="866" y="50">DESTINO</text>
-<text fill="#6f8095" font-size="9" text-anchor="middle" x="866" y="67">VOLUME RECEBIDO</text>
+<text fill="#6f8095" font-size="9" text-anchor="middle" x="866" y="67">VOLUME TRANSFERIDO</text>
 </g>
 <path class="pipe-base" d="M224 224H343V194H392"></path>
 <path class="pipe-base" d="M608 194H674V129H790"></path>
@@ -1974,7 +2644,7 @@
 </g>
 <path d="M403 245H601" stroke="rgba(143,168,192,.25)" stroke-linecap="round" stroke-width="6"></path>
 <text fill="#f4f8fb" font-size="13" font-weight="700" text-anchor="middle" x="500" y="282">CONJUNTO MOTOR-BOMBA</text>
-<text fill="#6f8095" font-size="9" text-anchor="middle" x="500" y="299">VAZÃO • VIBRAÇÃO • TEMPO DE OPERAÇÃO</text>
+<text fill="#6f8095" font-size="9" text-anchor="middle" x="500" y="299">ESTADO • HORAS • CONDIÇÃO MECÂNICA</text>
 </g>
 <g>
 <circle class="sensor-node" cx="270" cy="224" r="14"></circle>
@@ -2001,43 +2671,47 @@
 <div class="fluid-metric">
 <div class="flex items-center justify-between">
 <span class="console-status-icon"><i class="fas fa-gauge-high text-[9px]"></i></span>
-<span class="text-[7px] text-green-400 uppercase">Ativa</span>
+<span class="text-[7px] text-brand-teal uppercase">Processo</span>
 </div>
-<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Vazão instantânea</p>
-<p class="text-[10px] font-semibold text-white mt-1">Leitura contínua</p>
+<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Vazão e volume</p>
+<p class="text-[10px] font-semibold text-white mt-1">Acompanhamento da transferência</p>
 </div>
 <div class="fluid-metric">
 <div class="flex items-center justify-between">
 <span class="console-status-icon"><i class="fas fa-gauge text-[9px]"></i></span>
-<span class="text-[7px] text-brand-teal uppercase">Duplo ponto</span>
+<span class="text-[7px] text-brand-teal uppercase">Hidráulica</span>
 </div>
-<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Sucção e recalque</p>
-<p class="text-[10px] font-semibold text-white mt-1">Pressões correlacionadas</p>
+<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Pressões da linha</p>
+<p class="text-[10px] font-semibold text-white mt-1">Sucção e recalque correlacionados</p>
 </div>
 <div class="fluid-metric">
 <div class="flex items-center justify-between">
 <span class="console-status-icon"><i class="fas fa-wave-square text-[9px]"></i></span>
-<span class="text-[7px] text-brand-teal uppercase">Preditivo</span>
+<span class="text-[7px] text-brand-teal uppercase">Condição</span>
 </div>
-<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Vibração da bomba</p>
-<p class="text-[10px] font-semibold text-white mt-1">Tendência por conjunto</p>
+<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Conjunto motobomba</p>
+<p class="text-[10px] font-semibold text-white mt-1">Vibração, estado e horas</p>
 </div>
 <div class="fluid-metric">
 <div class="flex items-center justify-between">
-<span class="console-status-icon"><i class="fas fa-droplet text-[9px]"></i></span>
-<span class="text-[7px] text-gray-400 uppercase">Acumulado</span>
+<span class="console-status-icon"><i class="fas fa-bell text-[9px]"></i></span>
+<span class="text-[7px] text-brand-teal uppercase">Rastreabilidade</span>
 </div>
-<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Volume transferido</p>
-<p class="text-[10px] font-semibold text-white mt-1">Totalização por ciclo</p>
+<p class="text-[7px] uppercase tracking-wider text-gray-500 mt-3">Eventos operacionais</p>
+<p class="text-[10px] font-semibold text-white mt-1">Alertas e histórico registrados</p>
 </div>
+</div>
+<div class="fluid-data-note">
+<i class="fas fa-circle-info"></i>
+<span>As variáveis disponíveis dependem dos sensores, controladores e pontos de medição definidos para cada instalação.</span>
 </div>
 </div>
 <aside class="fluid-side">
 <div class="pump-health-panel">
 <div class="ops-panel-title">
 <div>
-<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Condição do conjunto</p>
-<p class="text-[11px] font-semibold text-white mt-1">Vibração e comportamento mecânico</p>
+<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Análise do conjunto</p>
+<p class="text-[11px] font-semibold text-white mt-1">Condição operacional correlacionada</p>
 </div>
 <span class="status-dot"></span>
 </div>
@@ -2045,13 +2719,13 @@
 <div aria-hidden="true" class="pump-health-ring">
 <div class="text-center relative z-10">
 <i class="fas fa-fan text-brand-teal text-lg"></i>
-<p class="text-[7px] text-gray-500 mt-1">BOMBA</p>
+<p class="text-[7px] text-gray-500 mt-1">CONJUNTO</p>
 </div>
 </div>
 <div class="min-w-0">
-<p class="text-[8px] text-gray-500 uppercase tracking-wider">Análise correlacionada</p>
-<p class="text-sm font-bold text-white mt-2">Vibração × regime hidráulico</p>
-<p class="text-[8px] text-gray-500 leading-4 mt-2">Tendências observadas junto da vazão, pressão e estado de operação.</p>
+<p class="text-[8px] text-gray-500 uppercase tracking-wider">Leitura integrada</p>
+<p class="text-sm font-bold text-white mt-2">Hidráulica × condição mecânica</p>
+<p class="text-[8px] text-gray-500 leading-4 mt-2">Vazão, pressões, vibração e estado operacional analisados no mesmo contexto.</p>
 </div>
 </div>
 <div aria-label="Representação conceitual de espectro de vibração" class="vibration-spectrum mt-5">
@@ -2070,298 +2744,28 @@
 </div>
 <div class="mt-3">
 <div class="pump-channel">
+<span class="pump-channel-icon"><i class="fas fa-gauge-high text-[8px]"></i></span>
+<div>
+<p class="text-[8px] font-semibold text-white">Variáveis hidráulicas</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Vazão e pressões da linha</p>
+</div>
+<span class="text-[7px] text-brand-teal uppercase">Correlacionadas</span>
+</div>
+<div class="pump-channel">
 <span class="pump-channel-icon"><i class="fas fa-wave-square text-[8px]"></i></span>
 <div>
-<p class="text-[8px] font-semibold text-white">Motor radial</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Canal de tendência</p>
+<p class="text-[8px] font-semibold text-white">Condição mecânica</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Tendência de vibração</p>
 </div>
-<span class="text-[7px] text-green-400 uppercase">Ativo</span>
-</div>
-<div class="pump-channel">
-<span class="pump-channel-icon"><i class="fas fa-arrows-left-right text-[8px]"></i></span>
-<div>
-<p class="text-[8px] font-semibold text-white">Mancal axial</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Variação acompanhada</p>
-</div>
-<span class="text-[7px] text-brand-teal uppercase">Tendência</span>
+<span class="text-[7px] text-brand-teal uppercase">Acompanhada</span>
 </div>
 <div class="pump-channel">
-<span class="pump-channel-icon"><i class="fas fa-fan text-[8px]"></i></span>
+<span class="pump-channel-icon"><i class="fas fa-clock-rotate-left text-[8px]"></i></span>
 <div>
-<p class="text-[8px] font-semibold text-white">Corpo da bomba</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Condição do conjunto</p>
+<p class="text-[8px] font-semibold text-white">Operação e eventos</p>
+<p class="text-[7px] text-gray-600 mt-0.5">Estados, horas e ocorrências</p>
 </div>
-<span class="text-[7px] text-gray-300 uppercase">Histórico</span>
-</div>
-</div>
-</div>
-<div class="pump-sequence-panel">
-<div class="ops-panel-title">
-<div>
-<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Automação hidráulica</p>
-<p class="text-[11px] font-semibold text-white mt-1">Sequência de transferência</p>
-</div>
-<i class="fas fa-gears text-brand-teal text-sm"></i>
-</div>
-<div class="pump-sequence">
-<div class="pump-step">
-<span class="pump-step-number">01</span>
-<div>
-<p class="text-[8px] font-semibold text-white">Permissivos</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Níveis, válvulas e intertravamentos</p>
-</div>
-<i class="fas fa-check text-green-400 text-[8px]"></i>
-</div>
-<div class="pump-step">
-<span class="pump-step-number">02</span>
-<div>
-<p class="text-[8px] font-semibold text-white">Partida da bomba</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Comando e confirmação de estado</p>
-</div>
-<i class="fas fa-check text-green-400 text-[8px]"></i>
-</div>
-<div class="pump-step">
-<span class="pump-step-number">03</span>
-<div>
-<p class="text-[8px] font-semibold text-white">Estabilização</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Vazão, pressão e vibração</p>
-</div>
-<span class="status-dot"></span>
-</div>
-<div class="pump-step">
-<span class="pump-step-number">04</span>
-<div>
-<p class="text-[8px] font-semibold text-white">Transferência</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Totalização e acompanhamento contínuo</p>
-</div>
-<span class="text-[7px] text-brand-teal uppercase">Ativa</span>
-</div>
-<div class="pump-step">
-<span class="pump-step-number">05</span>
-<div>
-<p class="text-[8px] font-semibold text-white">Parada segura</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Critério, registro e encerramento</p>
-</div>
-<span class="text-[7px] text-gray-500 uppercase">Próxima</span>
-</div>
-</div>
-</div>
-</aside>
-</div>
-</div>
-
-</div>
-</section>
-<!-- Centro operacional -->
-<section class="section-shell py-24 md:py-32 px-5 md:px-8 overflow-hidden" id="operacao">
-<div aria-hidden="true" class="operations-glow"></div>
-<div class="max-w-7xl mx-auto relative z-10">
-<div class="grid lg:grid-cols-[0.86fr_1.14fr] gap-8 lg:gap-14 items-end">
-<div>
-<span class="section-label">Centro operacional de bombeamento</span>
-<h2 class="section-title text-3xl md:text-5xl mt-4">
-                        Bombas em operação.<br/>
-<span class="text-gradient">Vazões e vibrações sob análise.</span>
-</h2>
-</div>
-<div class="lg:pb-1">
-<p class="text-gray-400 text-sm leading-7 max-w-2xl">
-                        Uma visão unificada para acompanhar bombas de água, vazão nas linhas, vibração dos conjuntos, pressões de sucção e recalque, volumes transferidos, automação, câmeras e eventos.
-                    </p>
-<div class="automation-tags">
-<span class="automation-tag"><i class="fas fa-fan text-brand-teal"></i>Bombas</span>
-<span class="automation-tag"><i class="fas fa-gauge-high text-brand-teal"></i>Vazão e pressão</span>
-<span class="automation-tag"><i class="fas fa-wave-square text-brand-teal"></i>Vibração</span>
-<span class="automation-tag"><i class="fas fa-droplet text-brand-teal"></i>Transferência</span>
-<span class="automation-tag"><i class="fas fa-clock-rotate-left text-brand-teal"></i>Histórico</span>
-</div>
-</div>
-</div>
-<div aria-label="Interface conceitual do centro operacional MHS" class="operations-console mt-14">
-<div class="operations-topline"></div>
-<div class="ops-toolbar">
-<div class="flex items-center gap-4 min-w-0">
-<div aria-hidden="true" class="ops-window-dots">
-<span></span><span></span><span></span>
-</div>
-<div class="min-w-0">
-<p class="text-[8px] uppercase tracking-[0.2em] text-gray-500">MHS Control Center</p>
-<p class="text-[11px] md:text-sm font-bold text-white mt-1 truncate">Supervisão de bombas e linhas</p>
-</div>
-</div>
-<div class="flex items-center gap-3 shrink-0">
-<span class="hidden sm:inline text-[7px] uppercase tracking-[0.16em] text-gray-500">Interface conceitual</span>
-<div class="flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/5 px-3 py-1.5">
-<span class="status-dot"></span>
-<span class="text-[8px] font-bold tracking-[0.14em] text-green-400">ECOSSISTEMA ONLINE</span>
-</div>
-</div>
-</div>
-<div class="ops-layout">
-<div class="ops-main">
-<div class="ops-metrics">
-<div class="ops-metric-card">
-<div class="flex items-start justify-between gap-2">
-<span class="console-status-icon"><i class="fas fa-water text-[10px]"></i></span>
-<span class="text-[7px] text-green-400 uppercase">Estável</span>
-</div>
-<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-3">Nível e volume</p>
-<p class="text-[11px] font-bold text-white mt-1">Dentro da faixa</p>
-</div>
-<div class="ops-metric-card">
-<div class="flex items-start justify-between gap-2">
-<span class="console-status-icon"><i class="fas fa-gauge-high text-[10px]"></i></span>
-<span class="text-[7px] text-brand-teal uppercase">Contínuo</span>
-</div>
-<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-3">Vazão</p>
-<p class="text-[11px] font-bold text-white mt-1">Leitura ativa</p>
-</div>
-<div class="ops-metric-card">
-<div class="flex items-start justify-between gap-2">
-<span class="console-status-icon"><i class="fas fa-wave-square text-[10px]"></i></span>
-<span class="text-[7px] text-gray-400 uppercase">Tendência</span>
-</div>
-<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-3">Vibração</p>
-<p class="text-[11px] font-bold text-white mt-1">Acompanhada</p>
-</div>
-<div class="ops-metric-card">
-<div class="flex items-start justify-between gap-2">
-<span class="console-status-icon"><i class="fas fa-clock text-[10px]"></i></span>
-<span class="text-[7px] text-gray-400 uppercase">Histórico</span>
-</div>
-<p class="text-[8px] uppercase tracking-wider text-gray-500 mt-3">Tempo de operação</p>
-<p class="text-[11px] font-bold text-white mt-1">Registro ativo</p>
-</div>
-</div>
-<div class="ops-panel">
-<div class="ops-panel-title">
-<div>
-<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Telemetria consolidada</p>
-<p class="text-[11px] font-semibold text-white mt-1">Vazão, pressão e vibração correlacionadas</p>
-</div>
-<div class="flex items-center gap-2">
-<span class="w-1.5 h-1.5 rounded-full bg-brand-teal shadow-[0_0_8px_rgba(34,199,238,0.8)]"></span>
-<span class="text-[7px] uppercase tracking-wider text-brand-teal">Atualização contínua</span>
-</div>
-</div>
-<div class="ops-chart-grid mt-4 p-2">
-<svg aria-label="Gráfico conceitual de telemetria consolidada" class="w-full h-40 md:h-48" role="img" viewbox="0 0 720 190">
-<defs>
-<lineargradient id="opsAreaFill" x1="0" x2="0" y1="0" y2="1">
-<stop offset="0%" stop-color="#22c7ee" stop-opacity=".3"></stop>
-<stop offset="100%" stop-color="#22c7ee" stop-opacity="0"></stop>
-</lineargradient>
-<lineargradient id="opsLineTwo" x1="0" x2="1" y1="0" y2="0">
-<stop offset="0%" stop-color="#63738a"></stop>
-<stop offset="100%" stop-color="#a5b4c7"></stop>
-</lineargradient>
-</defs>
-<path d="M0 143 C45 134, 65 74, 112 91 S180 146, 228 112 S290 43, 338 68 S410 136, 462 99 S530 45, 574 69 S650 122, 720 55 L720 190 L0 190 Z" fill="url(#opsAreaFill)"></path>
-<path d="M0 143 C45 134, 65 74, 112 91 S180 146, 228 112 S290 43, 338 68 S410 136, 462 99 S530 45, 574 69 S650 122, 720 55" fill="none" stroke="#22c7ee" stroke-linecap="round" stroke-width="3"></path>
-<path d="M0 118 C64 101, 95 126, 148 106 S233 70, 286 95 S375 130, 433 108 S526 80, 590 96 S664 104, 720 82" fill="none" opacity=".65" stroke="url(#opsLineTwo)" stroke-dasharray="7 8" stroke-linecap="round" stroke-width="2"></path>
-<g fill="#22c7ee">
-<circle cx="112" cy="91" r="4"></circle>
-<circle cx="338" cy="68" r="4"></circle>
-<circle cx="574" cy="69" r="4"></circle>
-<circle cx="720" cy="55" r="4"></circle>
-</g>
-</svg>
-</div>
-<div class="sensor-legend">
-<div class="sensor-legend-item">
-<p class="text-[7px] text-gray-500 uppercase">Reservatórios</p>
-<p class="text-[9px] text-white font-semibold mt-1">Nível e volume</p>
-</div>
-<div class="sensor-legend-item">
-<p class="text-[7px] text-gray-500 uppercase">Linhas</p>
-<p class="text-[9px] text-white font-semibold mt-1">Vazão acumulada</p>
-</div>
-<div class="sensor-legend-item">
-<p class="text-[7px] text-gray-500 uppercase">Conjuntos</p>
-<p class="text-[9px] text-white font-semibold mt-1">Vibração</p>
-</div>
-<div class="sensor-legend-item">
-<p class="text-[7px] text-gray-500 uppercase">Ativos</p>
-<p class="text-[9px] text-white font-semibold mt-1">Horas e ciclos</p>
-</div>
-</div>
-</div>
-</div>
-<aside class="ops-side">
-<div class="ops-panel">
-<div class="ops-panel-title">
-<div>
-<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Monitoramento visual</p>
-<p class="text-[11px] font-semibold text-white mt-1">Câmeras integradas</p>
-</div>
-<div class="flex items-center gap-2">
-<span class="status-dot"></span>
-<span class="text-[7px] text-green-400 uppercase">Disponível</span>
-</div>
-</div>
-<div class="camera-wall">
-<div class="camera-tile">
-<div class="camera-frame"></div>
-<span class="absolute left-2.5 bottom-2 z-10 text-[7px] text-gray-300 uppercase">Área 01</span>
-<i class="fas fa-video absolute right-2.5 top-2.5 z-10 text-[8px] text-brand-teal"></i>
-</div>
-<div class="camera-tile">
-<div class="camera-frame"></div>
-<span class="absolute left-2.5 bottom-2 z-10 text-[7px] text-gray-300 uppercase">Reservatório</span>
-<i class="fas fa-video absolute right-2.5 top-2.5 z-10 text-[8px] text-brand-teal"></i>
-</div>
-<div class="camera-tile">
-<div class="camera-frame"></div>
-<span class="absolute left-2.5 bottom-2 z-10 text-[7px] text-gray-300 uppercase">Bombas</span>
-<i class="fas fa-video absolute right-2.5 top-2.5 z-10 text-[8px] text-brand-teal"></i>
-</div>
-<div class="camera-tile">
-<div class="camera-frame"></div>
-<span class="absolute left-2.5 bottom-2 z-10 text-[7px] text-gray-300 uppercase">Painel</span>
-<i class="fas fa-video absolute right-2.5 top-2.5 z-10 text-[8px] text-brand-teal"></i>
-</div>
-</div>
-</div>
-<div class="ops-panel">
-<div class="ops-panel-title">
-<div>
-<p class="text-[8px] uppercase tracking-[0.16em] text-gray-500">Infraestrutura conectada</p>
-<p class="text-[11px] font-semibold text-white mt-1">Saúde da comunicação</p>
-</div>
-<i class="fas fa-diagram-project text-brand-teal text-sm"></i>
-</div>
-<div class="device-list">
-<div class="device-row">
-<span class="device-row-icon"><i class="fas fa-tower-broadcast text-[9px]"></i></span>
-<div class="min-w-0">
-<p class="text-[8px] text-white font-semibold">Gateway de campo</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Canal de telemetria</p>
-</div>
-<span class="text-[7px] text-green-400 uppercase">Online</span>
-</div>
-<div class="device-row">
-<span class="device-row-icon"><i class="fas fa-microchip text-[9px]"></i></span>
-<div class="min-w-0">
-<p class="text-[8px] text-white font-semibold">Controladores</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Estados e atividades</p>
-</div>
-<span class="text-[7px] text-brand-teal uppercase">Integrado</span>
-</div>
-<div class="device-row">
-<span class="device-row-icon"><i class="fas fa-satellite-dish text-[9px]"></i></span>
-<div class="min-w-0">
-<p class="text-[8px] text-white font-semibold">Sensores</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Variáveis de processo</p>
-</div>
-<span class="text-[7px] text-green-400 uppercase">Ativo</span>
-</div>
-<div class="device-row">
-<span class="device-row-icon"><i class="fas fa-database text-[9px]"></i></span>
-<div class="min-w-0">
-<p class="text-[8px] text-white font-semibold">Histórico operacional</p>
-<p class="text-[7px] text-gray-600 mt-0.5">Eventos e tendências</p>
-</div>
-<span class="text-[7px] text-gray-300 uppercase">Rastreável</span>
+<span class="text-[7px] text-gray-300 uppercase">Registrados</span>
 </div>
 </div>
 </div>

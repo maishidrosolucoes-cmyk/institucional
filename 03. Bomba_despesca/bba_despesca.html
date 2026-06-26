@@ -683,15 +683,18 @@
 
         .cta-shell {
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
             border: 1px solid rgba(34,199,238,0.16);
-            border-radius: 32px;
+            border-radius: 24px;
             background:
-                radial-gradient(circle at 78% 28%, rgba(34,199,238,0.18), transparent 28%),
+                radial-gradient(circle at 50% 0%, rgba(34,199,238,0.14), transparent 38%),
                 linear-gradient(135deg, rgba(13,35,52,0.98), rgba(5,11,18,0.99));
             box-shadow:
-                0 46px 100px rgba(0,0,0,0.45),
-                0 0 60px rgba(0,136,172,0.07),
+                0 24px 56px rgba(0,0,0,0.34),
+                0 0 38px rgba(0,136,172,0.06),
                 inset 0 1px 0 rgba(255,255,255,0.06);
         }
 
@@ -704,17 +707,22 @@
                 linear-gradient(rgba(34,199,238,0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(34,199,238,0.03) 1px, transparent 1px);
             background-size: 36px 36px;
-            mask-image: linear-gradient(90deg, transparent, #000);
+            mask-image: linear-gradient(90deg, transparent, #000, transparent);
         }
 
-        .cta-fish {
-            position: absolute;
-            right: 5%;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(139,231,248,0.12);
-            font-size: 260px;
-            filter: drop-shadow(0 0 50px rgba(34,199,238,0.1));
+        .cta-actions {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .cta-actions .lux-button,
+        .cta-actions .ghost-button {
+            min-width: 220px;
         }
 
         .modal-backdrop {
@@ -1748,22 +1756,16 @@
 
             .cta-shell {
                 width: 100%;
-                padding: 2rem 1.25rem;
-                border-radius: 22px;
+                padding: 1.25rem;
+                border-radius: 20px;
             }
 
-            .cta-shell .section-title {
-                font-size: clamp(1.72rem, 8vw, 2.1rem);
+            .cta-actions {
+                width: 100%;
             }
 
-            .cta-shell p {
-                font-size: 0.75rem;
-                line-height: 1.7;
-                overflow-wrap: anywhere;
-            }
-
-            .cta-shell .lux-button,
-            .cta-shell .ghost-button {
+            .cta-actions .lux-button,
+            .cta-actions .ghost-button {
                 width: 100%;
             }
 
@@ -2084,34 +2086,18 @@
             </div>
         </section>
 
-        <section id="contato" class="overflow-hidden px-5 py-20 md:px-8 md:py-28">
-            <div class="cta-shell mx-auto max-w-7xl px-7 py-14 md:px-12 md:py-20 lg:px-16">
-                <i class="fas fa-fish cta-fish" aria-hidden="true"></i>
+        <section id="contato" class="overflow-hidden px-5 py-12 md:px-8 md:py-16">
+            <div class="cta-shell mx-auto max-w-3xl px-5 py-5 md:px-8 md:py-6">
+                <div class="cta-actions">
+                    <button id="contactButton" type="button" class="lux-button">
+                        Solicitar avaliação técnica
+                        <i class="fas fa-arrow-right text-[9px]"></i>
+                    </button>
 
-                <div class="relative z-10 max-w-3xl">
-                    <span class="section-label">Projeto MHS</span>
-
-                    <h2 class="section-title mt-4 text-3xl md:text-5xl lg:text-6xl">
-                        Sua despesca merece uma solução
-                        <span class="text-gradient">projetada para a operação.</span>
-                    </h2>
-
-                    <p class="mt-6 max-w-2xl text-sm leading-7 text-gray-400">
-                        Compartilhe as condições da unidade, o tipo de cultivo e a rota desejada. A equipe MHS
-                        avalia a configuração adequada para integrar a bomba ao processo.
-                    </p>
-
-                    <div class="mt-8 flex flex-wrap gap-3">
-                        <button id="contactButton" type="button" class="lux-button">
-                            Solicitar avaliação técnica
-                            <i class="fas fa-arrow-right text-[9px]"></i>
-                        </button>
-
-                        <a href="#home" class="ghost-button">
-                            Voltar ao início
-                            <i class="fas fa-arrow-up text-[9px]"></i>
-                        </a>
-                    </div>
+                    <a href="#home" class="ghost-button">
+                        Voltar ao início
+                        <i class="fas fa-arrow-up text-[9px]"></i>
+                    </a>
                 </div>
             </div>
 

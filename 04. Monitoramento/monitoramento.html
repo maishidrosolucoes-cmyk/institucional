@@ -219,8 +219,26 @@
             --line: rgba(255, 255, 255, 0.08);
         }
 
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        *::-webkit-scrollbar {
+            width: 0 !important;
+            height: 0 !important;
+            display: none !important;
+        }
+
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
         body {
@@ -230,7 +248,19 @@
                 radial-gradient(circle at 10% 42%, rgba(24, 37, 64, 0.28), transparent 26%),
                 #060b12;
             color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.5;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit;
         }
 
         body::before {
@@ -312,7 +342,9 @@
             font-size: 10px;
             font-weight: 700;
             letter-spacing: 0.28em;
+            line-height: 1.5;
             text-transform: uppercase;
+            text-wrap: balance;
         }
 
         .section-label::before {
@@ -327,6 +359,13 @@
             font-weight: 800;
             letter-spacing: -0.04em;
             line-height: 1.08;
+            text-wrap: balance;
+        }
+
+        .section-description {
+            max-width: 42rem;
+            text-wrap: pretty;
+            overflow-wrap: break-word;
         }
 
         .text-gradient {
@@ -451,12 +490,12 @@
         }
 
         .hero-visual .app-screen-item {
-            top: 46%;
+            top: 42%;
             width: clamp(12rem, 19vw, 16.5rem);
         }
 
         .hero-visual .app-screen-dots {
-            bottom: 7.25rem;
+            bottom: 5.7rem;
         }
 
         .hero-visual .app-screen-caption {
@@ -1049,6 +1088,8 @@
 
         .module-card {
             position: relative;
+            display: flex;
+            flex-direction: column;
             min-height: 220px;
             border: 1px solid rgba(255,255,255,0.075);
             border-radius: 10px;
@@ -1057,7 +1098,28 @@
                 radial-gradient(circle at 100% 0%, rgba(0,136,172,0.14), transparent 42%);
             box-shadow: 0 22px 55px rgba(0,0,0,0.26);
             overflow: hidden;
+            text-align: left;
             transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+        }
+
+        .module-card-copy {
+            flex: 1 1 auto;
+        }
+
+        .module-card-title {
+            min-height: 2.8em;
+            line-height: 1.4;
+            text-wrap: balance;
+        }
+
+        .module-card-description {
+            text-wrap: pretty;
+            overflow-wrap: break-word;
+        }
+
+        .module-card-footer {
+            margin-top: auto;
+            align-items: flex-start;
         }
 
         .module-card::before {
@@ -1238,13 +1300,52 @@
 
         .view-card {
             position: relative;
+            display: flex;
+            flex-direction: column;
             min-height: 360px;
             border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.08);
             background: linear-gradient(165deg, rgba(13,29,44,.98), rgba(5,13,22,.99));
             overflow: hidden;
             box-shadow: 0 24px 60px rgba(0,0,0,.3);
+            text-align: left;
             transition: transform .35s ease, border-color .35s ease;
+        }
+
+        .view-card-title {
+            min-height: 3.25rem;
+            line-height: 1.35;
+            text-wrap: balance;
+        }
+
+        .view-card-copy {
+            min-height: 4.25rem;
+            text-wrap: pretty;
+            overflow-wrap: break-word;
+        }
+
+        .view-card .mini-screen {
+            min-height: 8.75rem;
+        }
+
+        .view-card-list {
+            margin-top: auto;
+            padding-top: 1.5rem;
+        }
+
+        .view-card-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.55rem;
+            line-height: 1.55;
+        }
+
+        .view-card-list i {
+            width: 0.75rem;
+            flex: 0 0 0.75rem;
+            margin-top: 0.22em;
+            margin-right: 0;
+            text-align: center;
         }
 
         .view-card:hover {
@@ -1271,6 +1372,53 @@
             font-size: 8px;
             font-weight: 900;
             letter-spacing: .1em;
+        }
+
+        .applications-carousel {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.25rem;
+            margin-top: 3.5rem;
+        }
+
+        .applications-carousel-dots {
+            display: none;
+        }
+
+        .monitor-cta {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 3rem;
+            padding: clamp(1.4rem, 3vw, 2rem);
+            overflow: hidden;
+            border: 1px solid rgba(34,199,238,0.2);
+            border-radius: 16px;
+            background:
+                radial-gradient(circle at 86% 12%, rgba(34,199,238,0.09), transparent 34%),
+                rgba(0,136,172,0.055);
+        }
+
+        .monitor-cta::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(34,199,238,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34,199,238,0.02) 1px, transparent 1px);
+            background-size: 36px 36px;
+            mask-image: linear-gradient(90deg, black, transparent 90%);
+        }
+
+        .monitor-cta .lux-button {
+            position: relative;
+            z-index: 1;
+            min-width: 15rem;
+            justify-content: center;
+            white-space: nowrap;
         }
 
         .mini-screen {
@@ -1302,7 +1450,18 @@
 
         .modal-content {
             transform: scale(.96) translateY(18px);
+            text-align: left;
             transition: transform .35s cubic-bezier(.4,0,.2,1);
+        }
+
+        #modal-title {
+            line-height: 1.25;
+            text-wrap: balance;
+        }
+
+        #modal-desc {
+            text-wrap: pretty;
+            overflow-wrap: break-word;
         }
 
         .modal.active .modal-content {
@@ -1314,24 +1473,6 @@
                 radial-gradient(circle at 50% 38%, rgba(0,136,172,.2), transparent 44%),
                 linear-gradient(145deg, rgba(13,29,46,.97), rgba(5,13,22,.99));
         }
-
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #060b12;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #182540;
-            border-radius: 999px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #0088AC;
-        }
-
 
         /* Monitoramento de bombas e transferência de fluidos */
         .fluid-transfer-glow {
@@ -1866,6 +2007,19 @@
         }
 
         @media (max-width: 1023px) {
+            .monitor-cta {
+                padding: 1.5rem;
+            }
+
+            .transfer-intro {
+                text-align: center;
+            }
+
+            .transfer-intro .section-description {
+                margin-right: auto;
+                margin-left: auto;
+            }
+
             .fluid-layout {
                 grid-template-columns: 1fr;
             }
@@ -1882,6 +2036,71 @@
         }
 
         @media (max-width: 767px) {
+            .monitor-cta {
+                margin-top: 2.25rem;
+                padding: 1rem;
+            }
+
+            .monitor-cta .lux-button {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .applications-carousel {
+                display: flex;
+                width: calc(100% + 2.5rem);
+                max-width: none;
+                gap: 0.85rem;
+                margin: 2.5rem -1.25rem 0;
+                padding: 0 1.25rem 1rem;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scroll-snap-type: x mandatory;
+                scroll-padding-inline: 1.25rem;
+                overscroll-behavior-inline: contain;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .applications-carousel::-webkit-scrollbar {
+                display: none;
+            }
+
+            .applications-carousel .view-card {
+                flex: 0 0 min(84vw, 22rem);
+                min-height: 31rem;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+            }
+
+            .applications-carousel .view-card:hover {
+                transform: none;
+            }
+
+            .applications-carousel-dots {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.45rem;
+                margin-top: 0.5rem;
+            }
+
+            .applications-carousel-dot {
+                width: 0.42rem;
+                height: 0.42rem;
+                padding: 0;
+                border: 0;
+                border-radius: 999px;
+                background: rgba(143,168,192,0.28);
+                transition: width .25s ease, background-color .25s ease, box-shadow .25s ease;
+            }
+
+            .applications-carousel-dot.is-active {
+                width: 1.5rem;
+                background: #22c7ee;
+                box-shadow: 0 0 12px rgba(34,199,238,0.38);
+            }
+
             .fluid-toolbar {
                 align-items: flex-start;
                 padding: 15px;
@@ -2031,12 +2250,12 @@
             }
 
             .hero-visual .app-screen-item {
-                top: 44%;
+                top: 40%;
                 width: clamp(10.75rem, 51vw, 13.25rem);
             }
 
             .hero-visual .app-screen-dots {
-                bottom: 9rem;
+                bottom: 7.3rem;
             }
 
             .hero-visual .app-screen-caption {
@@ -2085,6 +2304,11 @@
             .integration-point-step {
                 top: 0.85rem;
                 right: 0.9rem;
+            }
+
+            .integration-point > p {
+                margin-top: 0;
+                padding-right: 1.75rem;
             }
 
             .integration-camera-panel {
@@ -2416,7 +2640,7 @@
 <h1 class="section-title text-4xl sm:text-5xl lg:text-[64px] mt-5">
 <span class="text-gradient">Controle Total</span>
 </h1>
-<p class="text-gray-400 text-sm md:text-[15px] leading-7 mt-6 max-w-[580px]">
+<p class="section-description text-gray-400 text-sm md:text-[15px] leading-7 mt-6 max-w-[580px]">
                     Mais do que monitorar equipamentos, entregamos visibilidade,
                     inteligência e controle sobre toda a operação. Unimos engenharia,
                     automação e conhecimento aplicado em sistemas de bombeamento para transformar dados em decisões mais rápidas,
@@ -2450,7 +2674,7 @@
 </div>
 </header>
 <!-- Integrações complementares -->
-<section aria-labelledby="integration-title" class="section-shell integration-band px-5 md:px-8">
+<section aria-labelledby="integration-title" class="section-shell integration-band px-5 md:px-8" id="operacao">
 <div class="integration-layout max-w-7xl mx-auto relative z-10">
 <div class="integration-copy">
 <span class="section-label">Automa&ccedil;&atilde;o e monitoramento</span>
@@ -2458,7 +2682,7 @@
                     Opera&ccedil;&atilde;o conectada.<br class="hidden sm:block"/>
 <span class="text-gradient">Decis&otilde;es mais seguras.</span>
 </h2>
-<p class="text-gray-400 text-sm leading-7 mt-5">
+<p class="section-description text-gray-400 text-sm leading-7 mt-5">
                     Integramos automa&ccedil;&atilde;o e monitoramento para acompanhar a opera&ccedil;&atilde;o,
                     registrar eventos e transformar informa&ccedil;&otilde;es de campo em respostas mais r&aacute;pidas.
                     A solu&ccedil;&atilde;o pode incorporar c&acirc;meras, geolocaliza&ccedil;&atilde;o e notifica&ccedil;&otilde;es inteligentes.
@@ -2528,7 +2752,7 @@
 <section class="section-shell py-24 md:py-32 px-5 md:px-8 overflow-hidden" id="transferencia">
 <div aria-hidden="true" class="fluid-transfer-glow"></div>
 <div class="max-w-7xl mx-auto relative z-10">
-<div class="grid lg:grid-cols-[0.82fr_1.18fr] gap-8 lg:gap-16 items-end">
+<div class="transfer-intro grid lg:grid-cols-[0.82fr_1.18fr] gap-8 lg:gap-16 items-end">
 <div>
 <span class="section-label">Transferência de fluidos monitorada</span>
 <h2 class="section-title text-3xl md:text-5xl mt-4">
@@ -2537,12 +2761,10 @@
 </h2>
 </div>
 <div class="lg:pb-1">
-<p class="text-gray-400 text-sm leading-7 max-w-2xl">
-                        Acompanhe cada etapa da movimentação de fluidos com uma solução que integra engenharia,
-                        automação e monitoramento em tempo real. Obtenha visibilidade completa da operação, receba
-                        alertas inteligentes, acompanhe indicadores críticos e tome decisões com mais segurança.
-                        Tudo desenvolvido por especialistas em sistemas de bombeamento para maximizar desempenho,
-                        confiabilidade e disponibilidade operacional.
+<p class="section-description text-gray-400 text-sm leading-7 max-w-2xl">
+                        Acompanhe a movimentação de fluidos com engenharia, automação e monitoramento em tempo real.
+                        Visualize indicadores críticos, receba alertas inteligentes e tome decisões mais seguras para
+                        ampliar o desempenho, a confiabilidade e a disponibilidade operacional.
                     </p>
 </div>
 </div>
@@ -2780,22 +3002,21 @@
 <div class="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-brand-teal/[0.04] to-transparent pointer-events-none"></div>
 <div class="max-w-7xl mx-auto relative z-10">
 <div class="text-center max-w-3xl mx-auto">
-<span class="section-label justify-center">Bombeamento e transferência em diferentes escalas</span>
 <h2 class="section-title text-3xl md:text-5xl mt-4">
                     Visibilidade completa para <span class="text-gradient">cada etapa do fluido</span>
 </h2>
-<p class="text-gray-500 text-xs md:text-sm leading-6 mt-5">
+<p class="section-description text-gray-500 text-xs md:text-sm leading-6 mt-5 mx-auto">
                     Da casa de bombas ao centro de controle, vazões, vibrações, pressões, volumes e comandos permanecem integrados e rastreáveis.
                 </p>
 </div>
-<div class="grid md:grid-cols-3 gap-5 mt-14 max-w-6xl mx-auto">
+<div aria-label="Formas de visualização do monitoramento MHS" class="applications-carousel max-w-6xl mx-auto" id="applications-carousel">
 <article class="view-card p-6 md:p-7">
 <div class="module-icon">
 <i class="fas fa-hard-hat"></i>
 </div>
 <p class="text-[9px] uppercase tracking-[0.2em] text-brand-teal mt-6">Operação de campo</p>
-<h3 class="text-xl font-bold text-white mt-3">Acompanhamento técnico</h3>
-<p class="text-[11px] text-gray-500 leading-5 mt-3">
+<h3 class="view-card-title text-xl font-bold text-white mt-3">Acompanhamento técnico</h3>
+<p class="view-card-copy text-[11px] text-gray-500 leading-5 mt-3">
                         Leitura objetiva de variáveis, estados, alarmes e condições dos ativos em uma interface rápida e responsiva.
                     </p>
 <div class="mini-screen p-4 mt-6">
@@ -2814,10 +3035,10 @@
 </div>
 </div>
 </div>
-<ul class="space-y-3 mt-6 text-[10px] text-gray-400">
-<li><i class="fas fa-check text-brand-teal mr-2"></i>Leituras centralizadas</li>
-<li><i class="fas fa-check text-brand-teal mr-2"></i>Histórico por ativo</li>
-<li><i class="fas fa-check text-brand-teal mr-2"></i>Alertas operacionais</li>
+<ul class="view-card-list space-y-3 text-[10px] text-gray-400">
+<li><i class="fas fa-check text-brand-teal"></i><span>Leituras centralizadas</span></li>
+<li><i class="fas fa-check text-brand-teal"></i><span>Histórico por ativo</span></li>
+<li><i class="fas fa-check text-brand-teal"></i><span>Alertas operacionais</span></li>
 </ul>
 </article>
 <article class="view-card featured p-6 md:p-7">
@@ -2825,8 +3046,8 @@
 <i class="fas fa-display"></i>
 </div>
 <p class="text-[9px] uppercase tracking-[0.2em] text-brand-teal mt-6">Centro de controle</p>
-<h3 class="text-xl font-bold text-white mt-3">Supervisão integrada</h3>
-<p class="text-[11px] text-gray-500 leading-5 mt-3">
+<h3 class="view-card-title text-xl font-bold text-white mt-3">Supervisão integrada</h3>
+<p class="view-card-copy text-[11px] text-gray-500 leading-5 mt-3">
                         Operação, automação, câmeras e eventos reunidos em uma visão contínua para resposta rápida e segura.
                     </p>
 <div class="mini-screen p-4 mt-6">
@@ -2848,10 +3069,10 @@
 <span class="w-full h-[90%] bg-brand-teal rounded-sm"></span>
 </div>
 </div>
-<ul class="space-y-3 mt-6 text-[10px] text-gray-400">
-<li><i class="fas fa-check text-brand-teal mr-2"></i>Câmeras e automação integradas</li>
-<li><i class="fas fa-check text-brand-teal mr-2"></i>Priorização de eventos</li>
-<li><i class="fas fa-check text-brand-teal mr-2"></i>Gestão visual em tempo real</li>
+<ul class="view-card-list space-y-3 text-[10px] text-gray-400">
+<li><i class="fas fa-check text-brand-teal"></i><span>Câmeras e automação integradas</span></li>
+<li><i class="fas fa-check text-brand-teal"></i><span>Priorização de eventos</span></li>
+<li><i class="fas fa-check text-brand-teal"></i><span>Gestão visual em tempo real</span></li>
 </ul>
 </article>
 <article class="view-card p-6 md:p-7">
@@ -2859,8 +3080,8 @@
 <i class="fas fa-chart-pie"></i>
 </div>
 <p class="text-[9px] uppercase tracking-[0.2em] text-brand-teal mt-6">Gestão executiva</p>
-<h3 class="text-xl font-bold text-white mt-3">Indicadores consolidados</h3>
-<p class="text-[11px] text-gray-500 leading-5 mt-3">
+<h3 class="view-card-title text-xl font-bold text-white mt-3">Indicadores consolidados</h3>
+<p class="view-card-copy text-[11px] text-gray-500 leading-5 mt-3">
                         Tendências, disponibilidade e desempenho organizados para apoiar planejamento, produtividade e governança.
                     </p>
 <div class="mini-screen p-4 mt-6">
@@ -2879,26 +3100,25 @@
 </div>
 </div>
 </div>
-<ul class="space-y-3 mt-6 text-[10px] text-gray-400">
-<li><i class="fas fa-check text-brand-teal mr-2"></i>Dashboards por perfil</li>
-<li><i class="fas fa-check text-brand-teal mr-2"></i>Indicadores históricos</li>
-<li><i class="fas fa-check text-brand-teal mr-2"></i>Rastreabilidade operacional</li>
+<ul class="view-card-list space-y-3 text-[10px] text-gray-400">
+<li><i class="fas fa-check text-brand-teal"></i><span>Dashboards por perfil</span></li>
+<li><i class="fas fa-check text-brand-teal"></i><span>Indicadores históricos</span></li>
+<li><i class="fas fa-check text-brand-teal"></i><span>Rastreabilidade operacional</span></li>
 </ul>
 </article>
 </div>
-<div class="max-w-5xl mx-auto mt-12 rounded-2xl border border-brand-teal/20 bg-brand-teal/[0.055] p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-<div class="text-center md:text-left">
-<p class="text-[9px] uppercase tracking-[0.25em] text-brand-teal font-bold">Pronto para elevar o controle das suas bombas e transferências?</p>
-<h3 class="text-xl md:text-2xl font-bold text-white mt-2">Veja como o Monitoramento MHS acompanha vazão, vibração e o caminho completo do fluido.</h3>
+<div aria-label="Selecionar forma de visualização" class="applications-carousel-dots">
+<button aria-label="Exibir acompanhamento técnico" class="applications-carousel-dot is-active" data-applications-dot="0" type="button"></button>
+<button aria-label="Exibir supervisão integrada" class="applications-carousel-dot" data-applications-dot="1" type="button"></button>
+<button aria-label="Exibir indicadores consolidados" class="applications-carousel-dot" data-applications-dot="2" type="button"></button>
 </div>
-<a class="lux-button shrink-0" href="mailto:contato@maishidrosolucoes.com.br?subject=Demonstração%20do%20Monitoramento%20MHS">
+<div class="monitor-cta">
+<a class="lux-button" href="mailto:contato@maishidrosolucoes.com.br?subject=Demonstração%20do%20Monitoramento%20MHS">
                     Solicitar demonstração
-                    <i class="fas fa-arrow-right text-[9px]"></i>
 </a>
 </div>
-<footer class="pt-14 pb-2 flex flex-col sm:flex-row gap-4 items-center justify-between text-[9px] uppercase tracking-[0.14em] text-gray-600">
+<footer class="pt-14 pb-2 flex items-center justify-center text-center text-[9px] uppercase tracking-[0.14em] text-gray-600">
 <p>© MHS — Mais Hidro Soluções</p>
-<p>Bombas • Vazão • Vibração • Pressão • Transferência de fluidos</p>
 </footer>
 </div>
 </section>
@@ -2955,6 +3175,66 @@
 </div>
 </div>
 <script>
+        function initApplicationsCarousel() {
+            const carousel = document.getElementById('applications-carousel');
+            if (!carousel) return;
+
+            const cards = Array.from(carousel.querySelectorAll('.view-card'));
+            const dots = Array.from(document.querySelectorAll('[data-applications-dot]'));
+            const mobileQuery = window.matchMedia('(max-width: 767px)');
+            let frame = 0;
+
+            const setActiveDot = (index) => {
+                dots.forEach((dot, dotIndex) => {
+                    const active = dotIndex === index;
+                    dot.classList.toggle('is-active', active);
+                    dot.setAttribute('aria-current', active ? 'true' : 'false');
+                });
+            };
+
+            const updateActiveCard = () => {
+                frame = 0;
+                if (!mobileQuery.matches) {
+                    setActiveDot(0);
+                    return;
+                }
+
+                const carouselCenter = carousel.scrollLeft + carousel.clientWidth / 2;
+                let activeIndex = 0;
+                let smallestDistance = Number.POSITIVE_INFINITY;
+
+                cards.forEach((card, index) => {
+                    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+                    const distance = Math.abs(carouselCenter - cardCenter);
+                    if (distance < smallestDistance) {
+                        smallestDistance = distance;
+                        activeIndex = index;
+                    }
+                });
+
+                setActiveDot(activeIndex);
+            };
+
+            carousel.addEventListener('scroll', () => {
+                if (frame) return;
+                frame = window.requestAnimationFrame(updateActiveCard);
+            }, { passive: true });
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    cards[index]?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'start'
+                    });
+                });
+            });
+
+            mobileQuery.addEventListener('change', updateActiveCard);
+            window.addEventListener('resize', updateActiveCard, { passive: true });
+            updateActiveCard();
+        }
+
         // Dados dos módulos de monitoramento
         const produtosData = [
             {
@@ -3130,17 +3410,17 @@
                         <span class="module-index">${String(index + 1).padStart(2, '0')}</span>
                     </div>
 
-                    <div class="relative z-10 mt-6">
+                    <div class="module-card-copy relative z-10 mt-6">
                         <div class="flex items-center gap-2 mb-3">
                             <span class="w-1.5 h-1.5 rounded-full bg-brand-teal shadow-[0_0_8px_rgba(34,199,238,0.8)]"></span>
                             <span class="text-[8px] font-bold tracking-[0.18em] text-brand-teal">${prod.rating}</span>
                         </div>
 
-                        <h3 class="text-[15px] font-bold text-white leading-snug min-h-[42px]">${prod.modelo}</h3>
-                        <p class="text-[10px] text-gray-500 leading-5 mt-3 line-clamp-3">${prod.descricao}</p>
+                        <h3 class="module-card-title text-[15px] font-bold text-white">${prod.modelo}</h3>
+                        <p class="module-card-description text-[10px] text-gray-500 leading-5 mt-3 line-clamp-3">${prod.descricao}</p>
                     </div>
 
-                    <div class="relative z-10 mt-5 pt-4 border-t border-white/[0.07] flex items-center justify-between gap-4">
+                    <div class="module-card-footer relative z-10 mt-5 pt-4 border-t border-white/[0.07] flex justify-between gap-4">
                         <p class="text-[9px] text-gray-400 leading-4">${prod.capacidadeMax}</p>
                         <span class="w-7 h-7 rounded-full border border-brand-teal/25 bg-brand-teal/10 grid place-items-center text-brand-teal shrink-0">
                             <i class="fas fa-arrow-right text-[8px]"></i>
@@ -3188,7 +3468,10 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', renderCards);
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCards();
+            initApplicationsCarousel();
+        });
     </script>
 </body>
 </html>
